@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[scripts]
+package-project = "pipenv install -e ./app/"
+
+[packages]
+nltk = "*"
+black = {extras = ["jupyter"], version = "*"}
+pandas = "*"
+numpy = "*"
+sklearn = "*"
+lightgbm = "*"
+shap= "*"
+authorship-tool = {file = "app", editable = true}
+tabulate = "*"
+matplotlib = "*"
+mypy = "*"
+
+[dev-packages]
+ipykernel = "*"
+jupyter = "*"
+
+[requires]
+python_version = "3.11"
