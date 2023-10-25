@@ -33,9 +33,7 @@ for fileid in gutenberg.fileids():
 book_data_dict = {}
 
 for index, author in enumerate(authors):
-    books = [
-        gutenberg.paras(fileid) for fileid in gutenberg.fileids() if author in fileid
-    ]
+    books = [gutenberg.paras(fileid) for fileid in gutenberg.fileids() if author in fileid]
     para_num = len([paras for book in books for paras in book])
     book_data_dict[author] = para_num
 
@@ -55,9 +53,7 @@ NON_TARGET = "carroll"
 nontarget_books = [
     gutenberg.paras(file_id) for file_id in gutenberg.fileids() if NON_TARGET in file_id
 ]
-target_books = [
-    gutenberg.paras(file_id) for file_id in gutenberg.fileids() if TARGET in file_id
-]
+target_books = [gutenberg.paras(file_id) for file_id in gutenberg.fileids() if TARGET in file_id]
 
 nontarget_paras = [paras for book in nontarget_books for paras in book]
 target_paras = [paras for book in target_books for paras in book]
@@ -120,9 +116,7 @@ print(df.isna().sum())
 
 
 def learn(df, nd_correctness):
-    X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
-        df, nd_correctness
-    )
+    X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(df, nd_correctness)
 
     model = lgb.LGBMClassifier()
     model.fit(X_train.values, y_train)
@@ -136,9 +130,7 @@ def learn(df, nd_correctness):
 
 val = 0
 while val < 0.9:
-    model, X_train, X_test, y_train, y_test, y_pred_prob, y_pred, val = learn(
-        df, nd_correctness
-    )
+    model, X_train, X_test, y_train, y_test, y_pred_prob, y_pred, val = learn(df, nd_correctness)
 
 print(f"auc-rocスコア: {val}")
 

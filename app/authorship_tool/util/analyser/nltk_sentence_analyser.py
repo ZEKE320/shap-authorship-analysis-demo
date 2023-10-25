@@ -27,11 +27,7 @@ presidents = set([fileid[5:-4] for fileid in inaugural.fileids()])
 president_data_dict = {}
 
 for index, president in enumerate(presidents):
-    speeches = [
-        inaugural.sents(file_id)
-        for file_id in inaugural.fileids()
-        if president in file_id
-    ]
+    speeches = [inaugural.sents(file_id) for file_id in inaugural.fileids() if president in file_id]
     sent_num = len([sent for speech in speeches for sent in speech])
     president_data_dict[president] = sent_num
 
@@ -46,14 +42,10 @@ for idx, president_item in enumerate(sorted_dict.items()):
 # %%
 
 nontarget_speeches = [
-    inaugural.sents(file_id)
-    for file_id in inaugural.fileids()
-    if NON_TARGET_PRESIDENT in file_id
+    inaugural.sents(file_id) for file_id in inaugural.fileids() if NON_TARGET_PRESIDENT in file_id
 ]
 target_speeches = [
-    inaugural.sents(file_id)
-    for file_id in inaugural.fileids()
-    if TARGET_PRESIDENT in file_id
+    inaugural.sents(file_id) for file_id in inaugural.fileids() if TARGET_PRESIDENT in file_id
 ]
 
 nontarget_sents = [sent for speech in nontarget_speeches for sent in speech]
@@ -61,9 +53,7 @@ target_sents = [sent for speech in target_speeches for sent in speech]
 
 for sent in nontarget_sents[:50]:
     print(" ".join(sent))
-print(
-    f"...\n\nSpeaker: President {NON_TARGET_PRESIDENT}, {len(nontarget_sents)} sentences"
-)
+print(f"...\n\nSpeaker: President {NON_TARGET_PRESIDENT}, {len(nontarget_sents)} sentences")
 
 
 # %%

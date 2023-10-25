@@ -12,9 +12,7 @@ def learn_more(df: pd.DataFrame, nd_correctness: np.ndarray):
 
 
 def learn(df: pd.DataFrame, nd_correctness: np.ndarray):
-    x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(
-        df, nd_correctness
-    )
+    x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(df, nd_correctness)
 
     model = lgb.LGBMClassifier()
     model.fit(x_train.values, y_train)
