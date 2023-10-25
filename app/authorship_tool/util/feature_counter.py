@@ -68,6 +68,5 @@ def count_non_alphabetic_characters(sentence: list[str]) -> int:
 
 def count_uncommon_words(sentence: list[str]) -> int:
     """ストップワードではない単語の数を計算する"""
-    nltk.download("stopwords")
     stop_words = set(stopwords.words("english"))
     return len([word for word in sentence if word not in stop_words])
