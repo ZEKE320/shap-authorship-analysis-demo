@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-package-project = "pipenv install -e ./app/"
+packaging = "pipenv install -e ./app/"
 
 [packages]
 nltk = "*"
@@ -17,9 +17,9 @@ shap= "*"
 tabulate = "*"
 matplotlib = "*"
 mypy = "*"
-authorship-tool = {file = "app", editable = true}
 ipykernel = "*"
 jupyter = "*"
+authorship-tool = {file = "app", editable = true}
 
 [dev-packages]
 
