@@ -18,10 +18,10 @@ tabulate = "*"
 matplotlib = "*"
 mypy = "*"
 authorship-tool = {file = "app", editable = true}
-
-[dev-packages]
 ipykernel = "*"
 jupyter = "*"
+
+[dev-packages]
 
 [requires]
 python_version = "3.11"
