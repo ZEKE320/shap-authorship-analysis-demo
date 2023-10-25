@@ -1,6 +1,6 @@
 import nltk
 from nltk import FreqDist
-from authorship_tool.main.util import feature_counter as fct
+from authorship_tool.util import feature_counter as fct
 
 
 def word_variation(sentence: list[str]) -> float:

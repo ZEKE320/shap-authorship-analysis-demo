@@ -14,10 +14,10 @@ numpy = "*"
 sklearn = "*"
 lightgbm = "*"
 shap= "*"
-authorship-tool = {file = "app", editable = true}
 tabulate = "*"
 matplotlib = "*"
 mypy = "*"
+authorship-tool = {file = "app", editable = true}
 
 [dev-packages]
 ipykernel = "*"

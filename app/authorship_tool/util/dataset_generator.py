@@ -1,5 +1,5 @@
-import authorship_tool.main.util.feature_counter as fct
-import authorship_tool.main.util.frequency_calculator as fcal
+import authorship_tool.util.feature_counter as fct
+import authorship_tool.util.frequency_calculator as fcal
 
 
 class DatasetGenerator:
