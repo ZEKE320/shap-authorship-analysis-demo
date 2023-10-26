@@ -23,6 +23,9 @@ mypy = "*"
 ipykernel = "*"
 jupyter = "*"
 lightgbm = "*"
+isort = "*"
+pylint = "*"
+pylance = "*"
 
 
 [build-system]
