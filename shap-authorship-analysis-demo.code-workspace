@@ -4,41 +4,16 @@
       "path": "."
     }
   ],
-  "settings": {},
-  "extensions": {
-    "recommendations": [
-      "redhat.vscode-yaml",
-      "sonarsource.sonarlint-vscode",
-      "mechatroner.rainbow-csv",
-      "donjayamanne.python-extension-pack",
-      "ms-python.pylint",
-      "ms-python.vscode-pylance",
-      "esbenp.prettier-vscode",
-      "christian-kohler.path-intellisense",
-      "ziyasal.vscode-open-in-github",
-      "ms-python.mypy-type-checker",
-      "ms-toolsai.jupyter-hub",
-      "ms-python.isort",
-      "ms-toolsai.jupyter",
-      "visualstudioexptteam.vscodeintellicode",
-      "visualstudioexptteam.vscodeintellicode-completions",
-      "oderwat.indent-rainbow",
-      "kameshkotwani.google-search",
-      "seatonjiang.gitmoji-vscode",
-      "github.remotehub",
-      "github.vscode-pull-request-github",
-      "github.heygithub",
-      "github.copilot",
-      "github.copilot-labs",
-      "github.codespaces",
-      "mhutchie.git-graph",
-      "donjayamanne.git-extension-pack",
-      "grapecity.gc-excelviewer",
-      "tamasfe.even-better-toml",
-      "streetsidesoftware.code-spell-checker",
-      "vmware.vscode-manifest-yaml",
-      "ms-python.black-formatter",
-      "njpwerner.autodocstring"
-    ]
+  "settings": {
+    "gather.gatherToScript": true,
+    "[python]": {
+      "editor.tabSize": 4
+    },
+    "mypy-type-checker.reportingScope": "workspace",
+    "python.analysis.diagnosticMode": "workspace",
+    "pylint.importStrategy": "fromEnvironment",
+    "isort.importStrategy": "fromEnvironment",
+    "mypy-type-checker.importStrategy": "fromEnvironment",
+    "black-formatter.importStrategy": "fromEnvironment"
   }
 }
