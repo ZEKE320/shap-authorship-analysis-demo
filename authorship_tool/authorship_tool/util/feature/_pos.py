@@ -1,0 +1,82 @@
+import os
+from os import path
+from typing import Final
+
+import nltk
+from dotenv import load_dotenv
+
+from authorship_tool.util import TypeGuardUtil
+
+load_dotenv()
+ADJECTIVES_PAST_PARTICIPLE_PATH = ""
+if dataset_path := os.getenv("path_dataset_adjective_past_participle"):
+    ADJECTIVES_PAST_PARTICIPLE_PATH = path.join(
+        path.dirname(path.abspath(".env")), dataset_path
+    )
+
+
+try:
+    with open(ADJECTIVES_PAST_PARTICIPLE_PATH, "r", encoding="utf-8") as f:
+        PAST_PARTICIPLE_ADJECTIVES: list[str] | None = f.read().splitlines()
+except FileNotFoundError:
+    print(
+        f"Path: '{ADJECTIVES_PAST_PARTICIPLE_PATH}' could not be found. Skip and continue processing."
+    )
+
+
+class PosFeature:
+    """POSタグと追加の特徴タグを管理するクラス"""
+
+    __words_and_pos: list[tuple[str, str]]
+    """単語とPOSタグのタプルのリスト"""
+
+    def __init__(self, word_list: list[tuple[str, str]] | list[str]) -> None:
+        if TypeGuardUtil.is_str_list(word_list):
+            self.__words_and_pos = nltk.pos_tag(word_list)
+        elif TypeGuardUtil.is_pos_list(word_list):
+            self.__words_and_pos = word_list
+        else:
+            raise TypeError("src must be list[tuple[str, str]] or list[str]")
+
+    @property
+    def words_and_pos(self) -> list[tuple[str, str]]:
+        """単語とPOSタグのタプルのリスト
+
+        Returns:
+            list[tuple[str, str]]: 単語とPOSタグのタプルのリスト
+        """
+        return self.__words_and_pos
+
+    def subcategory(self) -> "PosFeature":
+        """サブカテゴリを追加する
+
+        Returns:
+            PosFeature: PosFeatureインスタンス
+        """
+        return self.jj_subcategory()
+
+    def jj_subcategory(self) -> "PosFeature":
+        """形容詞のサブカテゴリを追加する
+
+        Returns:
+            PosFeature: PosFeatureインスタンス
+        """
+        return self.jj_past_participle()
+
+    def jj_past_participle(self) -> "PosFeature":
+        """過去分詞形の形容詞を追加する
+
+        Returns:
+            PosFeature: PosFeatureインスタンス
+        """
+        if PAST_PARTICIPLE_ADJECTIVES is None:
+            return self
+
+        return PosFeature(
+            [
+                (word, "JJ_pp")
+                if word in PAST_PARTICIPLE_ADJECTIVES and pos == "JJ"
+                else (word, pos)
+                for (word, pos) in self.__words_and_pos
+            ]
+        )
