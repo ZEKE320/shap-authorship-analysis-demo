@@ -21,16 +21,12 @@ DATASET_PATH: Final[str] = path.join(
 
 
 class LGBMSourceModel:
-    __DESIRED_SCORE: Final[float]
-    __DF: Final[DataFrame]
-    __ND_CORRECTNESS: Final[ndarray]
-
     def __init__(
         self, desired_score: float, df: DataFrame, nd_correctness: ndarray
     ) -> None:
-        self.__DESIRED_SCORE = desired_score
-        self.__DF = df
-        self.__ND_CORRECTNESS = nd_correctness
+        self.__DESIRED_SCORE: Final[float] = desired_score
+        self.__DF: Final[DataFrame] = df
+        self.__ND_CORRECTNESS: Final[ndarray] = nd_correctness
 
     @property
     def desired_score(self) -> float:
@@ -46,15 +42,6 @@ class LGBMSourceModel:
 
 
 class LGBMResultModel:
-    __MODEL: Final[LGBMClassifier]
-    __TRAIN_DATA: Final[DataFrame]
-    __TEST_DATA: Final[DataFrame]
-    __TRAIN_ANS: Final[ndarray]
-    __TEST_ANS: Final[ndarray]
-    __ANS_PRED_PROB: Final[ndarray]
-    __ANS_PRED: Final[ndarray]
-    __AUC_ROC_SCORE: Final[float]
-
     def __init__(
         self,
         model: LGBMClassifier,
@@ -66,14 +53,14 @@ class LGBMResultModel:
         ans_pred: ndarray,
         auc_roc_score: float,
     ) -> None:
-        self.__MODEL = model
-        self.__TRAIN_DATA = train_data
-        self.__TEST_DATA = test_data
-        self.__TRAIN_ANS = train_ans
-        self.__TEST_ANS = test_ans
-        self.__ANS_PRED_PROB = ans_pred_prob
-        self.__ANS_PRED = ans_pred
-        self.__AUC_ROC_SCORE = auc_roc_score
+        self.__MODEL: Final[LGBMClassifier] = model
+        self.__TRAIN_DATA: Final[DataFrame] = train_data
+        self.__TEST_DATA: Final[DataFrame] = test_data
+        self.__TRAIN_ANS: Final[ndarray] = train_ans
+        self.__TEST_ANS: Final[ndarray] = test_ans
+        self.__ANS_PRED_PROB: Final[ndarray] = ans_pred_prob
+        self.__ANS_PRED: Final[ndarray] = ans_pred
+        self.__AUC_ROC_SCORE: Final[float] = auc_roc_score
 
     @property
     def model(self) -> LGBMClassifier:
@@ -94,8 +81,8 @@ class LGBMResultModel:
         with open(path.join(MODEL_PATH, "lgbm_model.pkl"), "wb") as f:
             pickle.dump(self.__MODEL, f)
 
-        self.__TRAIN_DATA.to_csv(path.join(DATASET_PATH, "train_data.csv"), index=False)
-        self.__TEST_DATA.to_csv(path.join(DATASET_PATH, "test_data.csv"), index=False)
+        self.__TRAIN_DATA.to_csv(path.join(DATASET_PATH, "train_data.csv"))
+        self.__TEST_DATA.to_csv(path.join(DATASET_PATH, "test_data.csv"))
         DataFrame(self.__TRAIN_ANS).to_csv(
             path.join(DATASET_PATH, "train_ans.csv"), index=False, header=False
         )
