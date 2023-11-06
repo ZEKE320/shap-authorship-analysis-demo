@@ -1,7 +1,5 @@
 import os
-from os import path
 from pathlib import Path
-from turtle import pos
 from typing import Final
 
 import nltk
