@@ -16,9 +16,10 @@ from authorship_tool.lgbm.model import LGBMResultModel, LGBMSourceModel
 from authorship_tool.lgbm.trainer import learn_until_succeed
 from authorship_tool.util import (
     ArrayDimensionReshaper,
-    FeatureCalculator,
     FeatureDatasetGenerator,
     TabulateUtil,
+    PosFeature,
+    TypeGuardUtil,
 )
 
 load_dotenv()
@@ -35,6 +36,7 @@ nltk.download("gutenberg")
 nltk.download("punkt")
 nltk.download("averaged_perceptron_tagger")
 nltk.download("stopwords")
+
 
 print()
 
@@ -86,6 +88,9 @@ paras_b = [paras for book in books_b for paras in book]
 for para in paras_b[:10]:
     print(ArrayDimensionReshaper.para2str(para))
 print(f"...\n\nAuthor: {AUTHOR_B}, {len(paras_b)} paragraphs\n\n")
+
+
+all_paragraph: list[list[str]] = paras_a + paras_b
 
 
 tag_set: set[str] = {
