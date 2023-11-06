@@ -94,10 +94,10 @@ class PosFeature:
         Returns:
             PosFeature: PosFeatureインスタンス
         """
-        if "JJ" not in {pos for (_, pos) in self.__words_and_pos}:
-            return self
+        if "JJ" in self.pos_set:
+            return self.add_jj_past_participle()
 
-        return self.add_jj_past_participle()
+        return self
 
     def add_jj_past_participle(self) -> "PosFeature":
         """過去分詞形の形容詞を追加する
@@ -105,14 +105,19 @@ class PosFeature:
         Returns:
             PosFeature: PosFeatureインスタンス
         """
-        return PosFeature(
-            [
-                (word, "JJ_pp")
-                if word in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET and pos == "JJ"
-                else (word, pos)
-                for (word, pos) in self.__words_and_pos
-            ]
-        )
+        for word, pos in self.__words_and_pos:
+            if pos == "JJ" and word in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET:
+                return PosFeature(
+                    [
+                        (word, "JJ_pp")
+                        if word in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET
+                        and pos == "JJ"
+                        else (word, pos)
+                        for (word, pos) in self.__words_and_pos
+                    ]
+                )
+
+        return self
 
     @classmethod
     def initialize_past_participle_adjective_dataset(cls) -> None:
