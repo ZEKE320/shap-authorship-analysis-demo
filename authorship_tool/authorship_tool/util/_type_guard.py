@@ -6,7 +6,7 @@ class TypeGuardUtil:
     """タイプガード用のユーティリティクラス"""
 
     @classmethod
-    def is_sentence(cls, values: list, /) -> TypeGuard[list[str]]:
+    def are_tokens(cls, values: list, /) -> TypeGuard[list[str]]:
         """strのリストであることを確認する
 
         Args:
@@ -20,7 +20,7 @@ class TypeGuardUtil:
         )
 
     @classmethod
-    def is_paragraph(cls, values: list, /) -> TypeGuard[list[list[str]]]:
+    def are_sents(cls, values: list, /) -> TypeGuard[list[list[str]]]:
         """strのリストのリストであることを確認する
 
         Args:
@@ -29,12 +29,10 @@ class TypeGuardUtil:
         Returns:
             TypeGuard[list[list[str]]]: タイプガードされたリスト
         """
-        return isinstance(values, list) and all(
-            cls.is_sentence(cent) for cent in values
-        )
+        return isinstance(values, list) and all(cls.are_tokens(cent) for cent in values)
 
     @classmethod
-    def is_pos_list(cls, values: list, /) -> TypeGuard[list[tuple[str, str]]]:
+    def are_tagged_tokens(cls, values: list, /) -> TypeGuard[list[tuple[str, str]]]:
         """posのリストであることを確認する
 
         Args:
