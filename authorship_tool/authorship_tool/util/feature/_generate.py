@@ -7,7 +7,7 @@ from authorship_tool.util import FeatureCalculator, FeatureCounter
 class FeatureDatasetGenerator:
     """特徴量のデータセットを生成するクラス"""
 
-    def __init__(self, tags: Optional[set[str]] = None) -> None:
+    def __init__(self, tags: Optional[list[str]] = None) -> None:
         self.columns: list[str] = [
             "word variation",
             "uncommon word frequency",
@@ -18,10 +18,11 @@ class FeatureDatasetGenerator:
             self.columns.extend(tags)
 
     def generate(
-        self, words: list[str], tags: set[str], correctness: bool
+        self, words: list[str], tags: list[str], correctness: bool
     ) -> tuple[list[float], bool]:
         """文章のリストから特徴量のリストを生成する"""
         freq_by_pos: dict[str, float] = FeatureCalculator.all_pos_frequency(words)
+
         return (
             [
                 FeatureCalculator.word_variation(words),
@@ -36,7 +37,7 @@ class FeatureDatasetGenerator:
     def reshape_and_generate(
         self,
         words_collection: list[list[str]],
-        tags: set[str],
+        tags: list[str],
         correctness: bool,
     ) -> tuple[list[float], bool]:
         """シェイプを落としてから特徴量のリストを生成する"""
