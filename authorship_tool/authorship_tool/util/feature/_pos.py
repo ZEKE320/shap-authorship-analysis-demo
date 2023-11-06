@@ -1,11 +1,13 @@
 import os
 from os import path
+from pathlib import Path
+from turtle import pos
 from typing import Final
 
 import nltk
 from dotenv import load_dotenv
 
-from authorship_tool.util import TypeGuardUtil
+from authorship_tool.util import TypeGuardUtil, PathUtil
 
 load_dotenv()
 
@@ -15,11 +17,24 @@ class PosFeature:
 
     __PAST_PARTICIPLE_ADJECTIVE_DATASET: list[str] = []
 
-    def __init__(self, word_list: list[tuple[str, str]] | list[str]) -> None:
-        if TypeGuardUtil.is_str_list(word_list):
+    def __init__(self, word_list: list[tuple[str, str] | list[str] | str]) -> None:
+        self.__words_and_pos: list[tuple[str, str]]
+        """単語とPOSタグのタプルのリスト"""
+
+        if TypeGuardUtil.is_sentence(word_list):
             self.__words_and_pos = nltk.pos_tag(word_list)
+
+        elif TypeGuardUtil.is_paragraph(word_list):
+            self.__words_and_pos = [
+                word_and_pos
+                for para in word_list
+                for sent in para
+                for word_and_pos in nltk.pos_tag(sent)
+            ]
+
         elif TypeGuardUtil.is_pos_list(word_list):
-            self.__words_and_pos = word_list
+            self.__words_and_pos = word_list.copy()
+
         else:
             raise TypeError("src must be list[tuple[str, str]] or list[str]")
 
