@@ -13,8 +13,7 @@ load_dotenv()
 class PosFeature:
     """POSタグと追加の特徴タグを管理するクラス"""
 
-    __words_and_pos: list[tuple[str, str]]
-    """単語とPOSタグのタプルのリスト"""
+    __PAST_PARTICIPLE_ADJECTIVE_DATASET: list[str] = []
 
     def __init__(self, word_list: list[tuple[str, str]] | list[str]) -> None:
         if TypeGuardUtil.is_str_list(word_list):
