@@ -8,20 +8,6 @@ from dotenv import load_dotenv
 from authorship_tool.util import TypeGuardUtil
 
 load_dotenv()
-ADJECTIVES_PAST_PARTICIPLE_PATH = ""
-if dataset_path := os.getenv("path_dataset_adjective_past_participle"):
-    ADJECTIVES_PAST_PARTICIPLE_PATH = path.join(
-        path.dirname(path.abspath(".env")), dataset_path
-    )
-
-
-try:
-    with open(ADJECTIVES_PAST_PARTICIPLE_PATH, "r", encoding="utf-8") as f:
-        PAST_PARTICIPLE_ADJECTIVES: list[str] | None = f.read().splitlines()
-except FileNotFoundError:
-    print(
-        f"Path: '{ADJECTIVES_PAST_PARTICIPLE_PATH}' could not be found. Skip and continue processing."
-    )
 
 
 class PosFeature:
