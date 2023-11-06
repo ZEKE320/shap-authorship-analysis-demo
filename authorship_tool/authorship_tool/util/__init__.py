@@ -1,5 +1,6 @@
 """ユーティリティモジュールのパッケージ"""
 from authorship_tool.util._dim_reshape import ArrayDimensionReshaper
+from authorship_tool.util._path import PathUtil
 from authorship_tool.util._table import TabulateUtil
 from authorship_tool.util._type_guard import TypeGuardUtil
 from authorship_tool.util.feature._count import FeatureCounter
@@ -9,6 +10,7 @@ from authorship_tool.util.feature._generate import FeatureDatasetGenerator
 
 __all__ = [
     "ArrayDimensionReshaper",
+    "PathUtil",
     "TabulateUtil",
     "TypeGuardUtil",
     "FeatureCalculator",
