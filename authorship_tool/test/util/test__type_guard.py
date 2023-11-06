@@ -18,15 +18,15 @@ def test_is_str_list() -> None:
 
 def test_is_pos_list() -> None:
     """posのリストであることを確認できること"""
-    assert TypeGuardUtil.is_pos_list([])
-    assert TypeGuardUtil.is_pos_list([("", "")])
-    assert TypeGuardUtil.is_pos_list([("a", "b"), ("c", "d")])
-    assert not TypeGuardUtil.is_pos_list([("a", 1)])
-    assert not TypeGuardUtil.is_pos_list([("a", "b", "c")])
-    assert not TypeGuardUtil.is_pos_list("a")  # type: ignore
-    assert not TypeGuardUtil.is_pos_list(1)  # type: ignore
+    assert TypeGuardUtil.are_tagged_tokens([])
+    assert TypeGuardUtil.are_tagged_tokens([("", "")])
+    assert TypeGuardUtil.are_tagged_tokens([("a", "b"), ("c", "d")])
+    assert not TypeGuardUtil.are_tagged_tokens([("a", 1)])
+    assert not TypeGuardUtil.are_tagged_tokens([("a", "b", "c")])
+    assert not TypeGuardUtil.are_tagged_tokens("a")  # type: ignore
+    assert not TypeGuardUtil.are_tagged_tokens(1)  # type: ignore
 
-    assert TypeGuardUtil.is_pos_list(nltk.pos_tag(["She", "looks", "busy", "."]))
+    assert TypeGuardUtil.are_tagged_tokens(nltk.pos_tag(["She", "looks", "busy", "."]))
 
 
 if __name__ == "__main__":
