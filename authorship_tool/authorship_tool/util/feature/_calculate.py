@@ -18,9 +18,7 @@ class FeatureCalculator:
     @classmethod
     def average_word_length(cls, words: list[str]) -> float:
         """文章中の単語の平均文字数を計算する"""
-        return sum([len(word) for word in words]) / FeatureCounter.sentence_length(
-            words
-        )
+        return sum(len(word) for word in words) / FeatureCounter.sentence_length(words)
 
     @classmethod
     def comma_frequency(cls, words: list[str]) -> float:
