@@ -17,26 +17,50 @@ class PosFeature:
 
     __PAST_PARTICIPLE_ADJECTIVE_DATASET: list[str] = []
 
-    def __init__(self, word_list: list[tuple[str, str] | list[str] | str]) -> None:
+    def __init__(self, word_list: list) -> None:
         self.__words_and_pos: list[tuple[str, str]]
         """単語とPOSタグのタプルのリスト"""
 
-        if TypeGuardUtil.is_sentence(word_list):
+        if TypeGuardUtil.are_tokens(word_list):
             self.__words_and_pos = nltk.pos_tag(word_list)
+            if self.__words_and_pos and TypeGuardUtil.are_tagged_tokens(
+                self.__words_and_pos
+            ):
+                return
 
-        elif TypeGuardUtil.is_paragraph(word_list):
+        elif TypeGuardUtil.are_sents(word_list):
             self.__words_and_pos = [
                 word_and_pos
-                for para in word_list
-                for sent in para
-                for word_and_pos in nltk.pos_tag(sent)
+                for words_and_pos in nltk.pos_tag_sents(word_list)
+                if TypeGuardUtil.are_tagged_tokens(words_and_pos)
+                for word_and_pos in words_and_pos
             ]
 
-        elif TypeGuardUtil.is_pos_list(word_list):
-            self.__words_and_pos = word_list.copy()
+            if self.__words_and_pos and TypeGuardUtil.are_tagged_tokens(
+                self.__words_and_pos
+            ):
+                return
 
-        else:
-            raise TypeError("src must be list[tuple[str, str]] or list[str]")
+        elif TypeGuardUtil.are_paras(word_list):
+            sents: list[list[str]] = [sent for para in word_list for sent in para]
+
+            self.__words_and_pos = [
+                word_and_pos
+                for words_and_pos in nltk.pos_tag_sents(sents)
+                if TypeGuardUtil.are_tagged_tokens(words_and_pos)
+                for word_and_pos in words_and_pos
+            ]
+
+            if self.__words_and_pos and TypeGuardUtil.are_tagged_tokens(
+                self.__words_and_pos
+            ):
+                return
+
+        elif TypeGuardUtil.are_tagged_tokens(word_list):
+            self.__words_and_pos = word_list.copy()
+            return
+
+        raise TypeError("src type is not supported.")
 
     @property
     def words_and_pos(self) -> list[tuple[str, str]]:
