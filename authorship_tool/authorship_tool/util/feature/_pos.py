@@ -54,7 +54,7 @@ class PosFeature:
         Returns:
             set[str]: POSタグの集合
         """
-        return {pos for (_, pos) in self.__words_and_pos}
+        return set(pos for (_, pos) in self.__words_and_pos)
 
     def add_subcategory(self) -> "PosFeature":
         """サブカテゴリを追加する
