@@ -6,6 +6,9 @@ profile = "black"
 known_first_party = ["authorship_tool"]
 only_sections = true
 
+[tool.pytest]
+mock_use_standalone_module = true
+
 [[tool.mypy.overrides]]
 module = ["sklearn.*", "nltk.*", "shap.*"]
 ignore_missing_imports = true
@@ -40,6 +43,7 @@ types-tabulate = "*"
 python-dotenv = "*"
 shap = "*"
 pytest = "*"
+pytest-mock = "*"
 
 
 [build-system]
