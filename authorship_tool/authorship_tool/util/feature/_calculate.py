@@ -91,7 +91,7 @@ class FeatureCalculator:
     @classmethod
     def all_pos_frequency(cls, words: list[str]) -> dict[str, float]:
         """文章中の全ての品詞の割合を計算する"""
-        detailed_pos_list = PosFeature(words).subcategory().words_and_pos
+        detailed_pos_list = PosFeature(words).add_subcategory().words_and_pos
         freq_dist = nltk.FreqDist(detailed_pos_list)
 
         total_tags = freq_dist.N()

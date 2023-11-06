@@ -88,13 +88,15 @@ for para in paras_b[:10]:
 print(f"...\n\nAuthor: {AUTHOR_B}, {len(paras_b)} paragraphs\n\n")
 
 
-all_tags: set[str] = set()
+tag_set: set[str] = {
+    tag
+    for para in all_paragraph
+    if TypeGuardUtil.is_paragraph(para)
+    for tag in PosFeature(para).add_subcategory().pos_set
+}
 
-for paras in paras_a + paras_b:
-    for para in paras:
-        all_tags.update(FeatureCalculator.all_pos_frequency(para).keys())
-
-print(sorted(all_tags))
+all_tags: list[str] = sorted(tag_set)
+print(all_tags)
 
 
 dataset_generator = FeatureDatasetGenerator(all_tags)
