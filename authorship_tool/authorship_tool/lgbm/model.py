@@ -81,8 +81,8 @@ class LGBMResultModel:
         with open(path.join(MODEL_PATH, "lgbm_model.pkl"), "wb") as f:
             pickle.dump(self.__MODEL, f)
 
-        self.__TRAIN_DATA.to_csv(path.join(DATASET_PATH, "train_data.csv"))
-        self.__TEST_DATA.to_csv(path.join(DATASET_PATH, "test_data.csv"))
+        self.__TRAIN_DATA.to_csv(path.join(DATASET_PATH, "train_data.csv"), index=False)
+        self.__TEST_DATA.to_csv(path.join(DATASET_PATH, "test_data.csv"), index=False)
         DataFrame(self.__TRAIN_ANS).to_csv(
             path.join(DATASET_PATH, "train_ans.csv"), index=False, header=False
         )
