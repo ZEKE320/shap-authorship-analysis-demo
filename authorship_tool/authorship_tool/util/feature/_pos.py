@@ -65,7 +65,7 @@ class PosFeature:
         colored_text: str = ""
         for idx, (word, pos) in enumerate(self.__words_and_pos):
             if pos in self.__POS_SUBCATEGORIES:
-                colored_text += f"\033[31m{word}\033[0m"
+                colored_text += f"\033[1m\033[31m{word}\033[0m"
             else:
                 colored_text += f"{word}"
 
@@ -78,7 +78,6 @@ class PosFeature:
                 ";",
                 "!",
                 "?",
-                "(",
                 ")",
             ]:
                 colored_text += " "
