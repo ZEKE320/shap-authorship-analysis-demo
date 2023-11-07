@@ -53,7 +53,6 @@ class PosFeature:
             if self.__words_and_pos and TypeGuardUtil.are_tagged_tokens(
                 self.__words_and_pos
             ):
-                print(str(self))
                 return
 
         elif TypeGuardUtil.are_tagged_tokens(word_list):
@@ -63,17 +62,28 @@ class PosFeature:
         raise TypeError("src type is not supported.")
 
     def __str__(self) -> str:
-        colored_test = ""
-        for word, pos in self.__words_and_pos:
+        colored_text: str = ""
+        for idx, (word, pos) in enumerate(self.__words_and_pos):
             if pos in self.__POS_SUBCATEGORIES:
-                colored_test += f"\033[31m{word}\033[0m "
+                colored_text += f"\033[31m{word}\033[0m"
             else:
-                colored_test += f"{word}"
+                colored_text += f"{word}"
 
-            if pos not in [".", ",", ":", ";", "!", "?", "(", ")"]:
-                colored_test += " "
+            if idx + 1 < len(self.__words_and_pos) and self.__words_and_pos[idx + 1][
+                1
+            ] not in [
+                ".",
+                ",",
+                ":",
+                ";",
+                "!",
+                "?",
+                "(",
+                ")",
+            ]:
+                colored_text += " "
 
-        return colored_test
+        return colored_text
 
     @property
     def words_and_pos(self) -> list[tuple[str, str]]:
@@ -120,7 +130,7 @@ class PosFeature:
         """
         for word, pos in self.__words_and_pos:
             if pos == "JJ" and word in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET:
-                return PosFeature(
+                pf = PosFeature(
                     [
                         (word, "JJ_pp")
                         if word in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET
@@ -129,6 +139,8 @@ class PosFeature:
                         for (word, pos) in self.__words_and_pos
                     ]
                 )
+                print(f"{pf}\n")
+                return pf
 
         return self
 
