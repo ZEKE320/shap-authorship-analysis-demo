@@ -78,26 +78,26 @@ class PosFeature:
         """
         return set(pos for (_, pos) in self.__words_and_pos)
 
-    def add_subcategory(self) -> "PosFeature":
+    def classify_subcategories(self) -> "PosFeature":
         """サブカテゴリを追加する
 
         Returns:
             PosFeature: PosFeatureインスタンス
         """
-        return self.add_jj_subcategory()
+        return self.__classify_jj_subcategories()
 
-    def add_jj_subcategory(self) -> "PosFeature":
+    def __classify_jj_subcategories(self) -> "PosFeature":
         """形容詞のサブカテゴリを追加する
 
         Returns:
             PosFeature: PosFeatureインスタンス
         """
         if "JJ" in self.pos_set:
-            return self.add_jj_past_participle()
+            return self.__classify_jj_past_participle()
 
         return self
 
-    def add_jj_past_participle(self) -> "PosFeature":
+    def __classify_jj_past_participle(self) -> "PosFeature":
         """過去分詞形の形容詞を追加する
 
         Returns:
