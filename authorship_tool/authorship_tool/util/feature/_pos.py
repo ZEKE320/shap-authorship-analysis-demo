@@ -14,6 +14,7 @@ class PosFeature:
     """POSタグと追加の特徴タグを管理するクラス"""
 
     __PAST_PARTICIPLE_ADJECTIVE_DATASET: list[str] = []
+    __POS_SUBCATEGORIES: list[str] = ["JJ_pp"]
 
     def __init__(self, word_list: list) -> None:
         self.__words_and_pos: list[tuple[str, str]]
@@ -52,6 +53,7 @@ class PosFeature:
             if self.__words_and_pos and TypeGuardUtil.are_tagged_tokens(
                 self.__words_and_pos
             ):
+                print(str(self))
                 return
 
         elif TypeGuardUtil.are_tagged_tokens(word_list):
@@ -59,6 +61,19 @@ class PosFeature:
             return
 
         raise TypeError("src type is not supported.")
+
+    def __str__(self) -> str:
+        colored_test = ""
+        for word, pos in self.__words_and_pos:
+            if pos in self.__POS_SUBCATEGORIES:
+                colored_test += f"\033[31m{word}\033[0m "
+            else:
+                colored_test += f"{word}"
+
+            if pos not in [".", ",", ":", ";", "!", "?", "(", ")"]:
+                colored_test += " "
+
+        return colored_test
 
     @property
     def words_and_pos(self) -> list[tuple[str, str]]:
