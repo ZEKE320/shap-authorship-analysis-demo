@@ -65,7 +65,7 @@ class PosFeature:
         colored_text: str = ""
         for idx, (word, pos) in enumerate(self.__words_and_pos):
             if pos in self.__POS_SUBCATEGORIES:
-                colored_text += f"[bold violet]{word}[/bold violet]"
+                colored_text += f"[bold #5F9EA1]{word}[/bold #5F9EA1]"
             else:
                 colored_text += f"{word}"
 
