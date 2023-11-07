@@ -1,8 +1,12 @@
 """特徴計算モジュール"""
 
 import nltk
+from rich.console import Console
 
 from authorship_tool.util import FeatureCounter, PosFeature
+
+
+console = Console(highlight=False)
 
 
 class FeatureCalculator:
@@ -94,7 +98,7 @@ class FeatureCalculator:
 
         # TODO 過去分詞形容詞を確認する為なので、後々削除する
         if "JJ_pp" in set(pos for (_, pos) in words_and_pos):
-            print(f"{pos_feature}\n")
+            console.print(f"{pos_feature}\n")
 
         freq_dist = nltk.FreqDist(words_and_pos)
 
