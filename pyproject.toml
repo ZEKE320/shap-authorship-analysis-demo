@@ -44,6 +44,7 @@ python-dotenv = "*"
 shap = "*"
 pytest = "*"
 pytest-mock = "*"
+rich = "^13.6.0"
 
 
 [build-system]
