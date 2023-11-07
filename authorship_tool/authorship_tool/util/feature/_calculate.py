@@ -89,8 +89,14 @@ class FeatureCalculator:
     @classmethod
     def all_pos_frequency(cls, words: list[str]) -> dict[str, float]:
         """文章中の全ての品詞の割合を計算する"""
-        detailed_pos_list = PosFeature(words).classify_subcategories().words_and_pos
-        freq_dist = nltk.FreqDist(detailed_pos_list)
+        pos_feature = PosFeature(words).classify_subcategories()
+        words_and_pos: list[tuple[str, str]] = pos_feature.words_and_pos
+
+        # TODO 過去分詞形容詞を確認する為なので、後々削除する
+        if "JJ_pp" in set(pos for (_, pos) in words_and_pos):
+            print(f"{pos_feature}\n")
+
+        freq_dist = nltk.FreqDist(words_and_pos)
 
         total_tags = freq_dist.N()
-        return {tag[1]: count / total_tags for tag, count in freq_dist.items()}
+        return {tag[1]: count / total_tags for (tag, count) in freq_dist.items()}

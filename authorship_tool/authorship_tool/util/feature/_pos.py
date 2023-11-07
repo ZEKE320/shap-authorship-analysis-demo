@@ -129,7 +129,7 @@ class PosFeature:
         """
         for word, pos in self.__words_and_pos:
             if pos == "JJ" and word in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET:
-                pf = PosFeature(
+                return PosFeature(
                     [
                         (word, "JJ_pp")
                         if word in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET
@@ -138,8 +138,6 @@ class PosFeature:
                         for (word, pos) in self.__words_and_pos
                     ]
                 )
-                print(f"{pf}\n")
-                return pf
 
         return self
 
