@@ -7,6 +7,8 @@ from authorship_tool.util.feature._count import FeatureCounter
 from authorship_tool.util.feature._pos import PosFeature
 from authorship_tool.util.feature._calculate import FeatureCalculator
 from authorship_tool.util.feature._generate import FeatureDatasetGenerator
+from authorship_tool.util.lgbm._model import LGBMResultModel, LGBMSourceModel
+from authorship_tool.util.lgbm._train import LGBMTrainerUtil
 
 __all__ = [
     "ArrayDimensionReshaper",
@@ -17,4 +19,7 @@ __all__ = [
     "FeatureCounter",
     "FeatureDatasetGenerator",
     "PosFeature",
+    "LGBMResultModel",
+    "LGBMSourceModel",
+    "LGBMTrainerUtil",
 ]
