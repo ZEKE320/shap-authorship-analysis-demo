@@ -26,47 +26,7 @@ class FeatureCounter:
         return words.count(character)
 
     @classmethod
-    def count_comma(cls, words: list[str]) -> int:
-        """文章内で出現するカンマの合計を計算する"""
-        return cls.count_character(words, ",")
-
-    @classmethod
-    def count_period(cls, words: list[str]) -> int:
-        """文章内で出現するピリオドの合計を計算する"""
-        return cls.count_character(words, ".")
-
-    @classmethod
-    def count_attention_mark(cls, words: list[str]) -> int:
-        """文章内で出現する感嘆符の合計を計算する"""
-        return cls.count_character(words, "!")
-
-    @classmethod
-    def count_question_mark(cls, words: list[str]) -> int:
-        """文章内で出現する疑問符の合計を計算する"""
-        return cls.count_character(words, "?")
-
-    @classmethod
-    def count_double_quotation(cls, words: list[str]) -> int:
-        """文章内で出現する二重引用符の合計を計算する"""
-        return cls.count_character(words, '"')
-
-    @classmethod
-    def count_single_quotation(cls, words: list[str]) -> int:
-        """文章内で出現する一重引用符の合計を計算する"""
-        return cls.count_character(words, "'")
-
-    @classmethod
-    def count_semicolon(cls, words: list[str]) -> int:
-        """文章内で出現するセミコロンの合計を計算する"""
-        return cls.count_character(words, ";")
-
-    @classmethod
-    def count_colon(cls, words: list[str]) -> int:
-        """文章内で出現するコロンの合計を計算する"""
-        return cls.count_character(words, ":")
-
-    @classmethod
-    def count_non_alphabetic_characters(cls, words: list[str]) -> int:
+    def count_non_alphabetic_characters(cls, sent: Sent) -> int:
         """文章内で出現する記号の合計を計算する"""
         pattern = r"[^a-zA-Z\s]"
         matches = re.findall(pattern, " ".join(words))
