@@ -25,9 +25,7 @@ class FeatureDatasetGenerator:
             col.extend(tags)
 
         # クラスのフィールドを定義
-        self.__cols_and_func: Final[
-            dict[str, Callable[[Sent], float]]
-        ] = cols_and_func
+        self.__cols_and_func: Final[dict[str, Callable[[Sent], float]]] = cols_and_func
         self.__columns: Final[tuple[str, ...]] = tuple(col)
         self.__tags: Final[tuple[Tag, ...]] = tags if tags else tuple()
 
