@@ -25,59 +25,7 @@ class FeatureCalculator:
         return sum(len(word) for word in words) / FeatureCounter.sentence_length(words)
 
     @classmethod
-    def comma_frequency(cls, words: list[str]) -> float:
-        """文章内で出現するカンマの割合を計算する"""
-        return FeatureCounter.count_comma(words) / FeatureCounter.sentence_length(words)
-
-    @classmethod
-    def period_frequency(cls, words: list[str]) -> float:
-        """文章内で出現するピリオドの割合を計算する"""
-        return FeatureCounter.count_period(words) / FeatureCounter.sentence_length(
-            words
-        )
-
-    @classmethod
-    def attention_mark_frequency(cls, words: list[str]) -> float:
-        """文章内で出現する感嘆符の割合を計算する"""
-        return FeatureCounter.count_attention_mark(
-            words
-        ) / FeatureCounter.sentence_length(words)
-
-    @classmethod
-    def question_mark_frequency(cls, words: list[str]) -> float:
-        """文章内で出現する疑問符の割合を計算する"""
-        return FeatureCounter.count_question_mark(
-            words
-        ) / FeatureCounter.sentence_length(words)
-
-    @classmethod
-    def double_quotation_frequency(cls, words: list[str]) -> float:
-        """文章内で出現する二重引用符の割合を計算する"""
-        return FeatureCounter.count_double_quotation(
-            words
-        ) / FeatureCounter.sentence_length(words)
-
-    @classmethod
-    def single_quotation_frequency(cls, words: list[str]) -> float:
-        """文章内で出現する一重引用符の割合を計算する"""
-        return FeatureCounter.count_single_quotation(
-            words
-        ) / FeatureCounter.sentence_length(words)
-
-    @classmethod
-    def semicolon_frequency(cls, words: list[str]) -> float:
-        """文章内で出現するセミコロンの割合を計算する"""
-        return FeatureCounter.count_semicolon(words) / FeatureCounter.sentence_length(
-            words
-        )
-
-    @classmethod
-    def colon_frequency(cls, words: list[str]) -> float:
-        """文章内で出現するコロンの割合を計算する"""
-        return FeatureCounter.count_colon(words) / FeatureCounter.sentence_length(words)
-
-    @classmethod
-    def non_alphabetic_characters_frequency(cls, words: list[str]) -> float:
+    def non_alphabetic_characters_frequency(cls, sent: Sent) -> float:
         """文章内で出現する記号の割合を計算する"""
         return FeatureCounter.count_non_alphabetic_characters(
             words
