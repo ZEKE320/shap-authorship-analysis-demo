@@ -101,3 +101,15 @@ class TypeGuardUtil:
             TypeGuard[set[str]]: タイプガードされたセット
         """
         return isinstance(values, set) and all(isinstance(s, Tag) for s in values)
+
+    @classmethod
+    def is_tag_tuple(cls, values: tuple, /) -> TypeGuard[tuple[Tag, ...]]:
+        """posのタプルであることを確認する
+
+        Args:
+            values (tuple): タプル
+
+        Returns:
+            TypeGuard[tuple[str, ...]]: タイプガードされたタプル
+        """
+        return isinstance(values, tuple) and all(isinstance(s, Tag) for s in values)
