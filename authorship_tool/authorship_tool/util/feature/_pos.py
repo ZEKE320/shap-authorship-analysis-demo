@@ -53,27 +53,14 @@ class PosFeature:
         raise TypeError("src type is not supported.")
 
     def __str__(self) -> str:
-        colored_text: str = ""
-        for idx, (word, pos) in enumerate(self.__words_and_pos):
+        for idx, (word, pos) in enumerate(self.__tagged_tokens):
             if pos in self.__POS_SUBCATEGORIES:
-                colored_text += f"[bold #393939 #749BC2 reverse]{word}[/bold #393939 #749BC2 reverse]"
-            else:
-                colored_text += f"{word}"
+                self.__tagged_tokens[idx] = (
+                    f"[bold #749BC2 reverse]{word}[/bold #749BC2 reverse]",
+                    pos,
+                )
 
-            if idx + 1 < len(self.__words_and_pos) and self.__words_and_pos[idx + 1][
-                1
-            ] not in [
-                ".",
-                ",",
-                ":",
-                ";",
-                "!",
-                "?",
-                ")",
-            ]:
-                colored_text += " "
-
-        return colored_text
+        return " ".join([tagged_token[0] for tagged_token in self.__tagged_tokens])
 
     @property
     def tagged_tokens(self) -> list[TaggedToken]:
