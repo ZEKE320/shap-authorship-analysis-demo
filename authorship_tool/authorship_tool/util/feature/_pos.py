@@ -51,6 +51,7 @@ class PosFeature:
             raise TypeError("src type is not supported.")
 
         self.__tagged_tokens: Final[list[TaggedToken]] = tagged_tokens
+
     def __str__(self) -> str:
         for idx, (word, pos) in enumerate(self.__tagged_tokens):
             if pos in self.__POS_SUBCATEGORIES:
@@ -78,6 +79,24 @@ class PosFeature:
             set[str]: POSタグの集合
         """
         return set(pos for (_, pos) in self.__tagged_tokens)
+
+    @property
+    def pos_list(self) -> list[Tag]:
+        """POSタグのリストを返す
+
+        Returns:
+            list[str]: POSタグのリスト
+        """
+        return sorted(self.pos_set)
+
+    @property
+    def pos_tuple(self) -> tuple[Tag, ...]:
+        """POSタグのタプルを返す
+
+        Returns:
+            tuple[str]: POSタグのタプル
+        """
+        return tuple(self.pos_list)
 
     def tag_subcategories(self) -> "PosFeature":
         """サブカテゴリを追加する
