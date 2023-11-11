@@ -18,46 +18,36 @@ class PosFeature:
     __POS_SUBCATEGORIES: list[str] = ["JJ_pp"]
 
     def __init__(self, word_list: list) -> None:
-        self.__words_and_pos: list[tuple[str, str]]
+        self.__tagged_tokens: list[TaggedToken] = []
         """単語とPOSタグのタプルのリスト"""
 
-        if TypeGuardUtil.are_tokens(word_list):
-            self.__words_and_pos = nltk.pos_tag(word_list)
-            if self.__words_and_pos and TypeGuardUtil.are_tagged_tokens(
-                self.__words_and_pos
-            ):
-                return
+        if TypeGuardUtil.is_sent(word_list):
+            self.__tagged_tokens = nltk.pos_tag(word_list)
 
-        elif TypeGuardUtil.are_sents(word_list):
-            self.__words_and_pos = [
+        elif TypeGuardUtil.is_para(word_list):
+            self.__tagged_tokens = [
                 word_and_pos
                 for words_and_pos in nltk.pos_tag_sents(word_list)
                 if TypeGuardUtil.are_tagged_tokens(words_and_pos)
                 for word_and_pos in words_and_pos
             ]
 
-            if self.__words_and_pos and TypeGuardUtil.are_tagged_tokens(
-                self.__words_and_pos
-            ):
-                return
-
         elif TypeGuardUtil.are_paras(word_list):
-            sents: list[list[str]] = [sent for para in word_list for sent in para]
+            sents: list[Sent] = [sent for para in word_list for sent in para]
 
-            self.__words_and_pos = [
+            self.__tagged_tokens = [
                 word_and_pos
                 for words_and_pos in nltk.pos_tag_sents(sents)
                 if TypeGuardUtil.are_tagged_tokens(words_and_pos)
                 for word_and_pos in words_and_pos
             ]
 
-            if self.__words_and_pos and TypeGuardUtil.are_tagged_tokens(
-                self.__words_and_pos
-            ):
-                return
-
         elif TypeGuardUtil.are_tagged_tokens(word_list):
-            self.__words_and_pos = word_list.copy()
+            self.__tagged_tokens = word_list.copy()
+
+        if len(self.__tagged_tokens) > 0 and TypeGuardUtil.are_tagged_tokens(
+            self.__tagged_tokens
+        ):
             return
 
         raise TypeError("src type is not supported.")
@@ -86,64 +76,65 @@ class PosFeature:
         return colored_text
 
     @property
-    def words_and_pos(self) -> list[tuple[str, str]]:
+    def tagged_tokens(self) -> list[TaggedToken]:
         """単語とPOSタグのタプルのリスト
 
         Returns:
             list[tuple[str, str]]: 単語とPOSタグのタプルのリスト
         """
-        return self.__words_and_pos
+        return self.__tagged_tokens
 
     @property
-    def pos_set(self) -> set[str]:
+    def pos_set(self) -> set[Tag]:
         """POSタグの集合を返す
 
         Returns:
             set[str]: POSタグの集合
         """
-        return set(pos for (_, pos) in self.__words_and_pos)
+        return set(pos for (_, pos) in self.__tagged_tokens)
 
-    def classify_subcategories(self) -> "PosFeature":
+    def tag_subcategories(self) -> "PosFeature":
         """サブカテゴリを追加する
 
         Returns:
             PosFeature: PosFeatureインスタンス
         """
-        return self.__classify_jj_subcategories()
+        return self.__tag_jj_subcategories()
 
-    def __classify_jj_subcategories(self) -> "PosFeature":
+    def __tag_jj_subcategories(self) -> "PosFeature":
         """形容詞のサブカテゴリを追加する
 
         Returns:
             PosFeature: PosFeatureインスタンス
         """
         if "JJ" in self.pos_set:
-            return self.__classify_jj_past_participle()
+            return self.__tag_jj_past_participle()
 
         return self
 
-    def __classify_jj_past_participle(self) -> "PosFeature":
+    def __tag_jj_past_participle(self) -> "PosFeature":
         """過去分詞形の形容詞を追加する
 
         Returns:
             PosFeature: PosFeatureインスタンス
         """
-        for word, pos in self.__words_and_pos:
+        for word, pos in self.__tagged_tokens:
             if pos == "JJ" and word in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET:
                 return PosFeature(
                     [
                         (word, "JJ_pp")
-                        if word in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET
+                        if word.strip().lower()
+                        in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET
                         and pos == "JJ"
                         else (word, pos)
-                        for (word, pos) in self.__words_and_pos
+                        for (word, pos) in self.__tagged_tokens
                     ]
                 )
 
         return self
 
     @classmethod
-    def initialize_past_participle_adjective_dataset(cls) -> None:
+    def initialize_dataset_past_participle_adjective(cls) -> None:
         if (project_root_path := PathUtil.PROJECT_ROOT_PATH) is None:
             print(
                 "Path: $PROJECT_ROOT_PATH could not be found. Skip and continue processing."
@@ -168,9 +159,9 @@ class PosFeature:
 
         with open(adjectives_past_participle_path, "r", encoding="utf-8") as f:
             adjectives: set[str] = set(f.read().splitlines())
-            PosFeature.__PAST_PARTICIPLE_ADJECTIVE_DATASET = sorted(
-                {adj.strip() for adj in adjectives}
+            PosFeature.__PAST_PARTICIPLE_ADJECTIVE_DATASET = set(
+                adj.strip().lower() for adj in adjectives
             )
 
 
-PosFeature.initialize_past_participle_adjective_dataset()
+PosFeature.initialize_dataset_past_participle_adjective()
