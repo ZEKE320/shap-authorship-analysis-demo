@@ -12,14 +12,23 @@ class FeatureDatasetGenerator:
         if tags and not TypeGuardUtil.is_tag_tuple(tags):
             raise ValueError("tags must be a tuple of str")
 
-        col: list[str] = [
-            "word variation",
-            "uncommon word frequency",
-            "sentence length",
-            "average word length",
-        ]
+        cols_and_func: dict[str, Callable[[Sent], float]] = {
+            "word variation": FeatureCalculator.word_variation,
+            "uncommon word frequency": FeatureCalculator.uncommon_word_frequency,
+            "sentence length": FeatureCounter.sentence_length,
+            "average word length": FeatureCalculator.average_word_length,
+        }
+
+        col: list[str] = list(cols_and_func.keys())
 
         if tags:
+            col.extend(tags)
+
+        # クラスのフィールドを定義
+        self.__cols_and_func: Final[
+            dict[str, Callable[[Sent], float]]
+        ] = cols_and_func
+        self.__columns: Final[tuple[str, ...]] = tuple(col)
         self.__tags: Final[tuple[Tag, ...]] = tags if tags else tuple()
 
     @property
@@ -35,6 +44,7 @@ class FeatureDatasetGenerator:
 
         return (
             tuple(
+                [func(sent) for func in self.__cols_and_func.values()]
                 + [freq_by_pos.get(tag, 0.0) for tag in self.__tags]
             ),
             correctness,
