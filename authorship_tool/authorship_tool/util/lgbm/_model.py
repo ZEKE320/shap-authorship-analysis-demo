@@ -84,7 +84,7 @@ class LGBMResultModel:
             PathUtil.DATASET_PATH.joinpath("test_ans.csv"), index=False, header=False
         )
         DataFrame(self.__ANS_PRED_PROB).to_csv(
-            PathUtil.DATASET_PATH.joinpath("and_pred_prob.csv"),
+            PathUtil.DATASET_PATH.joinpath("ans_pred_prob.csv"),
             index=False,
             header=False,
         )
