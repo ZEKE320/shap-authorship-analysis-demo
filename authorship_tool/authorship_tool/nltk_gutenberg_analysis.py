@@ -96,28 +96,24 @@ all_paras: list[list[list[str]]] = (
 if not all_paras:
     raise TypeError("paras_a or paras_b is not list[list[list[str]]] type.")
 
-pos_set: set[str] = set(
-    tag for tag in PosFeature(word_list=all_paras).tag_subcategories().pos_set
+tag_tuple: tuple[str, ...] = (
+    PosFeature(word_list=all_paras).tag_subcategories().pos_tuple
 )
 
-print(sorted(pos_set))
+print(sorted(tag_tuple))
 
 # %%
-dataset_generator = FeatureDatasetGenerator(tags=pos_set)
+dataset_generator = FeatureDatasetGenerator(tags=tag_tuple)
 data = []
 correctness = []
 
 for para_a in paras_a:
-    x, y = dataset_generator.generate_from_paragraph(
-        para=para_a, tags=pos_set, correctness=True
-    )
+    x, y = dataset_generator.generate_from_paragraph(para=para_a, correctness=True)
     data.append(x)
     correctness.append(y)
 
 for para_b in paras_b:
-    x, y = dataset_generator.generate_from_paragraph(
-        para=para_b, tags=pos_set, correctness=False
-    )
+    x, y = dataset_generator.generate_from_paragraph(para=para_b, correctness=False)
     data.append(x)
     correctness.append(y)
 
