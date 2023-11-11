@@ -167,6 +167,7 @@ shap.force_plot(
 plt.savefig(
     PathUtil.SHAP_FIGURE_PATH.joinpath("shap_force_plot.svg"), bbox_inches="tight"
 )
+# plt.show()
 
 # %%
 shap.decision_plot(
@@ -178,7 +179,7 @@ shap.decision_plot(
 plt.savefig(
     PathUtil.SHAP_FIGURE_PATH.joinpath("shap_decision_plot.svg"), bbox_inches="tight"
 )
-plt.show()
+# plt.show()
 
 
 # %%
@@ -190,7 +191,7 @@ shap.summary_plot(
 plt.savefig(
     PathUtil.SHAP_FIGURE_PATH.joinpath("shap_summary_plot.svg"), bbox_inches="tight"
 )
-plt.show()
+# plt.show()
 
 # %%
 shap.summary_plot(
@@ -202,4 +203,4 @@ shap.summary_plot(
 plt.savefig(
     PathUtil.SHAP_FIGURE_PATH.joinpath("shap_summary_plot_bar.svg"), bbox_inches="tight"
 )
-plt.show()
+# plt.show()
