@@ -8,15 +8,26 @@ from authorship_tool.type_alias import Para, Sent, Tag
 class FeatureDatasetGenerator:
     """特徴量のデータセットを生成するクラス"""
 
-    def __init__(self, tags: Optional[list[str]] = None) -> None:
-        self.columns: list[str] = [
+    def __init__(self, tags: Optional[set[Tag]] = None) -> None:
+        if tags and not TypeGuardUtil.is_tag_set(tags):
+            raise ValueError("tags must be a set of str")
+
+        col: list[str] = [
             "word variation",
             "uncommon word frequency",
             "sentence length",
             "average word length",
         ]
-        if tags is not None:
-            self.columns.extend(tags)
+
+        if tags:
+            col.extend(sorted(tags))
+
+        self.__columns: tuple[str, ...] = tuple(col)
+
+    @property
+    def columns(self) -> tuple[str, ...]:
+        """特徴量の列名"""
+        return self.__columns
 
     def generate(
         self, words: list[str], tags: list[str], correctness: bool
