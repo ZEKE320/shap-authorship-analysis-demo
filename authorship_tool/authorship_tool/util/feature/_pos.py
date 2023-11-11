@@ -18,14 +18,14 @@ class PosFeature:
     __POS_SUBCATEGORIES: set[Tag] = set(["JJ_pp"])
 
     def __init__(self, word_list: list) -> None:
-        self.__tagged_tokens: list[TaggedToken] = []
+        tagged_tokens: list[TaggedToken] = []
         """単語とPOSタグのタプルのリスト"""
 
         if TypeGuardUtil.is_sent(word_list):
-            self.__tagged_tokens = nltk.pos_tag(word_list)
+            tagged_tokens = nltk.pos_tag(word_list)
 
         elif TypeGuardUtil.is_para(word_list):
-            self.__tagged_tokens = [
+            tagged_tokens = [
                 word_and_pos
                 for words_and_pos in nltk.pos_tag_sents(word_list)
                 if TypeGuardUtil.are_tagged_tokens(words_and_pos)
@@ -35,7 +35,7 @@ class PosFeature:
         elif TypeGuardUtil.are_paras(word_list):
             sents: list[Sent] = [sent for para in word_list for sent in para]
 
-            self.__tagged_tokens = [
+            tagged_tokens = [
                 word_and_pos
                 for words_and_pos in nltk.pos_tag_sents(sents)
                 if TypeGuardUtil.are_tagged_tokens(words_and_pos)
@@ -43,15 +43,14 @@ class PosFeature:
             ]
 
         elif TypeGuardUtil.are_tagged_tokens(word_list):
-            self.__tagged_tokens = word_list.copy()
+            tagged_tokens = word_list.copy()
 
-        if len(self.__tagged_tokens) > 0 and TypeGuardUtil.are_tagged_tokens(
-            self.__tagged_tokens
+        if len(tagged_tokens) == 0 or not TypeGuardUtil.are_tagged_tokens(
+            tagged_tokens
         ):
-            return
+            raise TypeError("src type is not supported.")
 
-        raise TypeError("src type is not supported.")
-
+        self.__tagged_tokens: Final[list[TaggedToken]] = tagged_tokens
     def __str__(self) -> str:
         for idx, (word, pos) in enumerate(self.__tagged_tokens):
             if pos in self.__POS_SUBCATEGORIES:
