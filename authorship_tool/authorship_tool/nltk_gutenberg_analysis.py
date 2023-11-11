@@ -2,7 +2,8 @@
 # %%
 
 import re
-from typing import Final
+from typing import Final, TypeAlias
+from authorship_tool.type_alias import Para
 
 import matplotlib.pyplot as plt
 import nltk
@@ -31,13 +32,11 @@ nltk.download("stopwords")
 # %%
 
 DESIRED_SCORE: Final[float] = 0.88
-AUTHOR_A: Final[str] = "chesterton"
-AUTHOR_B: Final[str] = "austen"
-
 for idx, file_id in enumerate(gutenberg.fileids()):
     print(f"#{idx+1}\t{file_id}")
 
 # %%
+Author: TypeAlias = str
 authors = set()
 
 for file_id in gutenberg.fileids():
@@ -45,7 +44,7 @@ for file_id in gutenberg.fileids():
     if match:
         authors.add(match.group(1))
 
-book_data_dict = {}
+para_num_by_author: dict[Author, int] = {}
 
 for index, author in enumerate(authors):
     books = [
@@ -53,41 +52,42 @@ for index, author in enumerate(authors):
     ]
 
     para_num = len([para for book in books for para in book])
-    book_data_dict[author] = para_num
+    para_num_by_author[author] = para_num
 
-paragraph_num_by_author_num: dict[str, int] = dict(
-    sorted(book_data_dict.items(), key=lambda pd: pd[1], reverse=True)
+sorted_para_num_by_author: dict[Author, int] = dict(
+    sorted(para_num_by_author.items(), key=lambda pnba: pnba[1], reverse=True)
 )
 
-for idx, item in enumerate(paragraph_num_by_author_num.items()):
+for idx, item in enumerate(sorted_para_num_by_author.items()):
     print(f"{idx + 1}:\t{item[0]} - {item[1]} paragraphs")
 
 
 # %%
-
-books_a: list[list[list[list[str]]]] = [
+AUTHOR_A: Final[str] = "chesterton"
+books_a: list[list[Para]] = [
     gutenberg.paras(file_id) for file_id in gutenberg.fileids() if AUTHOR_A in file_id
 ]
 
-paras_a: list[list[list[str]]] = [para for book in books_a for para in book]
+paras_a: list[Para] = [para for book in books_a for para in book]
 
 for para in paras_a[:10]:
     print(ArrayDimensionReshaper.para2str(para))
 print(f"...\n\nAuthor: {AUTHOR_A}, {len(paras_a)} paragraphs\n\n")
 
 # %%
-books_b: list[list[list[list[str]]]] = [
+AUTHOR_B: Final[str] = "austen"
+books_b: list[list[Para]] = [
     gutenberg.paras(file_id) for file_id in gutenberg.fileids() if AUTHOR_B in file_id
 ]
 
-paras_b: list[list[list[str]]] = [para for book in books_b for para in book]
+paras_b: list[Para] = [para for book in books_b for para in book]
 
 for para in paras_b[:10]:
     print(ArrayDimensionReshaper.para2str(para))
 print(f"...\n\nAuthor: {AUTHOR_B}, {len(paras_b)} paragraphs\n\n")
 
 # %%
-all_paras: list[list[list[str]]] = (
+all_paras: list[Para] = (
     paras_a + paras_b
     if TypeGuardUtil.are_paras(paras_a) and TypeGuardUtil.are_paras(paras_b)
     else []
@@ -104,8 +104,8 @@ print(sorted(tag_tuple))
 
 # %%
 dataset_generator = FeatureDatasetGenerator(tags=tag_tuple)
-data = []
-correctness = []
+data: list[tuple[float, ...]] = []
+correctness: list[bool] = []
 
 for para_a in paras_a:
     x, y = dataset_generator.generate_from_paragraph(para=para_a, correctness=True)
@@ -154,14 +154,9 @@ DataFrame(test_shap_val).to_csv(
 )
 
 # %%
-shap.initjs()
+# shap.initjs()
 
 # %%
-shap.force_plot(
-    explainer.expected_value[1],
-    test_shap_val[0],
-    result.test_data.iloc[0],
-)
 shap.force_plot(
     explainer.expected_value[1],
     test_shap_val[0],
@@ -208,5 +203,3 @@ plt.savefig(
     PathUtil.SHAP_FIGURE_PATH.joinpath("shap_summary_plot_bar.svg"), bbox_inches="tight"
 )
 plt.show()
-
-# %%
