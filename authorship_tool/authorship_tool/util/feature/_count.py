@@ -29,7 +29,14 @@ class FeatureCounter:
     def count_non_alphabetic_characters(cls, sent: Sent) -> int:
         """文章内で出現する記号の合計を計算する"""
         pattern = r"[^a-zA-Z\s]"
-        matches = re.findall(pattern, " ".join(words))
+        matches: list[str] = re.findall(pattern=pattern, string=" ".join(sent))
+        return len(matches)
+
+    @classmethod
+    def count_numeric_characters(cls, sent: Sent) -> int:
+        """文章内で出現する数字の合計を計算する"""
+        pattern = r"[\d]"
+        matches: list[str] = re.findall(pattern=pattern, string=" ".join(sent))
         return len(matches)
 
     @classmethod
