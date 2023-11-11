@@ -1,14 +1,15 @@
 """NLTKのGutenbergコーパスを用いた著者判定の分析を行うモジュール"""
 # %%
+
 import re
 from typing import Final
 
+import matplotlib.pyplot as plt
 import nltk
 import numpy as np
 import shap
-from pandas import DataFrame
 from nltk.corpus import gutenberg
-import matplotlib.pyplot as plt
+from pandas import DataFrame
 
 from authorship_tool.util import (
     LGBMResultModel,

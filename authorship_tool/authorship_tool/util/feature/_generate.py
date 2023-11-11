@@ -1,7 +1,8 @@
 """特徴量のデータセットを生成するモジュール"""
 from typing import Optional
 
-from authorship_tool.util import FeatureCalculator, FeatureCounter
+from authorship_tool.util import FeatureCalculator, FeatureCounter, TypeGuardUtil
+from authorship_tool.type_alias import Para, Sent, Tag
 
 
 class FeatureDatasetGenerator:

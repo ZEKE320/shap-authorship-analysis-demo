@@ -5,6 +5,7 @@ from typing import Final
 import nltk
 from dotenv import load_dotenv
 
+from authorship_tool.type_alias import Tag, Token, Sent, TaggedToken
 from authorship_tool.util import TypeGuardUtil, PathUtil
 
 load_dotenv()

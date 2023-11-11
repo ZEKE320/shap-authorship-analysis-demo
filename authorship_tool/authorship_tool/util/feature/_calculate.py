@@ -4,7 +4,7 @@ import nltk
 from rich.console import Console
 
 from authorship_tool.util import FeatureCounter, PosFeature
-
+from authorship_tool.type_alias import Sent, Tag, TaggedToken
 
 console = Console(highlight=False)
 

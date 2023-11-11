@@ -1,6 +1,8 @@
 """タイプガード用のユーティリティモジュール"""
 from typing import TypeGuard
 
+from authorship_tool.type_alias import Para, Sent, Tag, Token, TaggedToken
+
 
 class TypeGuardUtil:
     """タイプガード用のユーティリティクラス"""

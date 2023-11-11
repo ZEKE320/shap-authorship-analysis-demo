@@ -4,6 +4,8 @@ import re
 
 import nltk
 
+from authorship_tool.type_alias import Sent
+
 
 class FeatureCounter:
     """文章の特徴量を計算するクラス"""
