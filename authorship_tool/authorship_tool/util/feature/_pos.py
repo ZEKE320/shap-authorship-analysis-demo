@@ -15,7 +15,7 @@ class PosFeature:
     """POSタグと追加の特徴タグを管理するクラス"""
 
     __PAST_PARTICIPLE_ADJECTIVE_DATASET: set[Token] = set()
-    __POS_SUBCATEGORIES: set[Tag] = set(["JJ_pp"])
+    __POS_SUBCATEGORIES: Final[set[Tag]] = set(["JJ_pp"])
 
     def __init__(self, word_list: list) -> None:
         tagged_tokens: list[TaggedToken] = []
