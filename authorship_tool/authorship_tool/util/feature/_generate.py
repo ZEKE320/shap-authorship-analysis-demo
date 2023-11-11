@@ -29,29 +29,31 @@ class FeatureDatasetGenerator:
         """特徴量の列名"""
         return self.__columns
 
-    def generate(
-        self, words: list[str], tags: list[str], correctness: bool
-    ) -> tuple[list[float], bool]:
+    def generate_from_sentence(
+        self, sent: Sent, tags: set[Tag], correctness: bool
+    ) -> tuple[tuple[float, ...], bool]:
         """文章のリストから特徴量のリストを生成する"""
-        freq_by_pos: dict[str, float] = FeatureCalculator.all_pos_frequency(words)
+        freq_by_pos: dict[str, float] = FeatureCalculator.all_pos_frequency(sent)
 
         return (
-            [
-                FeatureCalculator.word_variation(words),
-                FeatureCalculator.uncommon_word_frequency(words),
-                FeatureCounter.sentence_length(words),
-                FeatureCalculator.average_word_length(words),
-            ]
-            + [freq_by_pos.get(tag, 0) for tag in tags],
+            tuple(
+                [
+                    FeatureCalculator.word_variation(sent),
+                    FeatureCalculator.uncommon_word_frequency(sent),
+                    FeatureCounter.sentence_length(sent),
+                    FeatureCalculator.average_word_length(sent),
+                ]
+                + [freq_by_pos.get(tag, 0.0) for tag in tags]
+            ),
             correctness,
         )
 
-    def reshape_and_generate(
+    def generate_from_paragraph(
         self,
-        words_collection: list[list[str]],
-        tags: list[str],
+        para: Para,
+        tags: set[Tag],
         correctness: bool,
-    ) -> tuple[list[float], bool]:
+    ) -> tuple[tuple[float, ...], bool]:
         """シェイプを落としてから特徴量のリストを生成する"""
-        words: list[str] = [word for words in words_collection for word in words]
-        return self.generate(words, tags, correctness)
+        sent: Sent = [word for sent in para for word in sent]
+        return self.generate_from_sentence(sent, tags, correctness)
