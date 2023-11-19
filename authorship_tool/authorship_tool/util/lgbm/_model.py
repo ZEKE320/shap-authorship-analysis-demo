@@ -12,9 +12,9 @@ from authorship_tool.util import PathUtil
 
 class LGBMSourceModel:
     def __init__(
-        self, desired_score: float, df: DataFrame, nd_correctness: ndarray
+        self, desired_roc_score: float, df: DataFrame, nd_correctness: ndarray
     ) -> None:
-        self.__DESIRED_SCORE: Final[float] = desired_score
+        self.__DESIRED_SCORE: Final[float] = desired_roc_score
         self.__DF: Final[DataFrame] = df
         self.__ND_CORRECTNESS: Final[ndarray] = nd_correctness
 
@@ -65,31 +65,37 @@ class LGBMResultModel:
         return self.__AUC_ROC_SCORE
 
     def dump(self) -> None:
-        makedirs(PathUtil.LGBM_MODEL_PATH, exist_ok=True)
-        makedirs(PathUtil.DATASET_PATH, exist_ok=True)
+        makedirs(PathUtil.LGBM_MODEL_DIR, exist_ok=True)
+        makedirs(PathUtil.DATASET_DIR, exist_ok=True)
 
-        with open(PathUtil.LGBM_MODEL_PATH.joinpath("lgbm_model.pkl"), "wb") as f:
+        with open(PathUtil.LGBM_MODEL_DIR.joinpath("lgbm_model.pkl"), "wb") as f:
             pickle.dump(self.__MODEL, f)
 
         self.__TRAIN_DATA.to_csv(
-            PathUtil.DATASET_PATH.joinpath("train_data.csv"), index=False
+            PathUtil.DATASET_DIR.joinpath("train_data.csv"), index=False
         )
         self.__TEST_DATA.to_csv(
-            PathUtil.DATASET_PATH.joinpath("test_data.csv"), index=False
+            PathUtil.DATASET_DIR.joinpath("test_data.csv"), index=False
         )
         DataFrame(self.__TRAIN_ANS).to_csv(
-            PathUtil.DATASET_PATH.joinpath("train_ans.csv"), index=False, header=False
+            PathUtil.DATASET_DIR.joinpath("train_ans.csv"),
+            index=False,
+            header=False,
         )
         DataFrame(self.__TEST_ANS).to_csv(
-            PathUtil.DATASET_PATH.joinpath("test_ans.csv"), index=False, header=False
+            PathUtil.DATASET_DIR.joinpath("test_ans.csv"),
+            index=False,
+            header=False,
         )
         DataFrame(self.__ANS_PRED_PROB).to_csv(
-            PathUtil.DATASET_PATH.joinpath("ans_pred_prob.csv"),
+            PathUtil.DATASET_DIR.joinpath("ans_pred_prob.csv"),
             index=False,
             header=False,
         )
         DataFrame(self.__ANS_PRED).to_csv(
-            PathUtil.DATASET_PATH.joinpath("ans_pred.csv"), index=False, header=False
+            PathUtil.DATASET_DIR.joinpath("ans_pred.csv"),
+            index=False,
+            header=False,
         )
 
     def pred_crosstab(self) -> DataFrame:
