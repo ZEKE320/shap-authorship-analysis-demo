@@ -140,18 +140,9 @@ class PosFeature:
 
     @classmethod
     def initialize_dataset_past_participle_adjective(cls) -> None:
-        if (project_root_path := PathUtil.PROJECT_ROOT_PATH) is None:
-            print(
-                "Path: $PROJECT_ROOT_PATH could not be found. Skip and continue processing."
-            )
-            return
-
-        dataset_path: str | None = os.getenv("path_adjective_past_participle_dataset")
-        adjectives_past_participle_path: Final[Path | None] = (
-            project_root_path.joinpath(dataset_path)
-            if project_root_path.exists() and dataset_path
-            else None
-        )
+        adjectives_past_participle_path: Final[
+            Path | None
+        ] = PathUtil.PAST_PARTICIPLE_ADJECTIVE_DATASET
 
         if (
             adjectives_past_participle_path is None
