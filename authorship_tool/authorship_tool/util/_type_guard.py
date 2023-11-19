@@ -17,8 +17,10 @@ class TypeGuardUtil:
         Returns:
             TypeGuard[list[str]]: タイプガードされたリスト
         """
-        return isinstance(values, list) and all(
-            isinstance(string, str) for string in values
+        return (
+            bool(values)
+            and isinstance(values, list)
+            and all(isinstance(string, str) for string in values)
         )
 
     @classmethod
@@ -31,7 +33,11 @@ class TypeGuardUtil:
         Returns:
             TypeGuard[list[list[str]]]: タイプガードされたリスト
         """
-        return isinstance(values, list) and all(cls.is_sent(cent) for cent in values)
+        return (
+            bool(values)
+            and isinstance(values, list)
+            and all(cls.is_sent(cent) for cent in values)
+        )
 
     @classmethod
     def are_paras(cls, values: list, /) -> TypeGuard[list[Para]]:
@@ -43,7 +49,11 @@ class TypeGuardUtil:
         Returns:
             TypeGuard[list[list[list[str]]]]: タイプガードされたリスト
         """
-        return isinstance(values, list) and all(cls.is_para(para) for para in values)
+        return (
+            bool(values)
+            and isinstance(values, list)
+            and all(cls.is_para(para) for para in values)
+        )
 
     @classmethod
     def is_tagged_token(cls, values: tuple, /) -> TypeGuard[TaggedToken]:
@@ -56,7 +66,8 @@ class TypeGuardUtil:
             TypeGuard[tuple[str, str]]: タイプガードされたタプル
         """
         return (
-            isinstance(values, tuple)
+            bool(values)
+            and isinstance(values, tuple)
             and len(values) == 2
             and isinstance(values[0], Token)
             and isinstance(values[1], Tag)
@@ -72,8 +83,10 @@ class TypeGuardUtil:
         Returns:
             TypeGuard[list[tuple[str, str]]]: タイプガードされたリスト
         """
-        return isinstance(values, list) and all(
-            cls.is_tagged_token(tpl) for tpl in values
+        return (
+            bool(values)
+            and isinstance(values, list)
+            and all(cls.is_tagged_token(tpl) for tpl in values)
         )
 
     @classmethod
@@ -86,8 +99,26 @@ class TypeGuardUtil:
         Returns:
             TypeGuard[list[list[tuple[str, str]]]]: タイプガードされたリスト
         """
-        return isinstance(values, list) and all(
-            cls.are_tagged_tokens(pos_list) for pos_list in values
+        return (
+            bool(values)
+            and isinstance(values, list)
+            and all(cls.are_tagged_tokens(pos_list) for pos_list in values)
+        )
+
+    @classmethod
+    def is_tag_list(cls, values: list, /) -> TypeGuard[list[Tag]]:
+        """posのリストであることを確認する
+
+        Args:
+            values (list): リスト
+
+        Returns:
+            TypeGuard[list[str]]: タイプガードされたリスト
+        """
+        return (
+            bool(values)
+            and isinstance(values, list)
+            and all(isinstance(s, Tag) for s in values)
         )
 
     @classmethod
@@ -100,7 +131,11 @@ class TypeGuardUtil:
         Returns:
             TypeGuard[set[str]]: タイプガードされたセット
         """
-        return isinstance(values, set) and all(isinstance(s, Tag) for s in values)
+        return (
+            bool(values)
+            and isinstance(values, set)
+            and all(isinstance(s, Tag) for s in values)
+        )
 
     @classmethod
     def is_tag_tuple(cls, values: tuple, /) -> TypeGuard[tuple[Tag, ...]]:
@@ -112,4 +147,8 @@ class TypeGuardUtil:
         Returns:
             TypeGuard[tuple[str, ...]]: タイプガードされたタプル
         """
-        return isinstance(values, tuple) and all(isinstance(s, Tag) for s in values)
+        return (
+            bool(values)
+            and isinstance(values, tuple)
+            and all(isinstance(s, Tag) for s in values)
+        )
