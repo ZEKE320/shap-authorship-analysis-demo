@@ -54,7 +54,7 @@ class PosFeature:
 
     def __str__(self) -> str:
         for idx, (word, pos) in enumerate(self.__tagged_tokens):
-            if pos in self.__POS_SUBCATEGORIES:
+            if pos in PosFeature.__POS_SUBCATEGORIES:
                 self.__tagged_tokens[idx] = (
                     f"[bold #749BC2 reverse]{word}[/bold #749BC2 reverse]",
                     pos,
@@ -124,12 +124,12 @@ class PosFeature:
             PosFeature: PosFeatureインスタンス
         """
         for word, pos in self.__tagged_tokens:
-            if pos == "JJ" and word in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET:
+            if pos == "JJ" and word in PosFeature.__PAST_PARTICIPLE_ADJECTIVE_DATASET:
                 return PosFeature(
                     [
                         (word, "JJ_pp")
                         if word.strip().lower()
-                        in self.__PAST_PARTICIPLE_ADJECTIVE_DATASET
+                        in PosFeature.__PAST_PARTICIPLE_ADJECTIVE_DATASET
                         and pos == "JJ"
                         else (word, pos)
                         for (word, pos) in self.__tagged_tokens
@@ -155,7 +155,7 @@ class PosFeature:
 
         with open(adjectives_past_participle_path, "r", encoding="utf-8") as f:
             adjectives: set[str] = set(f.read().splitlines())
-            PosFeature.__PAST_PARTICIPLE_ADJECTIVE_DATASET = set(
+            cls.__PAST_PARTICIPLE_ADJECTIVE_DATASET = set(
                 adj.strip().lower() for adj in adjectives
             )
 
