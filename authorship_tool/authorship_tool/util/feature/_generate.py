@@ -8,9 +8,9 @@ from authorship_tool.type_alias import Para, Sent, Tag
 class FeatureDatasetGenerator:
     """特徴量のデータセットを生成するクラス"""
 
-    def __init__(self, tags: Optional[tuple[Tag, ...]] = None) -> None:
-        if tags and not TypeGuardUtil.is_tag_tuple(tags):
-            raise ValueError("tags must be a tuple of str")
+    def __init__(self, tags: Optional[list[Tag]] = None) -> None:
+        if tags and not TypeGuardUtil.is_tag_list(tags):
+            raise ValueError("tags must be a list of str")
 
         cols_and_func: dict[str, Callable[[Sent], float]] = {
             "word variation": FeatureCalculator.word_variation,
@@ -27,7 +27,7 @@ class FeatureDatasetGenerator:
         # クラスのフィールドを定義
         self.__cols_and_func: Final[dict[str, Callable[[Sent], float]]] = cols_and_func
         self.__columns: Final[tuple[str, ...]] = tuple(col)
-        self.__tags: Final[tuple[Tag, ...]] = tags if tags else tuple()
+        self.__tags: Final[list[Tag]] = tags if tags else list()
 
     @property
     def columns(self) -> tuple[str, ...]:
