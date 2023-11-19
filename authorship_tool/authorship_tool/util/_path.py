@@ -7,53 +7,44 @@ load_dotenv()
 
 
 class PathUtil:
-    PROJECT_ROOT_PATH: Path
-    LGBM_MODEL_PATH: Path
-    DATASET_PATH: Path
-    SHAP_FIGURE_PATH: Path
+    PROJECT_ROOT: Path
+    LGBM_MODEL_DIR: Path
+    DATASET_DIR: Path
+    SHAP_FIGURE_DIR: Path
+    PAST_PARTICIPLE_ADJECTIVE_DATASET: Path
 
     @classmethod
-    def initialize_all_path(cls) -> None:
-        cls.initialize_project_root_path()
-        cls.initialize_lgbm_model_path()
-        cls.initialize_dataset_path()
-        cls.initialize_shap_figure_path()
+    def initialize_all_paths(cls) -> None:
+        cls.PROJECT_ROOT = cls.__initialize_project_root()
+        cls.LGBM_MODEL_DIR = cls.__initialize_path("path_dump_lgbm_model_dir")
+        cls.DATASET_DIR = cls.__initialize_path("path_dump_dataset_dir")
+        cls.SHAP_FIGURE_DIR = cls.__initialize_path("path_dump_shap_figure_dir")
+        cls.PAST_PARTICIPLE_ADJECTIVE_DATASET = cls.__initialize_path(
+            "path_adjective_past_participle_dataset"
+        )
 
     @classmethod
-    def initialize_project_root_path(cls) -> None:
+    def __initialize_project_root(cls) -> Path:
         file_dir: Path = Path(os.path.dirname("__file__")).resolve()
 
         for directory in [*file_dir.parents, file_dir]:
             if directory.joinpath("pyproject.toml").exists():
-                PathUtil.PROJECT_ROOT_PATH = directory
-                return
+                return directory
 
         raise ValueError("File: 'pyproject.toml' could not be found.")
 
     @classmethod
-    def initialize_lgbm_model_path(cls) -> None:
-        PathUtil.LGBM_MODEL_PATH = cls.__initialize_file_path("path_lgbm_model")
-
-    @classmethod
-    def initialize_dataset_path(cls) -> None:
-        PathUtil.DATASET_PATH = cls.__initialize_file_path("path_dataset")
-
-    @classmethod
-    def initialize_shap_figure_path(cls) -> None:
-        PathUtil.SHAP_FIGURE_PATH = cls.__initialize_file_path("path_shap_figure")
-
-    @classmethod
-    def __initialize_file_path(cls, env_name) -> Path:
-        if cls.PROJECT_ROOT_PATH is None:
+    def __initialize_path(cls, env_key: str) -> Path:
+        if cls.PROJECT_ROOT is None:
             raise ValueError("Path: `PROJECT_ROOT_PATH` is not initialized.")
 
-        if not (rel_path := os.getenv(env_name)):
-            raise ValueError(f"Env: `{env_name}` could not be found.")
+        if not (rel_path := os.getenv(env_key)):
+            raise ValueError(f"Env: `{env_key}` could not be found.")
 
-        if not (abs_path := cls.PROJECT_ROOT_PATH.joinpath(rel_path)):
+        if not (abs_path := cls.PROJECT_ROOT.joinpath(rel_path)):
             raise FileNotFoundError(f"File: `{abs_path}` could not be found.")
 
         return abs_path
 
 
-PathUtil.initialize_all_path()
+PathUtil.initialize_all_paths()
