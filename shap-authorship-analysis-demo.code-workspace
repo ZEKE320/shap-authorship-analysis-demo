@@ -4,16 +4,5 @@
       "path": "."
     }
   ],
-  "settings": {
-    "gather.gatherToScript": true,
-    "[python]": {
-      "editor.tabSize": 4
-    },
-    "mypy-type-checker.reportingScope": "workspace",
-    "python.analysis.diagnosticMode": "workspace",
-    "pylint.importStrategy": "fromEnvironment",
-    "isort.importStrategy": "fromEnvironment",
-    "mypy-type-checker.importStrategy": "fromEnvironment",
-    "black-formatter.importStrategy": "fromEnvironment"
-  }
+  "settings": {}
 }
