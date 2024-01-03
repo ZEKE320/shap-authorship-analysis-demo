@@ -1,14 +1,14 @@
 """ユーティリティモジュールのパッケージ"""
-from authorship_tool.util._dim_reshape import ArrayDimensionReshaper
-from authorship_tool.util._path import PathUtil
-from authorship_tool.util._table import TabulateUtil
-from authorship_tool.util._type_guard import TypeGuardUtil
-from authorship_tool.util.feature._count import FeatureCounter
-from authorship_tool.util.feature._pos import PosFeature
-from authorship_tool.util.feature._calculate import FeatureCalculator
-from authorship_tool.util.feature._generate import FeatureDatasetGenerator
-from authorship_tool.util.lgbm._model import LGBMResultModel, LGBMSourceModel
-from authorship_tool.util.lgbm._train import LGBMTrainerUtil
+from src.authorship_tool.authorship_tool.util.dim_reshape import ArrayDimensionReshaper
+from src.authorship_tool.authorship_tool.util.path import PathUtil
+from src.authorship_tool.authorship_tool.util.table import TabulateUtil
+from src.authorship_tool.authorship_tool.util.type_guard import TypeGuardUtil
+from src.authorship_tool.authorship_tool.util.feature.count import FeatureCounter
+from src.authorship_tool.authorship_tool.util.feature.pos import PosFeature
+from src.authorship_tool.authorship_tool.util.feature.calculate import FeatureCalculator
+from src.authorship_tool.authorship_tool.util.feature.generate import FeatureDatasetGenerator
+from src.authorship_tool.authorship_tool.util.lgbm.model import LGBMResultModel, LGBMSourceModel
+from src.authorship_tool.authorship_tool.util.lgbm.train import LGBMTrainerUtil
 
 __all__ = [
     "ArrayDimensionReshaper",
