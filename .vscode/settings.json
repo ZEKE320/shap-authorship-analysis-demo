@@ -1,5 +1,0 @@
-{
-  "python.testing.pytestArgs": ["authorship_tool"],
-  "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true
-}
