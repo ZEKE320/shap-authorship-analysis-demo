@@ -1,40 +1,20 @@
-[tool.black]
-# line-length = 100
-
-[tool.isort]
-profile = "black"
-known_first_party = ["authorship_tool"]
-only_sections = true
-
-[tool.pytest]
-mock_use_standalone_module = true
-
-[[tool.mypy.overrides]]
-module = ["sklearn.*", "nltk.*", "shap.*"]
-ignore_missing_imports = true
-
 [tool.poetry]
-packages = [{ from = "authorship_tool", include = "authorship_tool" }]
 name = "authorship_tool"
 version = "0.1.0"
 description = ""
 authors = ["ZEKE320 <46393375+ZEKE320@users.noreply.github.com>"]
 readme = "README.md"
+packages = [{ from = ".", include = "authorship_tool" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-black = { extras = ["jupyter"], version = "*" }
-ipykernel = "*"
-isort = "*"
 jupyter = "*"
 lightgbm = "*"
 matplotlib = "*"
-mypy = "*"
 nltk = "*"
 numpy = "*"
 pandas = "*"
 pandas-stubs = "*"
-pylint = "*"
 scikit-learn = "*"
 tabulate = "*"
 types-pillow = "*"
@@ -45,7 +25,6 @@ shap = "*"
 pytest = "*"
 pytest-mock = "*"
 rich = "*"
-pyright = "*"
 
 
 [build-system]
