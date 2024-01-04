@@ -5,6 +5,7 @@ import re
 from typing import Final, TypeAlias
 
 import matplotlib.pyplot as plt
+import nltk
 import numpy as np
 import pandas as pd
 import shap
@@ -25,10 +26,10 @@ from authorship_tool.util import (
 )
 
 # 必要に応じてダウンロード
-# nltk.download("gutenberg")
-# nltk.download("punkt")
-# nltk.download("averaged_perceptron_tagger")
-# nltk.download("stopwords")
+nltk.download("gutenberg")
+nltk.download("punkt")
+nltk.download("averaged_perceptron_tagger")
+nltk.download("stopwords")
 
 # %%
 AUTHOR_A: Final[str] = "chesterton"
@@ -49,20 +50,20 @@ authors = set(
     if (match := re.search(r"^(.+?)-", file_id)) is not None
 )
 
-para_size_by_author: dict[Author, NumOfParas] = dict()
+para_size_by_author: dict[Author, NumOfParas] = {}
 
 for index, author in enumerate(iterable=authors):
     books: list[list[Para]] = [
         gutenberg.paras(fileids=file_id)
         for file_id in gutenberg.fileids()
         if author in file_id
-    ]
+    ]  # type: ignore
 
     para_num: NumOfParas = len([para for paras in books for para in paras])
     para_size_by_author[author] = para_num
 
 sorted_para_size_by_author: dict[Author, NumOfParas] = dict(
-    sorted(para_size_by_author.items(), key=lambda bsba: bsba[1], reverse=True)
+    sorted(para_size_by_author.items(), key=lambda item: item[1], reverse=True)
 )
 
 for idx, item in enumerate(sorted_para_size_by_author.items()):
@@ -73,7 +74,7 @@ books_a: list[list[Para]] = [
     gutenberg.paras(fileids=file_id)
     for file_id in gutenberg.fileids()
     if AUTHOR_A in file_id
-]
+]  # type: ignore
 
 paras_a: list[Para] = [para for paras in books_a for para in paras]
 if len(paras_a) == 0 or not TypeGuardUtil.are_paras(paras_a):
@@ -90,7 +91,7 @@ books_b: list[list[Para]] = [
     gutenberg.paras(fileids=file_id)
     for file_id in gutenberg.fileids()
     if AUTHOR_B in file_id
-]
+]  # type: ignore
 
 paras_b: list[Para] = [para for paras in books_b for para in paras]
 if len(paras_b) == 0 or not TypeGuardUtil.are_paras(paras_b):
@@ -170,12 +171,12 @@ shap.initjs()
 
 # %%
 shap.force_plot(
-    explainer.expected_value[1],
+    explainer.expected_value[1],  # type: ignore
     test_shap_val[0],
     result.test_data.iloc[0],
 )
 shap.force_plot(
-    explainer.expected_value[1],
+    explainer.expected_value[1],  # type: ignore
     test_shap_val[0],
     result.test_data.iloc[0],
     matplotlib=True,
@@ -189,7 +190,7 @@ plt.clf()
 
 # %%
 shap.decision_plot(
-    explainer.expected_value[1],
+    explainer.expected_value[1],  # type: ignore
     test_shap_val[0],
     result.test_data.iloc[0],
     show=False,

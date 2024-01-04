@@ -29,6 +29,7 @@ class PathUtil:
 
         for directory in [*file_dir.parents, file_dir]:
             if directory.joinpath("pyproject.toml").exists():
+                print(f"Project root: {directory}")
                 return directory
 
         raise ValueError("File: 'pyproject.toml' could not be found.")
@@ -41,9 +42,10 @@ class PathUtil:
         if not (rel_path := os.getenv(env_key)):
             raise ValueError(f"Env: `{env_key}` could not be found.")
 
-        if not (abs_path := cls.PROJECT_ROOT.joinpath(rel_path)):
+        if not (abs_path := cls.PROJECT_ROOT.joinpath(Path(rel_path))):
             raise FileNotFoundError(f"File: `{abs_path}` could not be found.")
 
+        print(f"Path: {env_key} = {abs_path}")
         return abs_path
 
 
