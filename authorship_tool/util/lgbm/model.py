@@ -7,7 +7,7 @@ from lightgbm import LGBMClassifier
 from numpy import ndarray
 from pandas import DataFrame
 
-from authorship_tool.util import PathUtil
+from authorship_tool.util.path_util import PathUtil
 
 
 class LGBMSourceModel:

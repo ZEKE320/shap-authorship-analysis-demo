@@ -21,8 +21,8 @@ class PathUtil:
             "path_adjective_past_participle_dataset"
         )
 
-    @classmethod
-    def __initialize_project_root(cls) -> Path:
+    @staticmethod
+    def __initialize_project_root() -> Path:
         file_dir: Path = Path(os.path.dirname("__file__")).resolve()
 
         for directory in [*file_dir.parents, file_dir]:

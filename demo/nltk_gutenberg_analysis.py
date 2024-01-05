@@ -13,17 +13,13 @@ from IPython.display import display
 from nltk.corpus import gutenberg
 from pandas import DataFrame
 
-from authorship_tool.type_alias import Para, Tag
-from authorship_tool.util import (
-    ArrayDimensionReshaper,
-    FeatureDatasetGenerator,
-    LGBMResultModel,
-    LGBMSourceModel,
-    LGBMTrainerUtil,
-    PathUtil,
-    PosFeature,
-    TypeGuardUtil,
-)
+from authorship_tool.types import Para, Tag
+from authorship_tool.util import dim_reshaper, type_guard
+from authorship_tool.util.feature.generator import FeatureDatasetGenerator
+from authorship_tool.util.feature.pos import PosFeature
+from authorship_tool.util.lgbm import trainer as lgbm_trainer
+from authorship_tool.util.lgbm.model import LGBMResultModel, LGBMSourceModel
+from authorship_tool.util.path_util import PathUtil
 
 # 必要に応じてダウンロード
 nltk.download("gutenberg")
@@ -77,11 +73,11 @@ books_a: list[list[Para]] = [
 ]  # type: ignore
 
 paras_a: list[Para] = [para for paras in books_a for para in paras]
-if len(paras_a) == 0 or not TypeGuardUtil.are_paras(paras_a):
+if len(paras_a) == 0 or not type_guard.are_paras(paras_a):
     raise ValueError("paras_a is empty or not list[list[str]]")
 
 for para in paras_a[:10]:
-    print(ArrayDimensionReshaper.para2str(para))
+    print(dim_reshaper.para2str(para))
 
 print(f"...\n\nAuthor: {AUTHOR_A}, {len(paras_a)} paragraphs\n")
 
@@ -94,16 +90,16 @@ books_b: list[list[Para]] = [
 ]  # type: ignore
 
 paras_b: list[Para] = [para for paras in books_b for para in paras]
-if len(paras_b) == 0 or not TypeGuardUtil.are_paras(paras_b):
+if len(paras_b) == 0 or not type_guard.are_paras(paras_b):
     raise ValueError("paras_a is empty or not list[list[str]]")
 
 for para in paras_b[:10]:
-    print(ArrayDimensionReshaper.para2str(para))
+    print(dim_reshaper.para2str(para))
 
 print(f"...\n\nAuthor: {AUTHOR_B}, {len(paras_b)} paragraphs\n")
 
 # %%
-if not (TypeGuardUtil.are_paras(paras_a) and TypeGuardUtil.are_paras(paras_b)):
+if not (type_guard.are_paras(paras_a) and type_guard.are_paras(paras_b)):
     raise TypeError("paras_a or paras_b is not list[list[list[str]]] type.")
 all_paras: list[Para] = paras_a + paras_b
 
@@ -145,7 +141,7 @@ print(df.isna().sum())
 
 # %%
 
-result: LGBMResultModel = LGBMTrainerUtil.learn_until_succeed(
+result: LGBMResultModel = lgbm_trainer.learn_until_succeed(
     LGBMSourceModel(DESIRED_ROC_SCORE, df, nd_correctness)
 )
 

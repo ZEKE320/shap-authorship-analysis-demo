@@ -3,8 +3,9 @@ from typing import Final
 
 import nltk
 
-from authorship_tool.type_alias import Sent, Tag, TaggedToken, Token
-from authorship_tool.util import PathUtil, TypeGuardUtil
+from authorship_tool.types import Sent, Tag, TaggedToken, Token
+from authorship_tool.util.path_util import PathUtil
+from authorship_tool.util import type_guard
 
 
 class PosFeature:
@@ -17,33 +18,31 @@ class PosFeature:
         tagged_tokens: list[TaggedToken] = []
         """単語とPOSタグのタプルのリスト"""
 
-        if TypeGuardUtil.is_sent(word_list):
+        if type_guard.is_sent(word_list):
             tagged_tokens = nltk.pos_tag(word_list)
 
-        elif TypeGuardUtil.is_para(word_list):
+        elif type_guard.is_para(word_list):
             tagged_tokens = [
                 word_and_pos
                 for words_and_pos in nltk.pos_tag_sents(word_list)
-                if TypeGuardUtil.are_tagged_tokens(words_and_pos)
+                if type_guard.are_tagged_tokens(words_and_pos)
                 for word_and_pos in words_and_pos
             ]
 
-        elif TypeGuardUtil.are_paras(word_list):
+        elif type_guard.are_paras(word_list):
             sents: list[Sent] = [sent for para in word_list for sent in para]
 
             tagged_tokens = [
                 word_and_pos
                 for words_and_pos in nltk.pos_tag_sents(sents)
-                if TypeGuardUtil.are_tagged_tokens(words_and_pos)
+                if type_guard.are_tagged_tokens(words_and_pos)
                 for word_and_pos in words_and_pos
             ]
 
-        elif TypeGuardUtil.are_tagged_tokens(word_list):
+        elif type_guard.are_tagged_tokens(word_list):
             tagged_tokens = word_list.copy()
 
-        if len(tagged_tokens) == 0 or not TypeGuardUtil.are_tagged_tokens(
-            tagged_tokens
-        ):
+        if len(tagged_tokens) == 0 or not type_guard.are_tagged_tokens(tagged_tokens):
             raise TypeError("src type is not supported.")
 
         self.__tagged_tokens: Final[list[TaggedToken]] = tagged_tokens
@@ -136,6 +135,7 @@ class PosFeature:
 
     @classmethod
     def initialize_dataset_past_participle_adjective(cls) -> None:
+        """過去分詞形の形容詞のデータセットのパスを指定する"""
         adjectives_past_participle_path: Final[
             Path | None
         ] = PathUtil.PAST_PARTICIPLE_ADJECTIVE_DATASET
