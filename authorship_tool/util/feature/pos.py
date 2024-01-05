@@ -1,14 +1,10 @@
-import os
 from pathlib import Path
 from typing import Final
 
 import nltk
-from dotenv import load_dotenv
 
-from authorship_tool.type_alias import Tag, Token, Sent, TaggedToken
-from authorship_tool.util import TypeGuardUtil, PathUtil
-
-load_dotenv()
+from authorship_tool.type_alias import Sent, Tag, TaggedToken, Token
+from authorship_tool.util import PathUtil, TypeGuardUtil
 
 
 class PosFeature:

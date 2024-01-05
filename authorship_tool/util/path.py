@@ -1,9 +1,7 @@
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
-
-load_dotenv()
+from authorship_tool.config import PATHS
 
 
 class PathUtil:
@@ -39,7 +37,7 @@ class PathUtil:
         if cls.PROJECT_ROOT is None:
             raise ValueError("Path: `PROJECT_ROOT_PATH` is not initialized.")
 
-        if not (rel_path := os.getenv(env_key)):
+        if not (rel_path := PATHS[env_key]):
             raise ValueError(f"Env: `{env_key}` could not be found.")
 
         if not (abs_path := cls.PROJECT_ROOT.joinpath(Path(rel_path))):
