@@ -11,7 +11,7 @@ from matplotlib import pyplot as plt
 from nltk.corpus import inaugural
 from pandas import DataFrame
 
-from authorship_tool.types import Para, Tag
+from authorship_tool.types import Para2dStr, Tag
 from authorship_tool.util import dim_reshaper, type_guard
 from authorship_tool.util.feature.generator import FeatureDatasetGenerator
 from authorship_tool.util.feature.pos import PosFeature
@@ -44,7 +44,7 @@ presidents: set[President] = {file_id[5:-4] for file_id in inaugural.fileids()}
 president_data_dict: dict[President, NumOfParas] = {}
 
 for index, president in enumerate(iterable=presidents):
-    speeches: list[list[Para]] = [
+    speeches: list[list[Para2dStr]] = [
         # inaugural.sents(file_id)
         inaugural.paras(fileids=file_id)
         for file_id in inaugural.fileids()
@@ -74,21 +74,21 @@ if len(paras_a) == 0 or not type_guard.are_paras(paras_a):
     raise ValueError("paras_a is empty or not list[Para]")
 
 for para in paras_a[:10]:
-    print(dim_reshaper.para2str(para))
+    print(dim_reshaper.para_to_str(para))
 
 print(f"...\n\nSpeaker: President {PRESIDENT_A}, {len(paras_a)} paragraphs\n")
 
 
 # %%
-speeches_b: list[list[Para]] = [
+speeches_b: list[list[Para2dStr]] = [
     inaugural.paras(file_id)
     for file_id in inaugural.fileids()
     if PRESIDENT_B in file_id
 ]  # type: ignore
 
-sents_b: list[Para] = [para for paras in speeches_b for para in paras]
+sents_b: list[Para2dStr] = [para for paras in speeches_b for para in paras]
 for para in sents_b[:50]:
-    print(dim_reshaper.para2str(para))
+    print(dim_reshaper.para_to_str(para))
 
 print(f"...\n\nSpeaker: President {PRESIDENT_B}, {len(sents_b)} paragraphs\n")
 
@@ -97,7 +97,7 @@ print(f"...\n\nSpeaker: President {PRESIDENT_B}, {len(sents_b)} paragraphs\n")
 
 if not (type_guard.are_paras(paras_a) and type_guard.are_paras(sents_b)):
     raise ValueError("paras_a or sents_b is not list[Para]")
-all_paras: list[Para] = paras_a + sents_b
+all_paras: list[Para2dStr] = paras_a + sents_b
 
 pos_list: list[Tag] = PosFeature(all_paras).tag_subcategories().pos_list
 

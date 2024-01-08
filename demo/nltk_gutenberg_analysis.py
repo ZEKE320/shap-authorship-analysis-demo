@@ -12,7 +12,7 @@ from IPython.display import display
 from nltk.corpus import gutenberg
 from pandas import DataFrame
 
-from authorship_tool.types import Para, Tag
+from authorship_tool.types import Para2dStr, Tag
 from authorship_tool.util import dim_reshaper, type_guard
 from authorship_tool.util.feature.generator import FeatureDatasetGenerator
 from authorship_tool.util.feature.pos import PosFeature
@@ -50,7 +50,7 @@ authors: set[Author] = {
 para_size_by_author: dict[Author, NumOfParas] = {}
 
 for index, author in enumerate(iterable=authors):
-    books: list[list[Para]] = [
+    books: list[list[Para2dStr]] = [
         gutenberg.paras(fileids=file_id)
         for file_id in gutenberg.fileids()
         if author in file_id
@@ -68,36 +68,36 @@ for idx, item in enumerate(sorted_para_size_by_author.items()):
 
 
 # %%
-books_a: list[list[Para]] = [
+books_a: list[list[Para2dStr]] = [
     gutenberg.paras(fileids=file_id)
     for file_id in gutenberg.fileids()
     if AUTHOR_A in file_id
 ]  # type: ignore
 
-paras_a: list[Para] = [para for paras in books_a for para in paras]
+paras_a: list[Para2dStr] = [para for paras in books_a for para in paras]
 if len(paras_a) == 0 or not type_guard.are_paras(paras_a):
     raise ValueError("paras_a is empty or not list[Para]")
 
 for para in paras_a[:10]:
-    print(dim_reshaper.para2str(para))
+    print(dim_reshaper.para_to_str(para))
 
 print(f"...\n\nAuthor: {AUTHOR_A}, {len(paras_a)} paragraphs\n")
 
 
 # %%
 
-books_b: list[list[Para]] = [
+books_b: list[list[Para2dStr]] = [
     gutenberg.paras(fileids=file_id)
     for file_id in gutenberg.fileids()
     if AUTHOR_B in file_id
 ]  # type: ignore
 
-paras_b: list[Para] = [para for paras in books_b for para in paras]
+paras_b: list[Para2dStr] = [para for paras in books_b for para in paras]
 if len(paras_b) == 0 or not type_guard.are_paras(paras_b):
     raise ValueError("paras_a is empty or not list[list[str]]")
 
 for para in paras_b[:10]:
-    print(dim_reshaper.para2str(para))
+    print(dim_reshaper.para_to_str(para))
 
 print(f"...\n\nAuthor: {AUTHOR_B}, {len(paras_b)} paragraphs\n")
 
@@ -105,7 +105,7 @@ print(f"...\n\nAuthor: {AUTHOR_B}, {len(paras_b)} paragraphs\n")
 # %%
 if not (type_guard.are_paras(paras_a) and type_guard.are_paras(paras_b)):
     raise TypeError("paras_a or paras_b is not list[Para]")
-all_paras: list[Para] = paras_a + paras_b
+all_paras: list[Para2dStr] = paras_a + paras_b
 
 pos_list: list[Tag] = PosFeature(all_paras).tag_subcategories().pos_list
 

@@ -5,13 +5,11 @@ from typing import TypeAlias
 
 Tag: TypeAlias = str
 """タグ"""
-Token: TypeAlias = str
+TokenStr: TypeAlias = str
 """単語"""
-Sent: TypeAlias = list[Token]
+Sent1dStr: TypeAlias = list[TokenStr]
 """文"""
-Para: TypeAlias = list[Sent]
+Para2dStr: TypeAlias = list[Sent1dStr]
 """段落"""
-Book: TypeAlias = list[Sent]
-"""本"""
-TaggedToken: TypeAlias = tuple[Token, Tag]
+TaggedTokens: TypeAlias = tuple[TokenStr, Tag]
 """タグ付けされた単語"""
