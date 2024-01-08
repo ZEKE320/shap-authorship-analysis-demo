@@ -25,6 +25,7 @@ shap = "*"
 pytest = "*"
 pytest-mock = "*"
 rich = "*"
+black = {extras = ["jupyter"], version = "^23.12.1"}
 
 
 [build-system]
