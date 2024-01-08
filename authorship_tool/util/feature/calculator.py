@@ -53,3 +53,39 @@ def all_pos_frequency(sent: Sent) -> dict[Tag, float]:
 
     total_tags: int = freq_dist.N()
     return {tag[1]: count / total_tags for (tag, count) in freq_dist.items()}
+
+
+def sentence_length(sent: Sent1dStr) -> int:
+    """文章中に出現する単語数を計算する"""
+    return len(sent)
+
+
+def count_individual_tokens(sent: Sent1dStr) -> int:
+    """文章中に出現する単語の種類数を計算する"""
+    return len(set(sent))
+
+
+def count_character(sent: Sent1dStr, character: str) -> int:
+    """文章内で出現する指定した文字の合計を計算する"""
+    return sent.count(character)
+
+
+def count_non_alphabetic_characters(sent: Sent1dStr) -> int:
+    """文章内で出現する記号の合計を計算する"""
+    pattern = r"[^a-zA-Z\s]"
+    matches: list[str] = re.findall(pattern=pattern, string=" ".join(sent))
+    return len(matches)
+
+
+def count_numeric_characters(sent: Sent1dStr) -> int:
+    """文章内で出現する数字の合計を計算する"""
+    pattern = r"[\d]"
+    matches: list[str] = re.findall(pattern=pattern, string=" ".join(sent))
+    return len(matches)
+
+
+def count_uncommon_words(sent: Sent1dStr) -> int:
+    """ストップワードではない単語の数を計算する"""
+    stop_words = set(nltk.corpus.stopwords.words("english"))
+    return len([word for word in sent if word not in stop_words])
+
