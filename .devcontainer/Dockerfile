@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/python:3.11
 
-RUN apt update &&\
-  apt upgrade -y &&\
-  apt clean &&\
-  rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN --mount=type=cache,target=/var/lib/apt/lists \
+  --mount=type=cache,target=/var/cache/apt/archives \
+  apt update &&\
+  apt upgrade -y
