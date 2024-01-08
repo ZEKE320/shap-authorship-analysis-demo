@@ -1,8 +1,9 @@
 import pickle
 from os import makedirs
-from typing import Final
+from typing import Optional
 
 import pandas as pd
+from attr import dataclass
 from lightgbm import LGBMClassifier
 from numpy import ndarray
 from pandas import DataFrame
@@ -10,93 +11,60 @@ from pandas import DataFrame
 from authorship_tool.util.path_util import PathUtil
 
 
+@dataclass(frozen=True)
 class LGBMSourceModel:
-    def __init__(
-        self, desired_roc_score: float, df: DataFrame, nd_correctness: ndarray
-    ) -> None:
-        self.__DESIRED_SCORE: Final[float] = desired_roc_score
-        self.__DF: Final[DataFrame] = df
-        self.__ND_CORRECTNESS: Final[ndarray] = nd_correctness
-
-    @property
-    def desired_score(self) -> float:
-        return self.__DESIRED_SCORE
-
-    @property
-    def df(self) -> DataFrame:
-        return self.__DF
-
-    @property
-    def nd_correctness(self) -> ndarray:
-        return self.__ND_CORRECTNESS
+    desired_score: float
+    df: DataFrame
+    nd_correctness: ndarray
 
 
+@dataclass(frozen=True)
 class LGBMResultModel:
-    def __init__(
-        self,
-        model: LGBMClassifier,
-        train_data: DataFrame,
-        test_data: DataFrame,
-        train_ans: ndarray,
-        test_ans: ndarray,
-        ans_pred_prob: ndarray,
-        ans_pred: ndarray,
-        auc_roc_score: float,
-    ) -> None:
-        self.__MODEL: Final[LGBMClassifier] = model
-        self.__TRAIN_DATA: Final[DataFrame] = train_data
-        self.__TEST_DATA: Final[DataFrame] = test_data
-        self.__TRAIN_ANS: Final[ndarray] = train_ans
-        self.__TEST_ANS: Final[ndarray] = test_ans
-        self.__ANS_PRED_PROB: Final[ndarray] = ans_pred_prob
-        self.__ANS_PRED: Final[ndarray] = ans_pred
-        self.__AUC_ROC_SCORE: Final[float] = auc_roc_score
+    model: LGBMClassifier
+    train_data: DataFrame
+    test_data: DataFrame
+    train_ans: ndarray
+    test_ans: ndarray
+    ans_pred_prob: ndarray
+    ans_pred: ndarray
+    auc_roc_score: float
 
-    @property
-    def model(self) -> LGBMClassifier:
-        return self.__MODEL
+    def dump(self, title: Optional[str] = None) -> None:
+        if title is None:
+            title = "_output_"
 
-    @property
-    def test_data(self) -> DataFrame:
-        return self.__TEST_DATA
+        makedirs(PathUtil.LGBM_MODEL_DIR.joinpath(title), exist_ok=True)
+        makedirs(PathUtil.DATASET_DIR.joinpath(title), exist_ok=True)
 
-    @property
-    def auc_roc_score(self) -> float:
-        return self.__AUC_ROC_SCORE
+        with open(PathUtil.LGBM_MODEL_DIR.joinpath(title, "lgbm_model.pkl"), "wb") as f:
+            pickle.dump(self.model, f)
 
-    def dump(self) -> None:
-        makedirs(PathUtil.LGBM_MODEL_DIR, exist_ok=True)
-        makedirs(PathUtil.DATASET_DIR, exist_ok=True)
-
-        with open(PathUtil.LGBM_MODEL_DIR.joinpath("lgbm_model.pkl"), "wb") as f:
-            pickle.dump(self.__MODEL, f)
-
-        self.__TRAIN_DATA.to_csv(
-            PathUtil.DATASET_DIR.joinpath("train_data.csv"), index=False
+        self.train_data.to_csv(
+            PathUtil.DATASET_DIR.joinpath(title, "train_data.csv"), index=False
         )
-        self.__TEST_DATA.to_csv(
-            PathUtil.DATASET_DIR.joinpath("test_data.csv"), index=False
+        self.test_data.to_csv(
+            PathUtil.DATASET_DIR.joinpath(title, "test_data.csv"), index=False
         )
-        DataFrame(self.__TRAIN_ANS).to_csv(
-            PathUtil.DATASET_DIR.joinpath("train_ans.csv"),
+        DataFrame(self.train_ans).to_csv(
+            PathUtil.DATASET_DIR.joinpath(title, "train_ans.csv"),
             index=False,
             header=False,
         )
-        DataFrame(self.__TEST_ANS).to_csv(
-            PathUtil.DATASET_DIR.joinpath("test_ans.csv"),
+        DataFrame(self.test_ans).to_csv(
+            PathUtil.DATASET_DIR.joinpath(title, "test_ans.csv"),
             index=False,
             header=False,
         )
-        DataFrame(self.__ANS_PRED_PROB).to_csv(
-            PathUtil.DATASET_DIR.joinpath("ans_pred_prob.csv"),
+        DataFrame(self.ans_pred_prob).to_csv(
+            PathUtil.DATASET_DIR.joinpath(title, "ans_pred_prob.csv"),
             index=False,
             header=False,
         )
-        DataFrame(self.__ANS_PRED).to_csv(
-            PathUtil.DATASET_DIR.joinpath("ans_pred.csv"),
+        DataFrame(self.ans_pred).to_csv(
+            PathUtil.DATASET_DIR.joinpath(title, "ans_pred.csv"),
             index=False,
             header=False,
         )
 
     def pred_crosstab(self) -> DataFrame:
-        return pd.crosstab(self.__TEST_ANS, self.__ANS_PRED)
+        return pd.crosstab(self.test_ans, self.ans_pred)
