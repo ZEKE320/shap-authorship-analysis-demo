@@ -1,3 +1,4 @@
+"""LGBMに利用するモデルデータ定義モジュール"""
 import pickle
 from os import makedirs
 from typing import Optional
@@ -13,6 +14,8 @@ from authorship_tool.util.path_util import PathUtil
 
 @dataclass(frozen=True)
 class LGBMSourceModel:
+    """LGBMのモデル作成用データクラス"""
+
     desired_score: float
     df: DataFrame
     nd_correctness: ndarray
@@ -20,6 +23,8 @@ class LGBMSourceModel:
 
 @dataclass(frozen=True)
 class LGBMResultModel:
+    """LGBMのモデル作成結果データクラス"""
+
     model: LGBMClassifier
     train_data: DataFrame
     test_data: DataFrame
@@ -30,6 +35,12 @@ class LGBMResultModel:
     auc_roc_score: float
 
     def dump(self, title: Optional[str] = None) -> None:
+        """
+        作成したモデル、データを保存する
+
+        Args:
+            title (Optional[str]): フォルダ名に使用するタイトル
+        """
         if title is None:
             title = "_output_"
 
@@ -67,4 +78,10 @@ class LGBMResultModel:
         )
 
     def pred_crosstab(self) -> DataFrame:
+        """
+        予測結果のクロス集計を行う
+
+        Returns:
+            DataFrame: クロス集計結果
+        """
         return pd.crosstab(self.test_ans, self.ans_pred)
