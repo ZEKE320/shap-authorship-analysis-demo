@@ -41,6 +41,7 @@ def learn(training_dto: LGBMSourceModel) -> LGBMResultModel:
         学習済みモデル、学習用データ、テスト用データ、学習用正解ラベル、テスト用正解ラベル、
         テスト用予測確率、テスト用予測ラベル、ROC AUCスコア
     """
+
     (
         train_data,
         test_data,
@@ -70,3 +71,7 @@ def learn(training_dto: LGBMSourceModel) -> LGBMResultModel:
         ans_pred,
         auc_roc_score,
     )
+
+
+def loocv_learn():
+    pass
