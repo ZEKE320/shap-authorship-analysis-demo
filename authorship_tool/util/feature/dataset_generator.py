@@ -4,7 +4,9 @@ Feature dataset generator module
 """
 from typing import Callable, Final, Optional
 
-from authorship_tool.types import TwoDimStr, OneDimStr, Tag
+import numpy as np
+
+from authorship_tool.types import OneDimStr, Tag, TwoDimStr
 from authorship_tool.util import dim_reshaper, type_guard
 from authorship_tool.util.feature.calculator import (
     ParagraphCalculator,
@@ -43,12 +45,12 @@ class SentenceFeatureDatasetGenerator:
 
     def generate_from_sentence(
         self, sent: OneDimStr, correctness: bool
-    ) -> tuple[tuple[float, ...], bool]:
+    ) -> tuple[np.ndarray, bool]:
         """文字列のリストから特徴量のリストを生成する"""
         freq_by_pos: dict[str, float] = SentenceCalculator.pos_frequencies(sent)
 
         return (
-            tuple(
+            np.array(
                 [func(sent) for func in self.__COLS_AND_FUNC.values()]
                 + [freq_by_pos.get(tag, 0.0) for tag in self.__tags]
             ),
@@ -59,7 +61,7 @@ class SentenceFeatureDatasetGenerator:
         self,
         para: TwoDimStr,
         correctness: bool,
-    ) -> tuple[tuple[float, ...], bool]:
+    ) -> tuple[np.ndarray, bool]:
         """文字列のリストのリストから特徴量のリストを生成する"""
         sent: OneDimStr = dim_reshaper.reduce_dim(para)
         return self.generate_from_sentence(sent, correctness)
@@ -118,15 +120,15 @@ class ParagraphFeatureDatasetGenerator:
     def generate_from_paragraph(
         self,
         para: TwoDimStr,
-        correctness: bool,
-    ) -> tuple[tuple[float, ...], bool]:
+        category: bool,
+    ) -> tuple[np.ndarray, bool]:
         """文字列のリストのリストから特徴量のリストを生成する"""
         freq_by_pos: dict[str, float] = ParagraphCalculator.pos_frequencies(para)
 
         return (
-            tuple(
+            np.array(
                 [func(para) for func in self.__COLS_AND_FUNC.values()]
                 + [freq_by_pos.get(tag, 0.0) for tag in self.__tags]
             ),
-            correctness,
+            category,
         )
