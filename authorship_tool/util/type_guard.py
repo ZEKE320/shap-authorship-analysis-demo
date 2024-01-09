@@ -1,7 +1,7 @@
 """タイプガード用のユーティリティモジュール"""
 from typing import TypeGuard
 
-from authorship_tool.types import Para2dStr, Sent1dStr, Tag, TaggedTokens, TokenStr
+from authorship_tool.types import Para2dStr, Sent1dStr, Tag, TaggedToken, TokenStr
 
 
 def is_sent(values: list, /) -> TypeGuard[Sent1dStr]:
@@ -52,7 +52,7 @@ def are_paras(values: list, /) -> TypeGuard[list[Para2dStr]]:
     )
 
 
-def is_tagged_token(values: tuple, /) -> TypeGuard[TaggedTokens]:
+def is_tagged_token(values: tuple, /) -> TypeGuard[TaggedToken]:
     """posのタプルであることを確認する
 
     Args:
@@ -70,7 +70,7 @@ def is_tagged_token(values: tuple, /) -> TypeGuard[TaggedTokens]:
     )
 
 
-def are_tagged_tokens(values: list, /) -> TypeGuard[list[TaggedTokens]]:
+def are_tagged_tokens(values: list, /) -> TypeGuard[list[TaggedToken]]:
     """posのリストであることを確認する
 
     Args:
@@ -86,7 +86,7 @@ def are_tagged_tokens(values: list, /) -> TypeGuard[list[TaggedTokens]]:
     )
 
 
-def are_tagged_sents(values: list, /) -> TypeGuard[list[list[TaggedTokens]]]:
+def are_tagged_sents(values: list, /) -> TypeGuard[list[list[TaggedToken]]]:
     """posのリストのリストであることを確認する
 
     Args:

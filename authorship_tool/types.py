@@ -11,5 +11,5 @@ Sent1dStr: TypeAlias = list[TokenStr]
 """文"""
 Para2dStr: TypeAlias = list[Sent1dStr]
 """段落"""
-TaggedTokens: TypeAlias = tuple[TokenStr, Tag]
+TaggedToken: TypeAlias = tuple[TokenStr, Tag]
 """タグ付けされた単語"""

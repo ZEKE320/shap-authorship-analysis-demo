@@ -1,9 +1,14 @@
+"""
+POSタグモジュール
+POS tags module
+"""
+
 from pathlib import Path
 from typing import Final
 
 import nltk
 
-from authorship_tool.types import Sent1dStr, Tag, TaggedTokens, TokenStr
+from authorship_tool.types import Sent1dStr, Tag, TaggedToken, TokenStr
 from authorship_tool.util.path_util import PathUtil
 from authorship_tool.util import type_guard
 
@@ -15,7 +20,7 @@ class PosFeature:
     __POS_SUBCATEGORIES: Final[set[Tag]] = set(["JJ_pp"])
 
     def __init__(self, word_list: list) -> None:
-        tagged_tokens: list[TaggedTokens] = []
+        tagged_tokens: list[TaggedToken] = []
         """単語とPOSタグのタプルのリスト"""
 
         if type_guard.is_sent(word_list):
@@ -45,7 +50,7 @@ class PosFeature:
         if len(tagged_tokens) == 0 or not type_guard.are_tagged_tokens(tagged_tokens):
             raise TypeError("src type is not supported.")
 
-        self.__tagged_tokens: Final[list[TaggedTokens]] = tagged_tokens
+        self.__tagged_tokens: Final[list[TaggedToken]] = tagged_tokens
 
     def __str__(self) -> str:
         for idx, (word, pos) in enumerate(self.__tagged_tokens):
@@ -58,7 +63,7 @@ class PosFeature:
         return " ".join([tagged_token[0] for tagged_token in self.__tagged_tokens])
 
     @property
-    def tagged_tokens(self) -> list[TaggedTokens]:
+    def tagged_tokens(self) -> list[TaggedToken]:
         """単語とPOSタグのタプルのリスト
 
         Returns:
