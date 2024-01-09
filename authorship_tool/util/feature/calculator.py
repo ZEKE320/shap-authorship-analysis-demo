@@ -114,29 +114,29 @@ class UnivKansasFeatures:
         return sentence_length(sent)
 
     @staticmethod
-    def _char_exists(para: Para2dStr, char: str) -> bool:
+    def _char_present(para: Para2dStr, char: str) -> bool:
         """段落内に指定した文字が存在するかどうかを判定する"""
         return any(char in word for sent in para for word in sent)
 
     @staticmethod
     def v3_close_parenthesis_present(para: Para2dStr) -> bool:
         """段落内に括弧閉じが存在するかどうかを判定する"""
-        return UnivKansasFeatures._char_exists(para, ")")
+        return UnivKansasFeatures._char_present(para, ")")
 
     @staticmethod
     def v4_dash_present(para: Para2dStr) -> bool:
         """段落内にダッシュが存在するかどうかを判定する"""
-        return UnivKansasFeatures._char_exists(para, "-")
+        return UnivKansasFeatures._char_present(para, "-")
 
     @staticmethod
     def _semi_colon_present(para: Para2dStr) -> bool:
         """段落内にセミコロンが存在するかどうかを判定する"""
-        return UnivKansasFeatures._char_exists(para, ";")
+        return UnivKansasFeatures._char_present(para, ";")
 
     @staticmethod
     def _colon_present(para: Para2dStr) -> bool:
         """段落内にコロンが存在するかどうかを判定する"""
-        return UnivKansasFeatures._char_exists(para, ":")
+        return UnivKansasFeatures._char_present(para, ":")
 
     @staticmethod
     def v5_semi_colon_or_colon_present(para: Para2dStr) -> bool:
@@ -148,12 +148,12 @@ class UnivKansasFeatures:
     @staticmethod
     def v6_question_mark_present(para: Para2dStr) -> bool:
         """段落内に疑問符が存在するかどうかを判定する"""
-        return UnivKansasFeatures._char_exists(para, "?")
+        return UnivKansasFeatures._char_present(para, "?")
 
     @staticmethod
     def v7_apostrophe_present(para: Para2dStr) -> bool:
         """段落内にアポストロフィが存在するかどうかを判定する"""
-        return UnivKansasFeatures._char_exists(para, "'")
+        return UnivKansasFeatures._char_present(para, "'")
 
     @staticmethod
     def v8_standard_deviation_of_sentence_length(para: Para2dStr) -> float:
