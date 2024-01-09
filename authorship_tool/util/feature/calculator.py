@@ -170,6 +170,10 @@ class UnivKansasFeatures:
             abs(sent_lengths[i] - sent_lengths[i + 1])
             for i in range(len(sent_lengths) - 1)
         ]
+
+        if len(diffs) == 0:
+            return 0.0
+
         return sum(diffs) / len(diffs)
 
     @staticmethod
