@@ -175,7 +175,7 @@ class UnivKansasFeatures:
     @staticmethod
     def v2_words_per_paragraph(para: Para2dStr) -> int:
         """段落内で出現する単語の合計を計算する"""
-        sent: Sent1dStr = dim_reshaper.para_to_1d(para)
+        sent: Sent1dStr = dim_reshaper.para_to_sent(para)
         return SentenceCalculator.sentence_length(sent)
 
     @staticmethod

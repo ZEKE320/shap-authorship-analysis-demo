@@ -61,7 +61,7 @@ class SentenceFeatureDatasetGenerator:
         correctness: bool,
     ) -> tuple[tuple[float, ...], bool]:
         """文字列のリストのリストから特徴量のリストを生成する"""
-        sent: Sent1dStr = dim_reshaper.para_to_1d(para)
+        sent: Sent1dStr = dim_reshaper.para_to_sent(para)
         return self.generate_from_sentence(sent, correctness)
 
 
