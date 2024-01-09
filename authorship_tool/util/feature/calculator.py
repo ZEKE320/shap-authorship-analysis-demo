@@ -18,6 +18,7 @@ from authorship_tool.util.feature.regex import NUMERIC_VALUE_PATTERN
 
 console = Console(highlight=False)
 
+stop_words = set(nltk.corpus.stopwords.words("english"))
 stemmer: SnowballStemmer = SnowballStemmer("english")
 lemmatizer: WordNetLemmatizer = WordNetLemmatizer()
 
