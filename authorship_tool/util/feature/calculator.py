@@ -22,81 +22,117 @@ stemmer: SnowballStemmer = SnowballStemmer("english")
 lemmatizer: WordNetLemmatizer = WordNetLemmatizer()
 
 
-def word_variation(sent: Sent1dStr) -> float:
-    """文章中の単語の豊富さを計算する: (単語の種類の数)/(文章中の単語数)
-    Calculate the word variation in a sentence:
-    (number of unique words)/(total number of words in the sentence)
+class SentenceCalculator:
     """
-    return count_individual_tokens(sent) / sentence_length(sent)
+    文章特徴量計算クラス
+    Sentence feature calculation class
+    """
 
+    @staticmethod
+    def word_variation(sent: Sent1dStr) -> float:
+        """
+        文章中の単語の豊富さを計算する: (単語の種類の数)/(文章中の単語数)
+        Calculate the word variation in a sentence:
+        (number of unique words)/(total number of words in the sentence)
+        """
+        return SentenceCalculator.count_individual_tokens(
+            sent
+        ) / SentenceCalculator.sentence_length(sent)
 
-def average_word_length(sent: Sent1dStr) -> float:
-    """文章中の単語の平均文字列長を計算する
-    Calculate the average word length in a sentence"""
-    return sum(len(word) for word in sent) / sentence_length(sent)
+    @staticmethod
+    def average_word_length(sent: Sent1dStr) -> float:
+        """
+        文章中の単語の平均文字列長を計算する
+        Calculate the average word length in a sentence
+        """
+        return sum(len(word) for word in sent) / SentenceCalculator.sentence_length(
+            sent
+        )
 
+    @staticmethod
+    def non_alphabetic_characters_frequency(sent: Sent1dStr) -> float:
+        """
+        文章内で出現する記号の割合を計算する
+        Calculate the frequency of non-alphabetic characters in a sentence
+        """
+        return SentenceCalculator.count_non_alphabetic_characters(
+            sent
+        ) / SentenceCalculator.sentence_length(sent)
 
-def non_alphabetic_characters_frequency(sent: Sent1dStr) -> float:
-    """文章内で出現する記号の割合を計算する
-    Calculate the frequency of non-alphabetic characters in a sentence"""
-    return count_non_alphabetic_characters(sent) / sentence_length(sent)
+    @staticmethod
+    def uncommon_word_frequency(sent: Sent1dStr) -> float:
+        """
+        特徴的な単語の割合を計算する
+        Calculate the frequency of uncommon words in a sentence
+        """
+        return SentenceCalculator.count_uncommon_words(
+            sent
+        ) / SentenceCalculator.sentence_length(sent)
 
+    @staticmethod
+    def pos_frequencies(sent: Sent1dStr) -> dict[Tag, float]:
+        """
+        文章中の各品詞の割合を計算する
+        Calculate the frequency of each part of speech in a sentence
+        """
+        pos_feature: PosFeature = PosFeature(sent).tag_subcategories()
+        tagged_tokens: list[TaggedToken] = pos_feature.tagged_tokens
 
-def uncommon_word_frequency(sent: Sent1dStr) -> float:
-    """特徴的な単語の割合を計算する
-    Calculate the frequency of uncommon words in a sentence"""
-    return count_uncommon_words(sent) / sentence_length(sent)
+        # 過去分詞形容詞を確認するコード
+        # if "JJ_pp" in set(pos for (_, pos) in tagged_tokens):
+        #     console.print(f"{pos_feature}\n")
+        tags: list[Tag] = [tag for (_, tag) in tagged_tokens]
+        tag_size: int = len(tags)
 
+        return {tag: tags.count(tag) / tag_size for tag in set(tags)}
 
-def all_pos_frequency(sent: Sent1dStr) -> dict[Tag, float]:
-    """文章中の各品詞の割合を計算する
-    Calculate the frequency of each part of speech in a sentence"""
-    pos_feature: PosFeature = PosFeature(sent).tag_subcategories()
-    tagged_tokens: list[TaggedTokens] = pos_feature.tagged_tokens
+    @staticmethod
+    def sentence_length(sent: Sent1dStr) -> int:
+        """文章中に出現する単語数を計算する"""
+        return len(sent)
 
-    # TODO 過去分詞形容詞を確認する為なので、後々削除する
-    if "JJ_pp" in set(pos for (_, pos) in tagged_tokens):
-        console.print(f"{pos_feature}\n")
+    @staticmethod
+    def count_individual_tokens(sent: Sent1dStr) -> int:
+        """文章中に出現する単語の種類数を計算する"""
+        return len(set(sent))
 
-    freq_dist = nltk.FreqDist(tagged_tokens)
+    @staticmethod
+    def count_character(sent: Sent1dStr, character: str) -> int:
+        """文章内で出現する指定した文字の合計を計算する"""
+        matched_chars: list[str] = [
+            char for token in sent for char in token if char == character
+        ]
+        return len(matched_chars)
 
-    total_tags: int = freq_dist.N()
-    return {tag[1]: count / total_tags for (tag, count) in freq_dist.items()}
+    @staticmethod
+    def count_non_alphabetic_characters(sent: Sent1dStr) -> int:
+        """文章内で出現するアルファベット以外の文字数を計算する"""
+        non_alpha_list = [
+            char for token in sent for char in token if not char.isalpha()
+        ]
+        return len(non_alpha_list)
 
+    @staticmethod
+    def count_numeric_characters(sent: Sent1dStr) -> int:
+        """文章内で出現する数字の文字数を計算する"""
+        numeric_list = [char for token in sent for char in token if char.isdecimal()]
+        return len(numeric_list)
 
-def sentence_length(sent: Sent1dStr) -> int:
-    """文章中に出現する単語数を計算する"""
-    return len(sent)
+    @staticmethod
+    def count_numeric_values(sent: Sent1dStr) -> int:
+        """文章内で出現する数値の出現数を計算する"""
+        matched_values = [
+            matched
+            for token in sent
+            for matched in re.findall(NUMERIC_VALUE_PATTERN, token)
+        ]
+        return len(matched_values)
 
-
-def count_individual_tokens(sent: Sent1dStr) -> int:
-    """文章中に出現する単語の種類数を計算する"""
-    return len(set(sent))
-
-
-def count_character(sent: Sent1dStr, character: str) -> int:
-    """文章内で出現する指定した文字の合計を計算する"""
-    return sent.count(character)
-
-
-def count_non_alphabetic_characters(sent: Sent1dStr) -> int:
-    """文章内で出現する記号の合計を計算する"""
-    pattern = r"[^a-zA-Z\s]"
-    matches: list[str] = re.findall(pattern=pattern, string=" ".join(sent))
-    return len(matches)
-
-
-def count_numeric_characters(sent: Sent1dStr) -> int:
-    """文章内で出現する数字の合計を計算する"""
-    pattern = r"[\d]"
-    matches: list[str] = re.findall(pattern=pattern, string=" ".join(sent))
-    return len(matches)
-
-
-def count_uncommon_words(sent: Sent1dStr) -> int:
-    """ストップワードではない単語の数を計算する"""
-    stop_words = set(nltk.corpus.stopwords.words("english"))
-    return len([word for word in sent if word not in stop_words])
+    @staticmethod
+    def count_uncommon_words(sent: Sent1dStr) -> int:
+        """ストップワードではない単語の数を計算する"""
+        stop_words = set(nltk.corpus.stopwords.words("english"))
+        return len([word for word in sent if word not in stop_words])
 
 
 class UnivKansasFeatures:
