@@ -142,6 +142,29 @@ class ParagraphCalculator:
     """
 
     @staticmethod
+    def word_variation(para: TwoDimStr) -> float:
+        """
+        段落中の単語の豊富さを計算する: (単語の種類の数)/(段落中の単語数)
+        Calculate the word variation in a paragraph:
+        (number of unique words)/(total number of words in the paragraph)
+        """
+        return SentenceCalculator.word_variation(dim_reshaper.reduce_dim(para))
+
+    @staticmethod
+    def average_token_length(para: TwoDimStr) -> float:
+        return SentenceCalculator.average_token_length(dim_reshaper.reduce_dim(para))
+
+    @staticmethod
+    def non_alphabetic_characters_frequency(para: TwoDimStr) -> float:
+        return SentenceCalculator.non_alphabetic_characters_frequency(
+            dim_reshaper.reduce_dim(para)
+        )
+
+    @staticmethod
+    def uncommon_word_frequency(para: TwoDimStr) -> float:
+        return SentenceCalculator.uncommon_word_frequency(dim_reshaper.reduce_dim(para))
+
+    @staticmethod
     def pos_frequencies(para: TwoDimStr) -> dict[Tag, float]:
         """
         段落中の各品詞の割合を計算する
