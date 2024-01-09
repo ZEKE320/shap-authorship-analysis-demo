@@ -168,7 +168,7 @@ explainer = shap.TreeExplainer(result.model)
 test_shap_val = explainer.shap_values(result.test_data)[1]
 
 DataFrame(test_shap_val).to_csv(
-    PathUtil.DATASET_DIR.joinpath("test_shap_val.csv"), index=False, header=False
+    PathUtil.DATASET_DIR.joinpath("gutenberg", "test_shap_val.csv"), index=False, header=False
 )
 
 
