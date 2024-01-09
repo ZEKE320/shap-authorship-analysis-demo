@@ -1,6 +1,5 @@
 # %%
 import re
-from os import makedirs
 from typing import Final, TypeAlias
 
 import matplotlib.pyplot as plt
@@ -18,8 +17,8 @@ from authorship_tool.util.feature.dataset_generator import (
     ParagraphFeatureDatasetGenerator,
 )
 from authorship_tool.util.feature.pos import PosFeature
-from authorship_tool.util.lgbm import trainer as lgbm_trainer
-from authorship_tool.util.lgbm.model import LGBMResultModel, LGBMSourceModel
+from authorship_tool.util.ml import trainer as lgbm_trainer
+from authorship_tool.util.ml.model import LGBMResult, LGBMSource
 from authorship_tool.util.path_util import PathUtil
 
 # 必要に応じてダウンロード
@@ -27,6 +26,10 @@ nltk.download("gutenberg")
 nltk.download("punkt")
 nltk.download("averaged_perceptron_tagger")
 nltk.download("stopwords")
+
+# %%
+pd.set_option("display.max_columns", None)
+pd.set_option("display.max_rows", None)
 
 # %%
 AUTHOR_A: Final[str] = "chesterton"
@@ -49,14 +52,14 @@ authors: set[Author] = {
 
 para_size_by_author: dict[Author, NumOfParas] = {}
 
-for index, author in enumerate(iterable=authors):
-    books: list[list[TwoDimStr]] = [
+for index, author in enumerate(authors):
+    books_of_author: list[list[TwoDimStr]] = [
         gutenberg.paras(fileids=file_id)
         for file_id in gutenberg.fileids()
         if author in file_id
     ]  # type: ignore
 
-    para_num: NumOfParas = len([para for paras in books for para in paras])
+    para_num: NumOfParas = len([para for paras in books_of_author for para in paras])
     para_size_by_author[author] = para_num
 
 sorted_para_size_by_author: dict[Author, NumOfParas] = dict(
@@ -100,7 +103,7 @@ for para in paras_b[:20]:
 print(f"...\n\nAuthor: {AUTHOR_B}, {len(paras_b)} paragraphs\n")
 
 # %%
-print(f"total: {len(paras_a + paras_b)} samples (paragraphs)")
+print(f"total: {len(paras_a + paras_b)} paragraphs (samples)")
 
 # %%
 if not (type_guard.are_paras(paras_a) and type_guard.are_paras(paras_b)):
@@ -131,9 +134,7 @@ for para_b in paras_b:
 df = DataFrame(data, columns=dataset_generator.columns)
 nd_correctness = np.array(correctness)
 
-pd.set_option("display.max_columns", 1000)
 display(df.head(10))
-pd.reset_option("display.max_columns")
 
 
 # %%
@@ -149,12 +150,21 @@ print(df.isna().sum())
 
 
 # %%
-result: LGBMResultModel = lgbm_trainer.learn(LGBMSourceModel(df, nd_correctness))
+result: LGBMResult = lgbm_trainer.train_once(LGBMSource(df, nd_correctness))
 
 
 # %%
-print(f"auc-roc score: {result.auc_roc_score}")
+score = result.score
 
+# %%
+print(f"auc-roc score: {score.auc_roc_score}")
+
+
+# %%
+print(f"f1 score: {score.f1_score}")
+
+# %%
+print(f"accuracy score: {score.accuracy_score}")
 
 # %%
 display(result.pred_crosstab())
@@ -165,31 +175,32 @@ result.dump("gutenberg")
 
 
 # %%
-explainer = shap.TreeExplainer(result.model)
-test_shap_val = explainer.shap_values(result.test_data)[1]
+test_data = result.splitted_dataset.test_data
+explainer = result.shap_data.explainer
+test_shap_val = result.shap_data.test_shap_val
+
 
 DataFrame(test_shap_val).to_csv(
     PathUtil.DATASET_DIR.joinpath("test_shap_val.csv"), index=False, header=False
 )
-
 
 # %%
 shap.initjs()
 
 
 # %%
-makedirs(PathUtil.SHAP_FIGURE_DIR.joinpath("gutenberg"), exist_ok=True)
+PathUtil.SHAP_FIGURE_DIR.joinpath("gutenberg").mkdir(exist_ok=True)
 
 # %%
 shap.force_plot(
     explainer.expected_value[1],  # type: ignore
     test_shap_val[0],
-    result.test_data.iloc[0],
+    test_data.iloc[0],
 )
 shap.force_plot(
     explainer.expected_value[1],  # type: ignore
     test_shap_val[0],
-    result.test_data.iloc[0],
+    test_data.iloc[0],
     matplotlib=True,
     show=False,
 )
@@ -200,12 +211,11 @@ plt.savefig(
 plt.show()
 plt.clf()
 
-
 # %%
 shap.decision_plot(
     explainer.expected_value[1],  # type: ignore
     test_shap_val[0],
-    result.test_data.iloc[0],
+    test_data.iloc[0],
     show=False,
 )
 plt.savefig(
@@ -215,11 +225,10 @@ plt.savefig(
 plt.show()
 plt.clf()
 
-
 # %%
 shap.summary_plot(
     test_shap_val,
-    result.test_data,
+    test_data,
     show=False,
 )
 plt.savefig(
@@ -233,7 +242,7 @@ plt.clf()
 # %%
 shap.summary_plot(
     test_shap_val,
-    result.test_data,
+    test_data,
     plot_type="bar",
     show=False,
 )

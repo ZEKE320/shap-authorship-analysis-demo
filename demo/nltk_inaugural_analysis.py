@@ -1,6 +1,5 @@
 # %%
-from os import makedirs
-from typing import Final, TypeAlias
+from typing import TypeAlias
 
 import nltk
 import numpy as np
@@ -9,16 +8,15 @@ import shap
 from IPython.display import display
 from matplotlib import pyplot as plt
 from nltk.corpus import inaugural
-from pandas import DataFrame
 
-from authorship_tool.types import TwoDimStr, Tag
+from authorship_tool.types import Tag, TwoDimStr
 from authorship_tool.util import dim_reshaper, type_guard
 from authorship_tool.util.feature.dataset_generator import (
     ParagraphFeatureDatasetGenerator,
 )
 from authorship_tool.util.feature.pos import PosFeature
-from authorship_tool.util.lgbm import trainer as lgbm_trainer
-from authorship_tool.util.lgbm.model import LGBMResultModel, LGBMSourceModel
+from authorship_tool.util.ml import trainer as lgbm_trainer
+from authorship_tool.util.ml.model import LGBMResult, LGBMSource
 from authorship_tool.util.path_util import PathUtil
 
 nltk.download("inaugural")
@@ -27,9 +25,12 @@ nltk.download("averaged_perceptron_tagger")
 nltk.download("stopwords")
 
 # %%
-PRESIDENT_A = "Bush"
-PRESIDENT_B = "Obama"
+pd.set_option("display.max_columns", None)
+pd.set_option("display.max_rows", None)
 
+# %%
+PRESIDENT_A = "Obama"
+PRESIDENT_B = "Bush"
 
 # %%
 for idx, file_id in enumerate(inaugural.fileids()):
@@ -44,7 +45,7 @@ presidents: set[President] = {file_id[5:-4] for file_id in inaugural.fileids()}
 
 president_data_dict: dict[President, NumOfParas] = {}
 
-for index, president in enumerate(iterable=presidents):
+for index, president in enumerate(presidents):
     speeches: list[list[TwoDimStr]] = [
         # inaugural.sents(file_id)
         inaugural.paras(fileids=file_id)
@@ -123,9 +124,7 @@ for para in paras_b:
 df = pd.DataFrame(data, columns=dataset_generator.columns)
 nd_correctness = np.array(correctness)
 
-pd.set_option("display.max_columns", 1000)
 display(df.head(10))
-pd.reset_option("display.max_columns")
 
 
 # %%
@@ -141,12 +140,21 @@ print(df.isna().sum())
 
 
 # %%
-result: LGBMResultModel = lgbm_trainer.learn(LGBMSourceModel(df, nd_correctness))
+result: LGBMResult = lgbm_trainer.train_once(LGBMSource(df, nd_correctness))
 
 
 # %%
-print(f"auc-roc score: {result.auc_roc_score}")
+score = result.score
 
+# %%
+print(f"auc-roc score: {score.auc_roc_score}")
+
+
+# %%
+print(f"f1 score: {score.f1_score}")
+
+# %%
+print(f"accuracy score: {score.accuracy_score}")
 
 # %%
 display(result.pred_crosstab())
@@ -157,14 +165,9 @@ result.dump("inaugural")
 
 
 # %%
-explainer = shap.TreeExplainer(result.model)
-test_shap_val = explainer.shap_values(result.test_data)[1]
-
-DataFrame(test_shap_val).to_csv(
-    PathUtil.DATASET_DIR.joinpath("inaugural", "test_shap_val.csv"),
-    index=False,
-    header=False,
-)
+test_data = result.splitted_dataset.test_data
+explainer = result.shap_data.explainer
+test_shap_val = result.shap_data.test_shap_val
 
 
 # %%
@@ -172,18 +175,18 @@ shap.initjs()
 
 
 # %%
-makedirs(PathUtil.SHAP_FIGURE_DIR.joinpath("inaugural"), exist_ok=True)
+PathUtil.SHAP_FIGURE_DIR.joinpath("inaugural").mkdir(exist_ok=True)
 
 # %%
 shap.force_plot(
     explainer.expected_value[1],  # type: ignore
     test_shap_val[0],
-    result.test_data.iloc[0],
+    test_data.iloc[0],
 )
 shap.force_plot(
     explainer.expected_value[1],  # type: ignore
     test_shap_val[0],
-    result.test_data.iloc[0],
+    test_data.iloc[0],
     matplotlib=True,
     show=False,
 )
@@ -194,12 +197,11 @@ plt.savefig(
 plt.show()
 plt.clf()
 
-
 # %%
 shap.decision_plot(
     explainer.expected_value[1],  # type: ignore
     test_shap_val[0],
-    result.test_data.iloc[0],
+    test_data.iloc[0],
     show=False,
 )
 plt.savefig(
@@ -213,7 +215,7 @@ plt.clf()
 # %%
 shap.summary_plot(
     test_shap_val,
-    result.test_data,
+    test_data,
     show=False,
 )
 plt.savefig(
@@ -223,11 +225,10 @@ plt.savefig(
 plt.show()
 plt.clf()
 
-
 # %%
 shap.summary_plot(
     test_shap_val,
-    result.test_data,
+    test_data,
     plot_type="bar",
     show=False,
 )
