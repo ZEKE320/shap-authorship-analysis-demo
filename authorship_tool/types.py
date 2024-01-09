@@ -7,9 +7,9 @@ Tag: TypeAlias = str
 """タグ"""
 TokenStr: TypeAlias = str
 """単語"""
-Sent1dStr: TypeAlias = list[TokenStr]
+OneDimStr: TypeAlias = list[TokenStr]
 """文"""
-Para2dStr: TypeAlias = list[Sent1dStr]
+TwoDimStr: TypeAlias = list[OneDimStr]
 """段落"""
 TaggedToken: TypeAlias = tuple[TokenStr, Tag]
 """タグ付けされた単語"""

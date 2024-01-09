@@ -4,7 +4,7 @@ Feature dataset generator module
 """
 from typing import Callable, Final, Optional
 
-from authorship_tool.types import Para2dStr, Sent1dStr, Tag
+from authorship_tool.types import TwoDimStr, OneDimStr, Tag
 from authorship_tool.util import dim_reshaper, type_guard
 from authorship_tool.util.feature.calculator import (
     ParagraphCalculator,
@@ -16,11 +16,11 @@ from authorship_tool.util.feature.calculator import (
 class SentenceFeatureDatasetGenerator:
     """文の特徴量のデータセットを生成するクラス"""
 
-    __COLS_AND_FUNC: Final[dict[str, Callable[[Sent1dStr], float | int]]] = {
+    __COLS_AND_FUNC: Final[dict[str, Callable[[OneDimStr], float | int]]] = {
         "word variation": SentenceCalculator.word_variation,
         "uncommon word frequency": SentenceCalculator.uncommon_word_frequency,
         "sentence length": SentenceCalculator.sentence_length,
-        "average word length": SentenceCalculator.average_word_length,
+        "average word length": SentenceCalculator.average_token_length,
     }
 
     def __init__(self, tags: Optional[list[Tag]] = None) -> None:
@@ -42,7 +42,7 @@ class SentenceFeatureDatasetGenerator:
         return self.__columns
 
     def generate_from_sentence(
-        self, sent: Sent1dStr, correctness: bool
+        self, sent: OneDimStr, correctness: bool
     ) -> tuple[tuple[float, ...], bool]:
         """文字列のリストから特徴量のリストを生成する"""
         freq_by_pos: dict[str, float] = SentenceCalculator.pos_frequencies(sent)
@@ -57,11 +57,11 @@ class SentenceFeatureDatasetGenerator:
 
     def generate_from_paragraph(
         self,
-        para: Para2dStr,
+        para: TwoDimStr,
         correctness: bool,
     ) -> tuple[tuple[float, ...], bool]:
         """文字列のリストのリストから特徴量のリストを生成する"""
-        sent: Sent1dStr = dim_reshaper.para_to_sent(para)
+        sent: OneDimStr = dim_reshaper.reduce_dim(para)
         return self.generate_from_sentence(sent, correctness)
 
 
@@ -71,7 +71,7 @@ class ParagraphFeatureDatasetGenerator:
     Paragraph feature dataset generator class
     """
 
-    __COLS_AND_FUNC: Final[dict[str, Callable[[Para2dStr], float | int]]] = {
+    __COLS_AND_FUNC: Final[dict[str, Callable[[TwoDimStr], float | int]]] = {
         "v1 sentences per paragraph": UnivKansasFeatures.v1_sentences_per_paragraph,
         "v2 words per paragraph": UnivKansasFeatures.v2_words_per_paragraph,
         "v3 close parenthesis present": UnivKansasFeatures.v3_close_parenthesis_present,
@@ -113,7 +113,7 @@ class ParagraphFeatureDatasetGenerator:
 
     def generate_from_paragraph(
         self,
-        para: Para2dStr,
+        para: TwoDimStr,
         correctness: bool,
     ) -> tuple[tuple[float, ...], bool]:
         """文字列のリストのリストから特徴量のリストを生成する"""

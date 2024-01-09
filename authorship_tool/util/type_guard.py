@@ -1,10 +1,10 @@
 """タイプガード用のユーティリティモジュール"""
 from typing import TypeGuard
 
-from authorship_tool.types import Para2dStr, Sent1dStr, Tag, TaggedToken, TokenStr
+from authorship_tool.types import TwoDimStr, OneDimStr, Tag, TaggedToken, TokenStr
 
 
-def is_sent(values: list, /) -> TypeGuard[Sent1dStr]:
+def is_sent(values: list, /) -> TypeGuard[OneDimStr]:
     """strのリストであることを確認する
 
     Args:
@@ -20,7 +20,7 @@ def is_sent(values: list, /) -> TypeGuard[Sent1dStr]:
     )
 
 
-def is_para(values: list, /) -> TypeGuard[Para2dStr]:
+def is_para(values: list, /) -> TypeGuard[TwoDimStr]:
     """strのリストのリストであることを確認する
 
     Args:
@@ -36,7 +36,7 @@ def is_para(values: list, /) -> TypeGuard[Para2dStr]:
     )
 
 
-def are_paras(values: list, /) -> TypeGuard[list[Para2dStr]]:
+def are_paras(values: list, /) -> TypeGuard[list[TwoDimStr]]:
     """strのリストのリストのリストであることを確認する
 
     Args:
