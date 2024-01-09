@@ -1,21 +1,24 @@
-"""特徴計算モジュール
-Feature calculation module"""
+"""
+特徴計算モジュール
+Feature calculation module
+"""
 
 import re
 from typing import Any
 
 import nltk
 import numpy as np
-from nltk import SnowballStemmer
+from nltk import SnowballStemmer, WordNetLemmatizer
 from rich.console import Console
-from nltk import WordNetLemmatizer
 
-from authorship_tool.types import Para2dStr, Sent1dStr, Tag, TaggedTokens, TokenStr
+from authorship_tool.types import Para2dStr, Sent1dStr, Tag, TaggedToken, TokenStr
 from authorship_tool.util import dim_reshaper
 from authorship_tool.util.feature.pos import PosFeature
+from authorship_tool.util.feature.regex import NUMERIC_VALUE_PATTERN
 
 console = Console(highlight=False)
-stemmer: SnowballStemmer = nltk.SnowballStemmer("english")
+
+stemmer: SnowballStemmer = SnowballStemmer("english")
 lemmatizer: WordNetLemmatizer = WordNetLemmatizer()
 
 
