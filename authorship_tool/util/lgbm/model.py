@@ -16,7 +16,6 @@ from authorship_tool.util.path_util import PathUtil
 class LGBMSourceModel:
     """LGBMのモデル作成用データクラス"""
 
-    desired_score: float
     df: DataFrame
     nd_correctness: ndarray
 

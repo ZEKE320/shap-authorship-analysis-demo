@@ -7,26 +7,26 @@ from lightgbm import LGBMClassifier
 from authorship_tool.util.lgbm.model import LGBMResultModel, LGBMSourceModel
 
 
-def learn_until_succeed(training_dto: LGBMSourceModel) -> LGBMResultModel:
-    """指定したROC AUCスコアを超えるまで、著者推定モデルを学習します。
+# def learn_until_succeed(training_source: LGBMSourceModel) -> LGBMResultModel:
+#     """指定したROC AUCスコアを超えるまで、著者推定モデルを学習します。
 
-    Args:
-        df (pd.DataFrame): _description_
-        nd_correctness (np.ndarray): _description_
-        desired_score (float): _description_
+#     Args:
+#         df (pd.DataFrame): _description_
+#         nd_correctness (np.ndarray): _description_
+#         desired_score (float): _description_
 
-    Returns:
-        tuple:
-        学習済みモデル、学習用データ、テスト用データ、学習用正解ラベル、テスト用正解ラベル、
-        テスト用予測確率、テスト用予測ラベル、ROC AUCスコア
-    """
+#     Returns:
+#         tuple:
+#         学習済みモデル、学習用データ、テスト用データ、学習用正解ラベル、テスト用正解ラベル、
+#         テスト用予測確率、テスト用予測ラベル、ROC AUCスコア
+#     """
 
-    while True:
-        training_result: LGBMResultModel = learn(training_dto)
-        if training_result.auc_roc_score >= training_dto.desired_score:
-            break
+#     while True:
+#         training_result: LGBMResultModel = learn(training_source)
+#         if training_result.auc_roc_score >= training_source.desired_score:
+#             break
 
-    return training_result
+#     return training_result
 
 
 def learn(training_dto: LGBMSourceModel) -> LGBMResultModel:
