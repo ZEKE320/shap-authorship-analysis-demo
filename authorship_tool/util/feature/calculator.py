@@ -162,7 +162,10 @@ class ParagraphCalculator:
 
 
 class UnivKansasFeatures:
-    """カンザス大学の先行研究に基づいた特徴量計算クラス"""
+    """
+    カンザス大学の先行研究に基づく特徴量計算クラス
+    University of Kansas's previous research based feature calculation class
+    """
 
     @staticmethod
     def v1_sentences_per_paragraph(para: Para2dStr) -> int:
@@ -173,7 +176,7 @@ class UnivKansasFeatures:
     def v2_words_per_paragraph(para: Para2dStr) -> int:
         """段落内で出現する単語の合計を計算する"""
         sent: Sent1dStr = dim_reshaper.para_to_1d(para)
-        return sentence_length(sent)
+        return SentenceCalculator.sentence_length(sent)
 
     @staticmethod
     def _char_present(para: Para2dStr, char: str) -> bool:
