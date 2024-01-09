@@ -55,8 +55,11 @@ def calc_score(prediction: Prediction, test_ans: ndarray) -> Score:
 def create_shap_data(model: LGBMClassifier, test_data: DataFrame) -> ShapResult:
     tree_explainer = shap.TreeExplainer(model)
     test_shap_val = tree_explainer.shap_values(test_data)[SHAP_VALUE_POSITIVE_IDX]
+    test_shap_expected_val = list(tree_explainer.expected_value)[
+        SHAP_VALUE_POSITIVE_IDX
+    ]
 
-    return ShapResult(tree_explainer, test_shap_val)
+    return ShapResult(tree_explainer, test_shap_val, test_shap_expected_val)
 
 
 def train_once(training_source: LGBMSource) -> LGBMResult:

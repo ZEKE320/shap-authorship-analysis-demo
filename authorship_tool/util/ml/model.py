@@ -45,7 +45,8 @@ class Score:
 @dataclass(frozen=True)
 class ShapResult:
     explainer: Explainer
-    test_shap_val: ndarray
+    shap_positive_vals: ndarray
+    shap_positive_expected_val: float
 
 
 @dataclass(frozen=True)
@@ -105,7 +106,7 @@ class LGBMResult:
             header=False,
         )
 
-        DataFrame(self.shap_data.test_shap_val).to_csv(
+        DataFrame(self.shap_data.shap_positive_vals).to_csv(
             DATASET_DIR.joinpath("test_shap_val.csv"),
             index=False,
             header=False,
