@@ -1,5 +1,6 @@
 """lightgbmトレーナー"""
 
+from typing import Final
 from numpy import ndarray
 from pandas import DataFrame
 import shap
@@ -15,6 +16,8 @@ from authorship_tool.util.ml.model import (
     Score,
     ShapResult,
 )
+
+SHAP_VALUE_POSITIVE_IDX: Final[int] = 1
 
 
 def train(dataset: SplittedDataset) -> LGBMResult:
@@ -51,7 +54,7 @@ def calc_score(prediction: Prediction, test_ans: ndarray) -> Score:
 
 def create_shap_data(model: LGBMClassifier, test_data: DataFrame) -> ShapResult:
     tree_explainer = shap.TreeExplainer(model)
-    test_shap_val = tree_explainer.shap_values(test_data)[1]
+    test_shap_val = tree_explainer.shap_values(test_data)[SHAP_VALUE_POSITIVE_IDX]
 
     return ShapResult(tree_explainer, test_shap_val)
 
@@ -92,10 +95,12 @@ def train_by_idx(source: LGBMSource, train_index, test_index) -> LGBMResult:
     return train(splitted_dataset)
 
 
-def loocv_train(source: LGBMSource):
+def loocv_train(source: LGBMSource) -> list[LGBMResult]:
     loo = LeaveOneOut()
 
     results: list[LGBMResult] = [
         train_by_idx(source, train_index, test_index)
         for train_index, test_index in loo.split(source.feature_data_frame)
     ]
+
+    return results
