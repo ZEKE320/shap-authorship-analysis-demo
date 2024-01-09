@@ -13,7 +13,7 @@ from pandas import DataFrame
 
 from authorship_tool.types import Para2dStr, Tag
 from authorship_tool.util import dim_reshaper, type_guard
-from authorship_tool.util.feature.generator import FeatureDatasetGenerator
+from authorship_tool.util.feature.ds_generator import SentenceFeatureDatasetGenerator
 from authorship_tool.util.feature.pos import PosFeature
 from authorship_tool.util.lgbm import trainer as lgbm_trainer
 from authorship_tool.util.lgbm.model import LGBMResultModel, LGBMSourceModel
@@ -105,7 +105,7 @@ print(pos_list)
 
 
 # %%
-dataset_generator = FeatureDatasetGenerator(pos_list)
+dataset_generator = SentenceFeatureDatasetGenerator(pos_list)
 data: list[tuple[float, ...]] = []
 correctness: list[bool] = []
 

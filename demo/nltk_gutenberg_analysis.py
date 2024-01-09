@@ -14,7 +14,7 @@ from pandas import DataFrame
 
 from authorship_tool.types import Para2dStr, Tag
 from authorship_tool.util import dim_reshaper, type_guard
-from authorship_tool.util.feature.generator import FeatureDatasetGenerator
+from authorship_tool.util.feature.ds_generator import ParagraphFeatureDatasetGenerator
 from authorship_tool.util.feature.pos import PosFeature
 from authorship_tool.util.lgbm import trainer as lgbm_trainer
 from authorship_tool.util.lgbm.model import LGBMResultModel, LGBMSourceModel
@@ -29,7 +29,7 @@ nltk.download("stopwords")
 # %%
 AUTHOR_A: Final[str] = "chesterton"
 AUTHOR_B: Final[str] = "austen"
-DESIRED_ROC_SCORE: Final[float] = 0.88
+DESIRED_ROC_SCORE: Final[float] = 0.9
 
 
 # %%
@@ -83,9 +83,7 @@ for para in paras_a[:10]:
 
 print(f"...\n\nAuthor: {AUTHOR_A}, {len(paras_a)} paragraphs\n")
 
-
 # %%
-
 books_b: list[list[Para2dStr]] = [
     gutenberg.paras(fileids=file_id)
     for file_id in gutenberg.fileids()
@@ -101,7 +99,6 @@ for para in paras_b[:10]:
 
 print(f"...\n\nAuthor: {AUTHOR_B}, {len(paras_b)} paragraphs\n")
 
-
 # %%
 if not (type_guard.are_paras(paras_a) and type_guard.are_paras(paras_b)):
     raise TypeError("paras_a or paras_b is not list[Para]")
@@ -111,9 +108,8 @@ pos_list: list[Tag] = PosFeature(all_paras).tag_subcategories().pos_list
 
 print(pos_list)
 
-
 # %%
-dataset_generator = FeatureDatasetGenerator(tags=pos_list)
+dataset_generator = ParagraphFeatureDatasetGenerator(tags=pos_list)
 data: list[tuple[float, ...]] = []
 correctness: list[bool] = []
 
