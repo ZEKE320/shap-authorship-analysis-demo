@@ -30,7 +30,6 @@ class PosFeature:
             tagged_tokens = [
                 word_and_pos
                 for words_and_pos in nltk.pos_tag_sents(word_list)
-                if type_guard.are_tagged_tokens(words_and_pos)
                 for word_and_pos in words_and_pos
             ]
 
@@ -40,7 +39,6 @@ class PosFeature:
             tagged_tokens = [
                 word_and_pos
                 for words_and_pos in nltk.pos_tag_sents(sents)
-                if type_guard.are_tagged_tokens(words_and_pos)
                 for word_and_pos in words_and_pos
             ]
 
