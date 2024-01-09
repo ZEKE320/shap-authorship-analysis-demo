@@ -92,6 +92,10 @@ class ParagraphFeatureDatasetGenerator:
         "v18 contains numbers": UnivKansasFeatures.v18_contains_numbers,
         "v19 contains 2 times more capitals than period": UnivKansasFeatures.v19_contains_2_times_more_capitals_than_period,
         "v20 contains et": UnivKansasFeatures.v20_contains_et,
+        "word variation": ParagraphCalculator.word_variation,
+        "average token length": ParagraphCalculator.average_token_length,
+        "non alphabetic characters frequency": ParagraphCalculator.non_alphabetic_characters_frequency,
+        "uncommon word frequency": ParagraphCalculator.uncommon_word_frequency,
     }
 
     def __init__(self, tags: Optional[list[Tag]] = None) -> None:
