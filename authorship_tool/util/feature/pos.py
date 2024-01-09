@@ -8,9 +8,9 @@ from typing import Final
 
 import nltk
 
-from authorship_tool.types import OneDimStr, Tag, TaggedToken, TokenStr
-from authorship_tool.util.path_util import PathUtil
+from authorship_tool.types import Sent1dStr, Tag, TaggedToken, TokenStr
 from authorship_tool.util import type_guard
+from authorship_tool.util.path_util import PathUtil
 
 
 class PosFeature:
@@ -34,7 +34,7 @@ class PosFeature:
             ]
 
         elif type_guard.are_paras(word_list):
-            sents: list[OneDimStr] = [sent for para in word_list for sent in para]
+            sents: list[Sent1dStr] = [sent for para in word_list for sent in para]
 
             tagged_tokens = [
                 word_and_pos

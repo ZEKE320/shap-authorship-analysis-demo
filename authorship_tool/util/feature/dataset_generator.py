@@ -6,7 +6,7 @@ from typing import Callable, Final, Optional
 
 import numpy as np
 
-from authorship_tool.types import OneDimStr, Tag, TwoDimStr
+from authorship_tool.types import Para2dStr, Sent1dStr, Tag
 from authorship_tool.util import dim_reshaper, type_guard
 from authorship_tool.util.feature.calculator import (
     ParagraphCalculator,
@@ -18,7 +18,7 @@ from authorship_tool.util.feature.calculator import (
 class SentenceFeatureDatasetGenerator:
     """文の特徴量のデータセットを生成するクラス"""
 
-    __COLS_AND_FUNC: Final[dict[str, Callable[[OneDimStr], float | int]]] = {
+    __COLS_AND_FUNC: Final[dict[str, Callable[[Sent1dStr], float | int]]] = {
         "word variation": SentenceCalculator.word_variation,
         "uncommon word frequency": SentenceCalculator.uncommon_word_frequency,
         "sentence length": SentenceCalculator.sentence_length,
@@ -44,7 +44,7 @@ class SentenceFeatureDatasetGenerator:
         return self.__columns
 
     def generate_from_sentence(
-        self, sent: OneDimStr, correctness: bool
+        self, sent: Sent1dStr, correctness: bool
     ) -> tuple[np.ndarray, bool]:
         """文字列のリストから特徴量のリストを生成する"""
         freq_by_pos: dict[str, float] = SentenceCalculator.pos_frequencies(sent)
@@ -59,11 +59,11 @@ class SentenceFeatureDatasetGenerator:
 
     def generate_from_paragraph(
         self,
-        para: TwoDimStr,
+        para: Para2dStr,
         correctness: bool,
     ) -> tuple[np.ndarray, bool]:
         """文字列のリストのリストから特徴量のリストを生成する"""
-        sent: OneDimStr = dim_reshaper.reduce_dim(para)
+        sent: Sent1dStr = dim_reshaper.reduce_dim(para)
         return self.generate_from_sentence(sent, correctness)
 
 
@@ -73,7 +73,7 @@ class ParagraphFeatureDatasetGenerator:
     Paragraph feature dataset generator class
     """
 
-    __COLS_AND_FUNC: Final[dict[str, Callable[[TwoDimStr], float | int]]] = {
+    __COLS_AND_FUNC: Final[dict[str, Callable[[Para2dStr], float | int]]] = {
         "v1 sentences per paragraph": UnivKansasFeatures.v1_sentences_per_paragraph,
         "v2 words per paragraph": UnivKansasFeatures.v2_words_per_paragraph,
         "v3 close parenthesis present": UnivKansasFeatures.v3_close_parenthesis_present,
@@ -119,7 +119,7 @@ class ParagraphFeatureDatasetGenerator:
 
     def generate_from_paragraph(
         self,
-        para: TwoDimStr,
+        para: Para2dStr,
         category: bool,
     ) -> tuple[np.ndarray, bool]:
         """文字列のリストのリストから特徴量のリストを生成する"""
