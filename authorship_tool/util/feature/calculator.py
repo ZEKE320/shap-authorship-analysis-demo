@@ -135,6 +135,32 @@ class SentenceCalculator:
         return len([word for word in sent if word not in stop_words])
 
 
+class ParagraphCalculator:
+    """
+    段落特徴量計算クラス
+    Paragraph feature calculation class
+    """
+
+    @staticmethod
+    def pos_frequencies(para: Para2dStr) -> dict[Tag, float]:
+        """
+        段落中の各品詞の割合を計算する
+        Calculate the frequency of each part of speech in a paragraph
+
+        Args:
+            para (Para2dStr): 段落 (Paragraph)
+
+        Returns:
+            dict[Tag, float]: 品詞とその割合 (POS and its frequency)
+        """
+        pos_feature: PosFeature = PosFeature(para).tag_subcategories()
+        tagged_tokens: list[TaggedToken] = pos_feature.tagged_tokens
+        tags: list[Tag] = [tag for (_, tag) in tagged_tokens]
+        tag_size: int = len(tags)
+
+        return {tag: tags.count(tag) / tag_size for tag in set(tags)}
+
+
 class UnivKansasFeatures:
     """カンザス大学の先行研究に基づいた特徴量計算クラス"""
 
