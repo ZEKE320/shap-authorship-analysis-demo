@@ -45,7 +45,7 @@ class SentenceCalculator:
         文章中の単語の平均文字列長を計算する
         Calculate the average word length in a sentence
         """
-        return sum(len(word) for word in sent) / SentenceCalculator.sentence_length(
+        return sum(len(token) for token in sent) / SentenceCalculator.sentence_length(
             sent
         )
 
