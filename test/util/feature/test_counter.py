@@ -1,4 +1,4 @@
-from authorship_tool.types import TwoDimStr
+from authorship_tool.types import Para2dStr
 from authorship_tool.util.feature.calculator import UnivKansasFeatures
 from authorship_tool.util.tokenizer import tokenize_to_para
 
@@ -11,9 +11,9 @@ text_2: str = "Oh no! Someone has stolen my pen... (I can't believe this is happ
 text_3: str = (
     "I'm glad to hear that you found it! This pen is well-designed. I really like it."
 )
-para_1: TwoDimStr = tokenize_to_para(text_1)
-para_2: TwoDimStr = tokenize_to_para(text_2)
-para_3: TwoDimStr = tokenize_to_para(text_3)
+para_1: Para2dStr = tokenize_to_para(text_1)
+para_2: Para2dStr = tokenize_to_para(text_2)
+para_3: Para2dStr = tokenize_to_para(text_3)
 
 
 class TestUnivKansasFeatures:
@@ -55,14 +55,14 @@ class TestUnivKansasFeatures:
 
     @staticmethod
     def test_v17_contains_others_or_researchers():
-        para_v17_1: TwoDimStr = tokenize_to_para(
+        para_v17_1: Para2dStr = tokenize_to_para(
             "The researchers conducted the experiment."
         )
-        para_v17_2: TwoDimStr = tokenize_to_para(
+        para_v17_2: Para2dStr = tokenize_to_para(
             "The other person did not agree with the result."
         )
-        para_v17_3: TwoDimStr = tokenize_to_para("He conducted a research.")
-        para_v17_4: TwoDimStr = tokenize_to_para("SHe discriminated against others.")
+        para_v17_3: Para2dStr = tokenize_to_para("He conducted a research.")
+        para_v17_4: Para2dStr = tokenize_to_para("SHe discriminated against others.")
         assert UnivKansasFeatures.v17_contains_others_or_researchers(para_v17_1)
         assert not UnivKansasFeatures.v17_contains_others_or_researchers(para_v17_2)
         assert not UnivKansasFeatures.v17_contains_others_or_researchers(para_v17_3)
@@ -84,7 +84,7 @@ class TestUnivKansasFeatures:
         assert not UnivKansasFeatures.v20_contains_et(para_2)
         assert not UnivKansasFeatures.v20_contains_et(para_3)
 
-        para_v20: TwoDimStr = tokenize_to_para(
+        para_v20: Para2dStr = tokenize_to_para(
             "Jack Smith, et al. conducted the experiment."
         )
         assert UnivKansasFeatures.v20_contains_et(para_v20)
