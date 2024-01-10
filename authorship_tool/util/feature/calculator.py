@@ -4,7 +4,6 @@ Feature calculation module
 """
 
 import re
-from typing import Any
 
 import nltk
 import numpy as np
@@ -30,48 +29,66 @@ class SentenceCalculator:
     """
 
     @staticmethod
-    def word_variation(sent: Sent1dStr) -> float:
+    def word_variation(sent: Sent1dStr) -> np.float64:
         """
         文章中の単語の豊富さを計算する: (単語の種類の数)/(文章中の単語数)
         Calculate the word variation in a sentence:
         (number of unique words)/(total number of words in the sentence)
         """
-        return SentenceCalculator.count_individual_tokens(
-            sent
-        ) / SentenceCalculator.sentence_length(sent)
+        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+            return np.float64(0)
+
+        return np.divide(
+            SentenceCalculator.count_individual_tokens(sent),
+            sent_length,
+            dtype=np.float64,
+        )
 
     @staticmethod
-    def average_token_length(sent: Sent1dStr) -> float:
+    def average_token_length(sent: Sent1dStr) -> np.float64:
         """
         文章中の単語の平均文字列長を計算する
         Calculate the average word length in a sentence
         """
-        return sum(len(token) for token in sent) / SentenceCalculator.sentence_length(
-            sent
+        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+            return np.float64(0)
+
+        return np.divide(
+            np.sum([len(token) for token in sent]),
+            sent_length,
+            dtype=np.float64,
         )
 
     @staticmethod
-    def non_alphabetic_characters_frequency(sent: Sent1dStr) -> float:
+    def non_alphabetic_characters_frequency(sent: Sent1dStr) -> np.float64:
         """
         文章内で出現する記号の割合を計算する
         Calculate the frequency of non-alphabetic characters in a sentence
         """
-        return SentenceCalculator.count_non_alphabetic_characters(
-            sent
-        ) / SentenceCalculator.sentence_length(sent)
+        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+            return np.float64(0)
+
+        return np.divide(
+            SentenceCalculator.count_non_alphabetic_characters(sent),
+            sent_length,
+            dtype=np.float64,
+        )
 
     @staticmethod
-    def uncommon_word_frequency(sent: Sent1dStr) -> float:
+    def uncommon_word_frequency(sent: Sent1dStr) -> np.float64:
         """
         特徴的な単語の割合を計算する
         Calculate the frequency of uncommon words in a sentence
         """
-        return SentenceCalculator.count_uncommon_words(
-            sent
-        ) / SentenceCalculator.sentence_length(sent)
+        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+            return np.float64(0)
+
+        return np.divide(
+            SentenceCalculator.count_uncommon_words(sent), sent_length, dtype=np.float64
+        )
 
     @staticmethod
-    def pos_frequencies(sent: Sent1dStr) -> dict[Tag, float]:
+    def pos_frequencies(sent: Sent1dStr) -> dict[Tag, np.float64]:
         """
         文章中の各品詞の割合を計算する
         Calculate the frequency of each part of speech in a sentence
@@ -82,10 +99,16 @@ class SentenceCalculator:
         # 過去分詞形容詞を確認するコード
         # if "JJ_pp" in set(pos for (_, pos) in tagged_tokens):
         #     console.print(f"{pos_feature}\n")
+
         tags: list[Tag] = [tag for (_, tag) in tagged_tokens]
         tag_size: int = len(tags)
 
-        return {tag: tags.count(tag) / tag_size for tag in set(tags)}
+        return {
+            tag: np.divide(tags.count(tag), tag_size, dtype=np.float64)
+            if tag_size != 0
+            else np.float64(0)
+            for tag in set(tags)
+        }
 
     @staticmethod
     def sentence_length(sent: Sent1dStr) -> int:
@@ -100,10 +123,10 @@ class SentenceCalculator:
     @staticmethod
     def count_character(sent: Sent1dStr, character: str) -> int:
         """文章内で出現する指定した文字の合計を計算する"""
-        matched_chars: list[str] = [
-            char for token in sent for char in token if char == character
-        ]
-        return len(matched_chars)
+        if len(character) != 1:
+            raise ValueError("character must be a single character")
+
+        return np.sum([token.count(character) for token in sent])
 
     @staticmethod
     def count_non_alphabetic_characters(sent: Sent1dStr) -> int:
@@ -142,7 +165,7 @@ class ParagraphCalculator:
     """
 
     @staticmethod
-    def word_variation(para: Para2dStr) -> float:
+    def word_variation(para: Para2dStr) -> np.float64:
         """
         段落中の単語の豊富さを計算する: (単語の種類の数)/(段落中の単語数)
         Calculate the word variation in a paragraph:
@@ -151,21 +174,21 @@ class ParagraphCalculator:
         return SentenceCalculator.word_variation(dim_reshaper.reduce_dim(para))
 
     @staticmethod
-    def average_token_length(para: Para2dStr) -> float:
+    def average_token_length(para: Para2dStr) -> np.float64:
         return SentenceCalculator.average_token_length(dim_reshaper.reduce_dim(para))
 
     @staticmethod
-    def non_alphabetic_characters_frequency(para: Para2dStr) -> float:
+    def non_alphabetic_characters_frequency(para: Para2dStr) -> np.float64:
         return SentenceCalculator.non_alphabetic_characters_frequency(
             dim_reshaper.reduce_dim(para)
         )
 
     @staticmethod
-    def uncommon_word_frequency(para: Para2dStr) -> float:
+    def uncommon_word_frequency(para: Para2dStr) -> np.float64:
         return SentenceCalculator.uncommon_word_frequency(dim_reshaper.reduce_dim(para))
 
     @staticmethod
-    def pos_frequencies(para: Para2dStr) -> dict[Tag, float]:
+    def pos_frequencies(para: Para2dStr) -> dict[Tag, np.float64]:
         """
         段落中の各品詞の割合を計算する
         Calculate the frequency of each part of speech in a paragraph
@@ -181,7 +204,12 @@ class ParagraphCalculator:
         tags: list[Tag] = [tag for (_, tag) in tagged_tokens]
         tag_size: int = len(tags)
 
-        return {tag: tags.count(tag) / tag_size for tag in set(tags)}
+        return {
+            tag: np.divide(tags.count(tag), tag_size, dtype=np.float64)
+            if tag_size != 0
+            else np.float64(0)
+            for tag in set(tags)
+        }
 
 
 class UnivKansasFeatures:
@@ -204,6 +232,10 @@ class UnivKansasFeatures:
     @staticmethod
     def _char_present(para: Para2dStr, char: str) -> bool:
         """段落内に指定した文字が存在するかどうかを判定する"""
+
+        if len(char) != 1:
+            raise ValueError("char must be a single character")
+
         return any(char in word for sent in para for word in sent)
 
     @staticmethod
@@ -244,14 +276,14 @@ class UnivKansasFeatures:
         return UnivKansasFeatures._char_present(para, "'")
 
     @staticmethod
-    def v8_standard_deviation_of_sentence_length(para: Para2dStr) -> float:
+    def v8_standard_deviation_of_sentence_length(para: Para2dStr) -> np.float64:
         """段落内の文長の標準偏差を計算する"""
         sent_lengths: list[int] = [len(sentence) for sentence in para]
-        standard_deviation: np.floating[Any] = np.std(sent_lengths)
-        return float(standard_deviation)
+        standard_deviation: np.float64 = np.std(sent_lengths, dtype=np.float64)
+        return standard_deviation
 
     @staticmethod
-    def v9_length_difference_for_consecutive_sentences(para: Para2dStr) -> float:
+    def v9_length_difference_for_consecutive_sentences(para: Para2dStr) -> np.float64:
         """段落内の文の前後で、文長の差の平均を計算する"""
         sent_lengths: list[int] = [len(sentence) for sentence in para]
         diffs: list[int] = [
@@ -259,10 +291,10 @@ class UnivKansasFeatures:
             for i in range(len(sent_lengths) - 1)
         ]
 
-        if len(diffs) == 0:
-            return 0.0
+        if (dif_count := len(diffs)) == 0:
+            return np.float64(0)
 
-        return sum(diffs) / len(diffs)
+        return np.divide(sum(diffs), dif_count, dtype=np.float64)
 
     @staticmethod
     def v10_sentence_with_lt_11_words(para: Para2dStr) -> bool:
@@ -276,7 +308,7 @@ class UnivKansasFeatures:
 
     @staticmethod
     def _contains_word(para: Para2dStr, word: str) -> bool:
-        """段落内にalthoughが存在するかどうかを判定する"""
+        """段落内に指定した単語が存在するかどうかを判定する"""
         lower_word: str = word.lower()
         return any(
             lower_word == token.lower() for sentence in para for token in sentence
@@ -309,19 +341,27 @@ class UnivKansasFeatures:
 
     @staticmethod
     def _contains_specific_word(para: Para2dStr, word: str) -> bool:
-        """段落内に指定した単語が存在するかどうかを判定する"""
-        stem: str = stemmer.stem(word)
-        matched_tokens: set[TokenStr] = {
-            token
-            for sentence in para
-            for token in sentence
-            if stem == stemmer.stem(token)
-        }
+        """段落内に指定した単語が派生形を含めて存在するかどうかを判定する"""
+
+        matched_tokens: set[TokenStr] = UnivKansasFeatures._obtain_words_matching_stem(
+            para, word
+        )
 
         if len(matched_tokens) == 0:
             return False
 
         return UnivKansasFeatures._check_word_lemma(matched_tokens, word)
+
+    @staticmethod
+    def _obtain_words_matching_stem(para: Para2dStr, word: str) -> set[TokenStr]:
+        """段落内に指定した語幹を持つ単語を取得する"""
+        stem: str = stemmer.stem(word)
+        return {
+            token
+            for sentence in para
+            for token in sentence
+            if stem == stemmer.stem(token)
+        }
 
     @staticmethod
     def _check_word_lemma(tokens: set[str], target_word: str) -> bool:
@@ -346,25 +386,24 @@ class UnivKansasFeatures:
     @staticmethod
     def _count_char(para: Para2dStr, target_char: str) -> int:
         """段落内に指定した文字の合計を計算する"""
-        return sum(
-            target_char == char
-            for sentence in para
-            for token in sentence
-            for char in token
+        if len(target_char) != 1:
+            raise ValueError("target_char must be a single character")
+
+        return np.sum(
+            [token.count(target_char) for sentence in para for token in sentence]
         )
 
     @staticmethod
     def v19_contains_2_times_more_capitals_than_period(para: Para2dStr) -> bool:
         """段落内にピリオドよりも大文字が2倍以上存在するかどうかを判定する"""
-        return (
-            sum(
+        return np.sum(
+            [
                 char.isupper()
                 for sentence in para
                 for token in sentence
                 for char in token
-            )
-            > UnivKansasFeatures._count_char(para, ".") * 2
-        )
+            ]
+        ) > np.multiply(UnivKansasFeatures._count_char(para, "."), 2)
 
     @staticmethod
     def v20_contains_et(para: Para2dStr) -> bool:
