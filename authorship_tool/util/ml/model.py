@@ -31,8 +31,8 @@ class SplittedDataset:
 
 @dataclass(frozen=True)
 class Prediction:
-    ans_pred_prob: ndarray
-    ans_pred: ndarray
+    pred_prob: ndarray
+    pred_ans: ndarray
 
 
 @dataclass(frozen=True)
@@ -95,12 +95,12 @@ class LGBMResult:
             header=False,
         )
 
-        DataFrame(self.prediction.ans_pred_prob).to_csv(
+        DataFrame(self.prediction.pred_prob).to_csv(
             DATASET_DIR.joinpath("ans_pred_prob.csv"),
             index=False,
             header=False,
         )
-        DataFrame(self.prediction.ans_pred).to_csv(
+        DataFrame(self.prediction.pred_ans).to_csv(
             DATASET_DIR.joinpath("ans_pred.csv"),
             index=False,
             header=False,
@@ -119,7 +119,12 @@ class LGBMResult:
         Returns:
             DataFrame: クロス集計結果
         """
-        return pd.crosstab(self.splitted_dataset.test_ans, self.prediction.ans_pred)
+        return pd.crosstab(
+            self.splitted_dataset.test_ans,
+            self.prediction.pred_ans,
+            rownames=["actual"],
+            colnames=["predicted"],
+        )
 
 
 @dataclass(frozen=True)

@@ -53,9 +53,9 @@ def calc_score(
     if len(test_ans) <= 1 or not use_score:
         return None
 
-    f1_result = f1_score(y_true=test_ans, y_pred=prediction.ans_pred)
-    accuracy_result = accuracy_score(y_true=test_ans, y_pred=prediction.ans_pred)
-    auc_roc_result = roc_auc_score(y_true=test_ans, y_score=prediction.ans_pred_prob)
+    f1_result = f1_score(y_true=test_ans, y_pred=prediction.pred_ans)
+    accuracy_result = accuracy_score(y_true=test_ans, y_pred=prediction.pred_ans)
+    auc_roc_result = roc_auc_score(y_true=test_ans, y_score=prediction.pred_prob)
 
     return Score(f1_result, accuracy_result, auc_roc_result)
 
