@@ -2,7 +2,7 @@
 特徴量データセット生成モジュール
 Feature dataset generator module
 """
-from typing import Callable, Final, Optional
+from typing import Any, Callable, Final, Optional
 
 import numpy as np
 
@@ -47,6 +47,10 @@ class SentenceFeatureDatasetGenerator:
         self, sent: Sent1dStr, correctness: bool
     ) -> tuple[np.ndarray, bool]:
         """文字列のリストから特徴量のリストを生成する"""
+
+        if not type_guard.is_sent(sent):
+            raise ValueError("sent must be list[str]")
+
         freq_by_pos: dict[str, float] = SentenceCalculator.pos_frequencies(sent)
 
         return (
@@ -63,6 +67,7 @@ class SentenceFeatureDatasetGenerator:
         correctness: bool,
     ) -> tuple[np.ndarray, bool]:
         """文字列のリストのリストから特徴量のリストを生成する"""
+
         sent: Sent1dStr = dim_reshaper.reduce_dim(para)
         return self.generate_from_sentence(sent, correctness)
 
@@ -121,8 +126,12 @@ class ParagraphFeatureDatasetGenerator:
         self,
         para: Para2dStr,
         category: bool,
-    ) -> tuple[np.ndarray, bool]:
+    ) -> tuple[np.ndarray[np.float64, Any], bool]:
         """文字列のリストのリストから特徴量のリストを生成する"""
+
+        if not type_guard.is_para(para):
+            raise ValueError("para must be list[list[str]]")
+
         freq_by_pos: dict[str, float] = ParagraphCalculator.pos_frequencies(para)
 
         return (
