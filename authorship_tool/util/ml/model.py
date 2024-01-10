@@ -18,7 +18,7 @@ class LGBMSource:
     """LGBMのモデル作成用データクラス"""
 
     feature_data_frame: DataFrame
-    nd_correctness: ndarray
+    nd_category: ndarray
 
 
 @dataclass(frozen=True)
@@ -37,13 +37,13 @@ class Prediction:
 
 @dataclass(frozen=True)
 class Score:
-    auc_roc_score: float
     f1_score: float
     accuracy_score: float
+    auc_roc_score: Optional[float] = None
 
 
 @dataclass(frozen=True)
-class ShapResult:
+class ShapData:
     explainer: Explainer
     shap_positive_vals: ndarray
     shap_positive_expected_val: float
@@ -56,8 +56,8 @@ class LGBMResult:
     model: LGBMClassifier
     splitted_dataset: SplittedDataset
     prediction: Prediction
-    score: Score
-    shap_data: ShapResult
+    shap_data: ShapData
+    score: Optional[Score] = None
 
     def dump(self, title: Optional[str] = None) -> None:
         """
@@ -120,3 +120,11 @@ class LGBMResult:
             DataFrame: クロス集計結果
         """
         return pd.crosstab(self.splitted_dataset.test_ans, self.prediction.ans_pred)
+
+
+@dataclass(frozen=True)
+class LGBMCvResult:
+    models: list[LGBMClassifier]
+    splitted_datasets: list[SplittedDataset]
+    predictions: list[Prediction]
+    shap_data_list: list[ShapData]
