@@ -1,7 +1,6 @@
 """lightgbmトレーナー"""
 
 from typing import Final, Optional
-from unittest import result
 
 import shap
 from lightgbm import LGBMClassifier
@@ -90,7 +89,7 @@ def train_once(training_source: LGBMSource) -> LGBMResult:
         )
     )
 
-    return train(dataset)
+    return train(dataset, use_score=True)
 
 
 def train_by_index(
