@@ -3,10 +3,6 @@
 {
   "name": "SHAP Authorship Analysis",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  // "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
-
-  "workspaceMount": "type=volume,source=vsc-remote-containers,target=/workspace",
-  "workspaceFolder": "/workspace/shap-authorship-analysis",
 
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 
