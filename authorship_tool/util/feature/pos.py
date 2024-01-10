@@ -70,31 +70,13 @@ class PosFeature:
         return self.__tagged_tokens
 
     @property
-    def pos_set(self) -> set[Tag]:
-        """POSタグの集合を返す
-
-        Returns:
-            set[str]: POSタグの集合
-        """
-        return set(pos for (_, pos) in self.__tagged_tokens)
-
-    @property
-    def pos_list(self) -> list[Tag]:
-        """POSタグのリストを返す
-
-        Returns:
-            list[str]: POSタグのリスト
-        """
-        return sorted(self.pos_set)
-
-    @property
-    def pos_tuple(self) -> tuple[Tag, ...]:
+    def all_pos(self) -> tuple[Tag, ...]:
         """POSタグのタプルを返す
 
         Returns:
             tuple[str]: POSタグのタプル
         """
-        return tuple(self.pos_list)
+        return tuple(sorted({pos for (_, pos) in self.__tagged_tokens}))
 
     def tag_subcategories(self) -> "PosFeature":
         """サブカテゴリを追加する
@@ -110,7 +92,7 @@ class PosFeature:
         Returns:
             PosFeature: PosFeatureインスタンス
         """
-        if "JJ" in self.pos_set:
+        if "JJ" in self.all_pos:
             return self.__tag_jj_past_participle()
 
         return self
