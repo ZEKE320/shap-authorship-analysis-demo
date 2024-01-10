@@ -26,6 +26,7 @@ pytest = "*"
 pytest-mock = "*"
 rich = "*"
 black = {extras = ["jupyter"], version = "^23.12.1"}
+isort = "^5.13.2"
 
 
 [build-system]
