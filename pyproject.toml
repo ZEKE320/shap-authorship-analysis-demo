@@ -39,7 +39,4 @@ profile = "black"
 plugins = "numpy.typing.mypy_plugin"
 
 [tool.pylint.MASTER]
-disable = "wrong-import-position"
-
-[tool.pylint."FORMAT"]
-max-line-length = 88
+disable = ["wrong-import-position", "line-too-long"]
