@@ -9,6 +9,7 @@ import nltk
 
 nltk.download("stopwords")
 nltk.download("wordnet")
+nltk.download("punkt")
 
 import numpy as np
 from nltk import SnowballStemmer, WordNetLemmatizer
