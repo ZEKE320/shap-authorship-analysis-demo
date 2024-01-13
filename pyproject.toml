@@ -8,27 +8,29 @@ packages = [{ from = ".", include = "authorship_tool" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+black = { extras = ["jupyter"], version = "^23.12.1" }
+isort = "^5.13.2"
 jupyter = "*"
 lightgbm = "*"
 matplotlib = "*"
+mypy = "^1.8.0"
 nltk = "*"
-numpy = "*"
+numpy = "^1.26.3"
 pandas = "*"
 pandas-stubs = "*"
-scikit-learn = "*"
-tabulate = "*"
-types-pillow = "*"
-types-psutil = "*"
-types-tabulate = "*"
-python-dotenv = "*"
-shap = "*"
+pydash = "^7.0.6"
 pytest = "*"
 pytest-mock = "*"
 rich = "*"
-black = {extras = ["jupyter"], version = "^23.12.1"}
-isort = "^5.13.2"
+scikit-learn = "*"
+shap = "*"
+tabulate = "*"
+types-tabulate = "*"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+plugins = "numpy.typing.mypy_plugin"
