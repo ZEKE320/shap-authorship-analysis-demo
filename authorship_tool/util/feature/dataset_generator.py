@@ -109,6 +109,8 @@ class ParagraphFeatureDatasetGenerator:
         "average token length": ParagraphCalculator.average_token_length,
         "non alphabetic characters frequency": ParagraphCalculator.non_alphabetic_characters_frequency,
         "uncommon word frequency": ParagraphCalculator.uncommon_word_frequency,
+        "non-alphabetic characters frequency": ParagraphCalculator.non_alphabetic_characters_frequency,
+        "numeric value frequency": ParagraphCalculator.numeric_value_frequency,
     }
 
     def __init__(self, tags: tuple[Tag, ...] | None = None) -> None:
