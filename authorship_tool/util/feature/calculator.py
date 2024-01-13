@@ -1,11 +1,15 @@
 """
-特徴計算モジュール
+特徴量計算モジュール
 Feature calculation module
 """
 
 import re
 
 import nltk
+
+nltk.download("stopwords")
+nltk.download("wordnet")
+
 import numpy as np
 from nltk import SnowballStemmer, WordNetLemmatizer
 from rich.console import Console
