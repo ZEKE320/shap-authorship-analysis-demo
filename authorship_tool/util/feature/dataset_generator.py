@@ -19,7 +19,7 @@ from authorship_tool.util.feature.calculator import (
 class SentenceFeatureDatasetGenerator:
     """文の特徴量のデータセットを生成するクラス"""
 
-    __COLS_AND_FUNC: Final[dict[str, Callable[[Sent1dStr], np.float64 | int]]] = {
+    __COLS_AND_FUNC: Final[dict[str, Callable[[Sent1dStr], np.float64 | np.int64]]] = {
         "word variation": SentenceCalculator.word_variation,
         "uncommon word frequency": SentenceCalculator.uncommon_word_frequency,
         "sentence length": SentenceCalculator.sentence_length,
@@ -82,7 +82,9 @@ class ParagraphFeatureDatasetGenerator:
     Paragraph feature dataset generator class
     """
 
-    __COLS_AND_FUNC: Final[dict[str, Callable[[Para2dStr], np.float64 | int]]] = {
+    __COLS_AND_FUNC: Final[
+        dict[FeatureLabel, Callable[[Para2dStr], (np.bool_ | np.int64 | np.float64)]]
+    ] = {
         "v1 sentences per paragraph": UnivKansasFeatures.v1_sentences_per_paragraph,
         "v2 words per paragraph": UnivKansasFeatures.v2_words_per_paragraph,
         "v3 close parenthesis present": UnivKansasFeatures.v3_close_parenthesis_present,
@@ -113,13 +115,16 @@ class ParagraphFeatureDatasetGenerator:
         if tags and not type_guard.is_tag_tuple(tags):
             raise ValueError("tags must be a list of str")
 
-        col: list[str] = list(ParagraphFeatureDatasetGenerator.__COLS_AND_FUNC.keys())
+        col: list[FeatureLabel] = list(
+            ParagraphFeatureDatasetGenerator.__COLS_AND_FUNC.keys()
+        )
         if tags:
             col.extend(tags)
 
         # クラスのフィールドを定義
-        self.__columns: Final[tuple[str, ...]] = tuple(col)
         self.__tags: Final[tuple[Tag, ...]] = tags if tags else ()
+
+        self.__columns: Final[tuple[FeatureLabel, ...]] = tuple(col)
 
     @property
     def columns(self) -> tuple[str, ...]:
