@@ -28,7 +28,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
         poetry add flake8 pytest
-        if [ -f pyproject.toml ]; then poetry install; fi
+        poetry install
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
