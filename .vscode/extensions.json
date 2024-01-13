@@ -26,6 +26,7 @@
     "mechatroner.rainbow-csv",
     "mhutchie.git-graph",
     "ms-python.black-formatter",
+    "ms-python.flake8",
     "ms-python.gather",
     "ms-python.isort",
     "ms-python.mypy-type-checker",
@@ -43,6 +44,7 @@
     "oderwat.indent-rainbow",
     "pkief.material-icon-theme",
     "seatonjiang.gitmoji-vscode",
+    "simonsiefke.svg-preview",
     "streetsidesoftware.code-spell-checker",
     "tamasfe.even-better-toml",
     "tomoki1207.pdf",
@@ -51,8 +53,7 @@
     "visualstudioexptteam.vscodeintellicode",
     "yzane.markdown-pdf",
     "yzhang.markdown-all-in-one",
-    "ziyasal.vscode-open-in-github",
-    "simonsiefke.svg-preview"
+    "ziyasal.vscode-open-in-github"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []
