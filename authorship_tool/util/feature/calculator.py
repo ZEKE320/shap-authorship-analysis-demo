@@ -117,6 +117,48 @@ class SentenceCalculator:
         )
 
     @staticmethod
+    def non_alphabetic_character_frequency(sent: Sent1dStr) -> np.float64:
+        """
+        文中で出現するアルファベット以外の文字の割合を計算する
+        Calculate the frequency of non-alphabetic characters in a sentence
+
+        Args:
+            sent (Sent1dStr): 文 (Sentence)
+
+        Returns:
+            np.float64: アルファベット以外の文字の割合 (Frequency of non-alphabetic characters)
+        """
+        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+            return np.float64(0)
+
+        return np.divide(
+            SentenceCalculator.count_non_alphabetic_characters(sent),
+            sent_length,
+            dtype=np.float64,
+        )
+
+    @staticmethod
+    def numeric_value_frequency(sent: Sent1dStr) -> np.float64:
+        """
+        文中の数値の割合を計算する
+        Calculate the frequency of numeric values in a sentence
+
+        Args:
+            sent (Sent1dStr): 文 (Sentence)
+
+        Returns:
+            np.float64: 数値の割合 (Frequency of numeric values)
+        """
+        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+            return np.float64(0)
+
+        return np.divide(
+            SentenceCalculator.count_numeric_values(sent),
+            sent_length,
+            dtype=np.float64,
+        )
+
+    @staticmethod
     def pos_frequencies(sent: Sent1dStr) -> dict[Tag, np.float64]:
         """
         文中の各品詞の割合を計算する
