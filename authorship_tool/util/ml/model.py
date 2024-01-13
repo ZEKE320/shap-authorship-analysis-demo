@@ -1,7 +1,7 @@
 """LGBMに利用するモデルデータ定義モジュール"""
 import pickle
 from pathlib import Path
-from typing import Final, TypedDict
+from typing import Final
 
 import numpy as np
 import pandas as pd
@@ -15,7 +15,7 @@ from authorship_tool.util.path_util import PathUtil
 
 
 @dataclass(frozen=True)
-class LGBMSource(TypedDict):
+class LGBMSource:
     """LGBMのモデル作成用データクラス"""
 
     feature_data_frame: DataFrame
@@ -23,7 +23,9 @@ class LGBMSource(TypedDict):
 
 
 @dataclass(frozen=True)
-class SplittedDataset(TypedDict):
+class SplittedDataset:
+    """学習データとテストデータ用データクラス"""
+
     train_data: DataFrame
     test_data: DataFrame
     train_ans: NDArray
@@ -31,28 +33,34 @@ class SplittedDataset(TypedDict):
 
 
 @dataclass(frozen=True)
-class Prediction(TypedDict):
+class Prediction:
+    """予測結果データクラス"""
+
     pred_prob: NDArray
     pred_ans: NDArray
 
 
 @dataclass(frozen=True)
-class Score(TypedDict):
-    f1_score: np.float64 | NDArray[np.float64]
+class Score:
+    """評価スコアデータクラス"""
+
+    f1_score: np.float64
     accuracy_score: np.float64
-    auc_roc_score: np.float64 | None
+    auc_roc_score: np.float64
 
 
 @dataclass(frozen=True)
-class ShapData(TypedDict):
+class ShapData:
+    """Shapデータクラス"""
+
     explainer: Explainer
-    shap_positive_vals: NDArray
-    shap_positive_expected_val: np.float64
+    shap_vals: NDArray[np.float64]
+    shap_expected_val: np.float64
 
 
 @dataclass(frozen=True)
-class LGBMResult(TypedDict):
-    """LGBMのモデル作成結果データクラス"""
+class TrainingResult:
+    """LGBMのモデル学習結果データクラス"""
 
     model: LGBMClassifier
     splitted_dataset: SplittedDataset
@@ -62,7 +70,9 @@ class LGBMResult(TypedDict):
 
 
 @dataclass(frozen=True)
-class LGBMCvResult(TypedDict):
+class CrossValidationResult:
+    """LGBMのクロスバリデーション結果データクラス"""
+
     models: list[LGBMClassifier]
     splitted_datasets: list[SplittedDataset]
     predictions: list[Prediction]
@@ -70,15 +80,18 @@ class LGBMCvResult(TypedDict):
 
 
 @dataclass(frozen=True)
-class CvViewData(TypedDict):
-    test_ans: DataFrame
-    pred_ans: DataFrame
-    pred_prob: DataFrame
-    shap_positive_vals: DataFrame
-    shap_expected_val: np.float64
+class CrossValidationView:
+    """クロスバリデーション結果の可視化用データクラス"""
+
+    test_data: pd.DataFrame
+    test_ans: NDArray[np.bool_]
+    pred_ans: NDArray[np.bool_]
+    pred_prob: NDArray[np.float64]
+    shap_positive_vals: NDArray[np.float64]
+    shap_expected_val: NDArray[np.float64]
 
 
-def dump(result: LGBMResult, title: str | None = None) -> None:
+def dump(result: TrainingResult, title: str | None = None) -> None:
     """
     作成したモデル、データを保存する
 
@@ -95,44 +108,44 @@ def dump(result: LGBMResult, title: str | None = None) -> None:
     LGBM_MODEL_DIR.mkdir(exist_ok=True)
 
     with open(LGBM_MODEL_DIR.joinpath("lgbm_model.pkl"), "wb") as f:
-        pickle.dump(result["model"], f)
+        pickle.dump(result.model, f)
 
-    result["splitted_dataset"]["train_data"].to_csv(
+    result.splitted_dataset.train_data.to_csv(
         DATASET_DIR.joinpath("train_data.csv"), index=False
     )
-    result["splitted_dataset"]["test_data"].to_csv(
+    result.splitted_dataset.test_data.to_csv(
         DATASET_DIR.joinpath("test_data.csv"), index=False
     )
-    DataFrame(result["splitted_dataset"]["train_ans"]).to_csv(
+    DataFrame(result.splitted_dataset.train_ans).to_csv(
         DATASET_DIR.joinpath("train_ans.csv"),
         index=False,
         header=False,
     )
-    DataFrame(result["splitted_dataset"]["test_ans"]).to_csv(
+    DataFrame(result.splitted_dataset.test_ans).to_csv(
         DATASET_DIR.joinpath("test_ans.csv"),
         index=False,
         header=False,
     )
 
-    DataFrame(result["prediction"]["pred_prob"]).to_csv(
+    DataFrame(result.prediction.pred_prob).to_csv(
         DATASET_DIR.joinpath("ans_pred_prob.csv"),
         index=False,
         header=False,
     )
-    DataFrame(result["prediction"]["pred_ans"]).to_csv(
+    DataFrame(result.prediction.pred_ans).to_csv(
         DATASET_DIR.joinpath("ans_pred.csv"),
         index=False,
         header=False,
     )
 
-    DataFrame(result["shap_data"]["shap_positive_vals"]).to_csv(
+    DataFrame(result.shap_data.shap_vals).to_csv(
         DATASET_DIR.joinpath("test_shap_val.csv"),
         index=False,
         header=False,
     )
 
 
-def pred_crosstab(result: LGBMResult) -> DataFrame:
+def pred_crosstab_normal(result: TrainingResult) -> DataFrame:
     """
     予測結果のクロス集計を行う
 
@@ -140,8 +153,23 @@ def pred_crosstab(result: LGBMResult) -> DataFrame:
         DataFrame: クロス集計結果
     """
     return pd.crosstab(
-        result["splitted_dataset"]["test_ans"],
-        result["prediction"]["pred_ans"],
+        result.splitted_dataset.test_ans,
+        result.prediction.pred_ans,
+        rownames=["actual"],
+        colnames=["predicted"],
+    )
+
+
+def pred_crosstab_loocv(cv_result: CrossValidationView) -> DataFrame:
+    """
+    予測結果のクロス集計を行う
+
+    Returns:
+        DataFrame: クロス集計結果
+    """
+    return pd.crosstab(
+        cv_result.test_ans,
+        cv_result.pred_ans,
         rownames=["actual"],
         colnames=["predicted"],
     )
