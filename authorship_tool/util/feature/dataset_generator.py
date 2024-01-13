@@ -2,12 +2,13 @@
 特徴量データセット生成モジュール
 Feature dataset generator module
 """
-from typing import Callable, Final
+from typing import Callable, Final, get_type_hints
 
 import numpy as np
+import pandas as pd
 from numpy.typing import NDArray
 
-from authorship_tool.types import Para2dStr, Sent1dStr, Tag
+from authorship_tool.types import FeatureLabel, Para2dStr, Sent1dStr, Tag
 from authorship_tool.util import dim_reshaper, type_guard
 from authorship_tool.util.feature.calculator import (
     ParagraphCalculator,
@@ -128,16 +129,30 @@ class ParagraphFeatureDatasetGenerator:
 
         self.__columns: Final[tuple[FeatureLabel, ...]] = tuple(col)
 
+        self.__dtypes: Final[
+            tuple[type[np.bool_ | np.int64 | np.float64], ...]
+        ] = tuple(
+            get_type_hints(callable)["return"]
+            for callable in self.__COLS_AND_FUNC.values()
+        ) + tuple(
+            np.float64 for _ in range(len(self.__tags))
+        )
+
     @property
     def columns(self) -> tuple[str, ...]:
         """特徴量の列名"""
         return self.__columns
 
+    @property
+    def dtypes(self) -> tuple[type[np.bool_ | np.int64 | np.float64], ...]:
+        """特徴量のデータ型"""
+        return self.__dtypes
+
     def generate_from_paragraph(
         self,
         para: Para2dStr,
-        category: bool,
-    ) -> NDArray:
+        category: np.bool_,
+    ) -> pd.Series:
         """文字列のリストのリストから特徴量のリストを生成する"""
 
         if not type_guard.is_para(para):
@@ -145,16 +160,22 @@ class ParagraphFeatureDatasetGenerator:
 
         freq_by_pos: dict[str, np.float64] = ParagraphCalculator.pos_frequencies(para)
 
-        return np.hstack(
+        feature_calc_results = pd.Series(
+            [
+                callable(para)
+                for callable in ParagraphFeatureDatasetGenerator.__COLS_AND_FUNC.values()
+            ],
+        )
+        pos_frequency_results = pd.Series(
+            [freq_by_pos.get(tag, np.float64(0.0)) for tag in self.__tags],
+        )
+        category_series = pd.Series([category])
+
+        return pd.concat(
             (
-                np.array(
-                    [func(para) for func in self.__COLS_AND_FUNC.values()],
-                    dtype=np.float64,
-                ),
-                np.array(
-                    [freq_by_pos.get(tag, 0.0) for tag in self.__tags],
-                    dtype=np.float64,
-                ),
-                np.array([category], dtype=bool),
-            )
+                feature_calc_results,
+                pos_frequency_results,
+                category_series,
+            ),
+            axis=0,
         )
