@@ -1,87 +1,103 @@
 """lightgbmトレーナー"""
 
+from dataclasses import astuple
 from typing import Final
 
 import numpy as np
+import pandas as pd
 import shap
 from lightgbm import LGBMClassifier
 from numpy.typing import NDArray
-from pandas import DataFrame
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.model_selection import LeaveOneOut, train_test_split
 
 from authorship_tool.util.ml.model import (
-    LGBMCvResult,
-    LGBMResult,
+    CrossValidationResult,
+    CrossValidationView,
     LGBMSource,
     Prediction,
     Score,
     ShapData,
     SplittedDataset,
+    TrainingResult,
 )
 
 SHAP_VALUE_POSITIVE_IDX: Final[int] = 1
 
 
-def train(dataset: SplittedDataset, use_score: bool = False) -> LGBMResult:
+def train(splitted_dataset: SplittedDataset, use_score: bool = False) -> TrainingResult:
+    """
+    LightGBMを使ってモデルをトレーニングします。
+    Train the model using LightGBM.
+
+    Args:
+        splitted_dataset (SplittedDataset): トレーニングデータとテストデータ
+        use_score (bool, optional): スコア計算の有無. Defaults to False.
+
+    Returns:
+        TrainingResult: トレーニング結果
+    """
+
     model = LGBMClassifier()
-    model.fit(X=dataset["train_data"].values, y=dataset["train_ans"])
+    model.fit(X=splitted_dataset.train_data.values, y=splitted_dataset.train_ans)
 
-    prediction: Prediction = predict(model, dataset["test_data"])
-    shap_result: ShapData = create_shap_data(model, dataset["test_data"])
+    prediction: Prediction = predict(model, splitted_dataset.test_data)
+    shap_data: ShapData = create_shap_data(model, splitted_dataset.test_data)
 
-    score: Score | None = calc_score(prediction, dataset["test_ans"], use_score)
+    score: Score | None = calc_score(prediction, splitted_dataset.test_ans, use_score)
 
-    return {
-        "model": model,
-        "splitted_dataset": dataset,
-        "prediction": prediction,
-        "shap_data": shap_result,
-        "score": score if use_score else None,
-    }
-
-
-def predict(model: LGBMClassifier, test_data: DataFrame) -> Prediction:
-    pred_prob: NDArray[np.float64] = np.array(
-        model.predict_proba(X=test_data), dtype=np.float64
-    )[:, 1]
-    pred_ans: NDArray[np.bool_] = np.array(model.predict(X=test_data), dtype=np.bool_)
-
-    return {"pred_prob": pred_prob, "pred_ans": pred_ans}
+    return TrainingResult(
+        model,
+        splitted_dataset,
+        prediction,
+        shap_data,
+        score if use_score else None,
+    )
 
 
-def calc_score(
-    prediction: Prediction, test_ans: NDArray, use_score: bool
-) -> Score | None:
-    if len(test_ans) <= 1 or not use_score:
-        return None
+def predict(model: LGBMClassifier, test_data: pd.DataFrame) -> Prediction:
+    """
+    モデルによる予測を行います。
+    Perform prediction by the model.
 
-    f1_result = f1_score(y_true=test_ans, y_pred=prediction["pred_ans"])
-    accuracy_result = accuracy_score(y_true=test_ans, y_pred=prediction["pred_ans"])
-    auc_roc_result = roc_auc_score(y_true=test_ans, y_score=prediction["pred_prob"])
+    Args:
+        model (LGBMClassifier): モデル
+        test_data (pd.DataFrame): テストデータ
 
-    return {
-        "f1_score": f1_result,
-        "accuracy_score": accuracy_result,
-        "auc_roc_score": auc_roc_result,
-    }
+    Returns:
+        Prediction: 予測結果
+    """
+
+    return Prediction(
+        pred_prob=np.array(model.predict_proba(X=test_data), dtype=np.float64)[:, 1],
+        pred_ans=np.array(model.predict(X=test_data), dtype=np.bool_),
+    )
 
 
-def create_shap_data(model: LGBMClassifier, test_data: DataFrame) -> ShapData:
+def create_shap_data(model: LGBMClassifier, test_data: pd.DataFrame) -> ShapData:
+    """
+    SHAPデータを作成します。
+
+    Args:
+        model (LGBMClassifier): モデル
+        test_data (pd.DataFrame): テストデータ
+
+    Returns:
+        ShapData: SHAPデータ
+    """
+
     tree_explainer = shap.TreeExplainer(model)
-    test_shap_val = tree_explainer.shap_values(test_data)[SHAP_VALUE_POSITIVE_IDX]
-    test_shap_expected_val = np.array(tree_explainer.expected_value)[
-        SHAP_VALUE_POSITIVE_IDX
-    ]
+    shap_vals = tree_explainer.shap_values(test_data)[SHAP_VALUE_POSITIVE_IDX]
+    shap_expected_val = np.array(tree_explainer.expected_value)[SHAP_VALUE_POSITIVE_IDX]
 
-    return {
-        "explainer": tree_explainer,
-        "shap_positive_vals": test_shap_val,
-        "shap_positive_expected_val": test_shap_expected_val,
-    }
+    return ShapData(
+        explainer=tree_explainer,
+        shap_vals=shap_vals,
+        shap_expected_val=shap_expected_val,
+    )
 
 
-def train_once(training_source: LGBMSource) -> LGBMResult:
+def train_once(training_source: LGBMSource) -> TrainingResult:
     """LightGBMを使って、著者推定モデルを学習します。
 
     Args:
@@ -95,15 +111,15 @@ def train_once(training_source: LGBMSource) -> LGBMResult:
     """
 
     train_data, test_data, train_ans, test_ans = train_test_split(
-        training_source["feature_data_frame"], training_source["nd_category"]
+        training_source.feature_data_frame, training_source.nd_category
     )
 
-    dataset: SplittedDataset = {
-        "train_data": train_data,
-        "test_data": test_data,
-        "train_ans": train_ans,
-        "test_ans": test_ans,
-    }
+    dataset = SplittedDataset(
+        train_data,
+        test_data,
+        train_ans,
+        test_ans,
+    )
 
     return train(dataset, use_score=True)
 
@@ -113,57 +129,170 @@ def train_by_index(
     train_indices: NDArray,
     test_index: NDArray,
     use_score: bool = False,
-) -> LGBMResult:
-    X_train, X_test = (
-        source["feature_data_frame"].iloc[train_indices],
-        source["feature_data_frame"].iloc[test_index],
+) -> TrainingResult:
+    """
+    指定したインデックスのデータを用いて学習を行います。
+
+    Args:
+        source (LGBMSource): LGBMのモデル作成用ソースデータ
+        train_indices (NDArray): トレーニングデータのインデックス一覧
+        test_index (NDArray): テストデータのインデックス一覧
+        use_score (bool, optional): スコア計算の有無. Defaults to False.
+
+    Returns:
+        LGBMResult: _description_
+    """
+    splitted_dataset = SplittedDataset(
+        train_data=source.feature_data_frame.iloc[train_indices],
+        test_data=source.feature_data_frame.iloc[test_index],
+        train_ans=source.nd_category[train_indices],
+        test_ans=source.nd_category[test_index],
     )
-    y_train, y_test = (
-        source["nd_category"][train_indices],
-        source["nd_category"][test_index],
-    )
-    splitted_dataset: SplittedDataset = {
-        "train_data": X_train,
-        "test_data": X_test,
-        "train_ans": y_train,
-        "test_ans": y_test,
-    }
 
     return train(splitted_dataset, use_score)
 
 
-def train_loocv(source: LGBMSource) -> LGBMCvResult:
+def train_loocv(source: LGBMSource) -> CrossValidationView:
+    """
+    LOOCVで学習を行います。
+
+    Args:
+        source (LGBMSource): LGBMのモデル作成用ソースデータ
+
+    Returns:
+        CvViewData: Cvの結果を表示するためのデータ
+    """
     loo = LeaveOneOut()
 
-    results: list[LGBMResult] = [
+    results: list[TrainingResult] = [
         train_by_index(source, train_indices, test_index, use_score=False)
-        for train_indices, test_index in loo.split(source["feature_data_frame"])
+        for train_indices, test_index in loo.split(source.feature_data_frame)
     ]
 
-    cv_result: LGBMCvResult = convert_results_to_cv_result(results)
+    cv_result: CrossValidationResult = convert_results_to_cv_result(results)
+    cv_view_data: CrossValidationView = convert_cv_result_for_view(cv_result)
 
-    return cv_result
+    return cv_view_data
 
 
-def convert_results_to_cv_result(results: list[LGBMResult]) -> LGBMCvResult:
-    models, datasets, predictions, shap_data_list = map(
-        list,
-        zip(
-            *(
-                (
-                    result["model"],
-                    result["splitted_dataset"],
-                    result["prediction"],
-                    result["shap_data"],
-                )
-                for result in results
-            )
-        ),
+def convert_results_to_cv_result(
+    results: list[TrainingResult],
+) -> CrossValidationResult:
+    """
+    LGBMResultのリストからLGBMCvResultを生成します。
+
+    Args:
+        results (list[LGBMResult]): LGBMResultのリスト
+
+    Returns:
+        LGBMCvResult: LGBMCvResultインスタンス
+    """
+
+    models, splitted_datasets, predictions, shap_data_list = map(
+        list, zip(*map(astuple, results))
     )
 
-    return {
-        "models": models,
-        "splitted_datasets": datasets,
-        "predictions": predictions,
-        "shap_data_list": shap_data_list,
-    }
+    return CrossValidationResult(
+        models,
+        splitted_datasets,
+        predictions,
+        shap_data_list,
+    )
+
+
+def convert_cv_result_for_view(cv_result: CrossValidationResult) -> CrossValidationView:
+    """
+    LGBMCvResultをCvViewDataに変換します。
+
+    Args:
+        cv_result (LGBMCvResult): LGBMCvResultインスタンス
+
+    Returns:
+        CvViewData: Cvの結果を表示するためのデータ
+    """
+
+    (
+        test_data_zip,
+        test_ans_zip,
+        pred_ans_zip,
+        pred_prob_zip,
+        shap_vals_zip,
+        shap_expected_val_zip,
+    ) = zip(astuple(cv_result))
+
+    test_data: pd.DataFrame = pd.concat(test_data_zip)
+    test_ans: NDArray[np.bool_] = np.concatenate(test_ans_zip)
+
+    pred_ans: NDArray[np.bool_] = np.concatenate(pred_ans_zip)
+    pred_prob: NDArray[np.float64] = np.concatenate(pred_prob_zip)
+    shap_vals: NDArray[np.float64] = np.concatenate(shap_vals_zip)
+    shap_expected_val: NDArray[np.float64] = np.concatenate(
+        np.full(
+            shape=shap_vals_zip,
+            fill_value=shap_expected_val_zip,
+        )
+    )
+
+    return CrossValidationView(
+        test_data,
+        test_ans,
+        pred_ans,
+        pred_prob,
+        shap_vals,
+        shap_expected_val,
+    )
+
+
+def calc_score(
+    prediction: Prediction, test_ans: NDArray, use_score: bool
+) -> Score | None:
+    """
+    スコアを計算します。
+
+    Args:
+        prediction (Prediction): 予測結果
+        test_ans (NDArray): 正解ラベル
+        use_score (bool): スコア計算の有無
+
+    Returns:
+        Score | None: スコアデータ
+    """
+
+    if len(test_ans) <= 1 or not use_score:
+        return None
+
+    f1_result = f1_score(y_true=test_ans, y_pred=prediction.pred_ans)
+    accuracy_result = accuracy_score(y_true=test_ans, y_pred=prediction.pred_ans)
+    auc_roc_result = roc_auc_score(y_true=test_ans, y_score=prediction.pred_prob)
+
+    return Score(
+        f1_result,  # type: ignore
+        accuracy_result,  # type: ignore
+        auc_roc_result,  # type: ignore
+    )
+
+
+def calculate_score_by_loocv(cv_view_data: CrossValidationView) -> Score:
+    """
+    LOOCVの結果からスコアを計算します。
+
+    Args:
+        cv_view_data (CvViewData): Cvの結果を表示するためのデータ
+
+    Returns:
+        Score: スコアデータ
+    """
+
+    f1_result = f1_score(y_true=cv_view_data.test_ans, y_pred=cv_view_data.pred_ans)
+    accuracy_result = accuracy_score(
+        y_true=cv_view_data.test_ans, y_pred=cv_view_data.pred_ans
+    )
+    auc_roc_result = roc_auc_score(
+        y_true=cv_view_data.test_ans, y_score=cv_view_data.pred_prob
+    )
+
+    return Score(
+        f1_result,  # type: ignore
+        accuracy_result,  # type: ignore
+        auc_roc_result,  # type: ignore
+    )
