@@ -32,5 +32,11 @@ types-tabulate = "*"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.isort]
+profile = "black"
+
 [tool.mypy]
 plugins = "numpy.typing.mypy_plugin"
+
+[tool.pylint.MASTER]
+disable = "wrong-import-position"
