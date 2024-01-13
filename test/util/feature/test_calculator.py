@@ -1,6 +1,15 @@
+"""
+    特徴量計算モジュールテスト
+    Feature calculator module test
+"""
+
+import nltk
+
 from authorship_tool.types import Para2dStr
 from authorship_tool.util.feature.calculator import UnivKansasFeatures
 from authorship_tool.util.tokenizer import tokenize_to_para
+
+nltk.download("stopwords")
 
 text_1: str = (
     "This is a famous pen, Mr. Smith."
