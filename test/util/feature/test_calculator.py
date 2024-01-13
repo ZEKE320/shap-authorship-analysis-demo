@@ -12,7 +12,9 @@ text_1: str = (
     + " It was designed by the famous artist Amy Mahogany,"
     + " and it looks very classy, don't you think so?"
 )
-text_2: str = "Oh no! Someone has stolen my pen... (I can't believe this is happening!)"
+text_2: str = (
+    "Oh no! Someone has stolen my pen... (I cannot believe this is happening!)"
+)
 text_3: str = (
     "I'm glad to hear that you found it! This pen is well-designed. I really like it."
 )
@@ -23,43 +25,105 @@ para_3: Para2dStr = tokenize_to_para(text_3)
 
 class TestUnivKansasFeatures:
     @staticmethod
-    def test_v1_sentences_per_paragraph():
+    def test_v1_sentences_per_paragraph() -> None:
         assert UnivKansasFeatures.v1_sentences_per_paragraph(para_1) == 2
         assert UnivKansasFeatures.v1_sentences_per_paragraph(para_2) == 2
         assert UnivKansasFeatures.v1_sentences_per_paragraph(para_3) == 3
 
     @staticmethod
-    def test_v2_words_per_paragraph():
+    def test_v2_words_per_paragraph() -> None:
         assert UnivKansasFeatures.v2_words_per_paragraph(para_1) == 31
         assert UnivKansasFeatures.v2_words_per_paragraph(para_2) == 19
         assert UnivKansasFeatures.v2_words_per_paragraph(para_3) == 20
 
     @staticmethod
-    def test__char_present():
+    def test__char_present() -> None:
         assert UnivKansasFeatures._char_present(para_1, ",")
         assert UnivKansasFeatures._char_present(para_2, ".")
         assert not UnivKansasFeatures._char_present(para_3, "?")
 
     @staticmethod
-    def test_v3_close_parenthesis_present():
+    def test_v3_close_parenthesis_present() -> None:
         assert not UnivKansasFeatures.v3_close_parenthesis_present(para_1)
         assert UnivKansasFeatures.v3_close_parenthesis_present(para_2)
         assert not UnivKansasFeatures.v3_close_parenthesis_present(para_3)
 
     @staticmethod
-    def test_v4_dash_present():
+    def test_v4_dash_present() -> None:
         assert not UnivKansasFeatures.v4_dash_present(para_1)
         assert not UnivKansasFeatures.v4_dash_present(para_2)
         assert UnivKansasFeatures.v4_dash_present(para_3)
 
     @staticmethod
-    def test__contains_specific_word():
+    def test__contains_specific_word() -> None:
         assert not UnivKansasFeatures._contains_specific_word(para_1, "thin")
         assert not UnivKansasFeatures._contains_specific_word(para_2, "an")
         assert UnivKansasFeatures._contains_specific_word(para_3, "likes")
 
     @staticmethod
-    def test_v17_contains_others_or_researchers():
+    def test_v5_semi_colon_or_colon_present() -> None:
+        # TODO Implement here
+        pass
+
+    @staticmethod
+    def test_v6_question_mark_present() -> None:
+        assert UnivKansasFeatures.v6_question_mark_present(para_1)
+        assert not UnivKansasFeatures.v6_question_mark_present(para_2)
+        assert not UnivKansasFeatures.v6_question_mark_present(para_3)
+
+    @staticmethod
+    def test_v7_apostrophe_present() -> None:
+        assert UnivKansasFeatures.v7_apostrophe_present(para_1)
+        assert not UnivKansasFeatures.v7_apostrophe_present(para_2)
+        assert UnivKansasFeatures.v7_apostrophe_present(para_3)
+
+    @staticmethod
+    def test_v8_standard_deviation_of_sentence_length() -> None:
+        # TODO Implement here
+        pass
+
+    @staticmethod
+    def test_v9_length_difference_for_consecutive_sentences() -> None:
+        # TODO Implement here
+        pass
+
+    @staticmethod
+    def test_v10_sentence_with_lt_11_words() -> None:
+        # TODO Implement here
+        pass
+
+    @staticmethod
+    def test_v11_sentence_with_gt_34_words() -> None:
+        # TODO Implement here
+        pass
+
+    @staticmethod
+    def test_v12_contains_although() -> None:
+        # TODO Implement here
+        pass
+
+    @staticmethod
+    def test_v13_contains_however() -> None:
+        # TODO Implement here
+        pass
+
+    @staticmethod
+    def test_v14_contains_but() -> None:
+        # TODO Implement here
+        pass
+
+    @staticmethod
+    def test_v15_contains_because() -> None:
+        # TODO Implement here
+        pass
+
+    @staticmethod
+    def test_v16_contains_this() -> None:
+        # TODO Implement here
+        pass
+
+    @staticmethod
+    def test_v17_contains_others_or_researchers() -> None:
         para_v17_1: Para2dStr = tokenize_to_para(
             "The researchers conducted the experiment."
         )
@@ -74,7 +138,7 @@ class TestUnivKansasFeatures:
         assert UnivKansasFeatures.v17_contains_others_or_researchers(para_v17_4)
 
     @staticmethod
-    def test_v19_contains_2_times_more_capitals_than_period():
+    def test_v19_contains_2_times_more_capitals_than_period() -> None:
         assert UnivKansasFeatures.v19_contains_2_times_more_capitals_than_period(para_1)
         assert not UnivKansasFeatures.v19_contains_2_times_more_capitals_than_period(
             para_2
@@ -84,7 +148,7 @@ class TestUnivKansasFeatures:
         )
 
     @staticmethod
-    def test_v20_contains_et():
+    def test_v20_contains_et() -> None:
         assert not UnivKansasFeatures.v20_contains_et(para_1)
         assert not UnivKansasFeatures.v20_contains_et(para_2)
         assert not UnivKansasFeatures.v20_contains_et(para_3)
