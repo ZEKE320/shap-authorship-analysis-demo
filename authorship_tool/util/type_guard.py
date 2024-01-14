@@ -5,13 +5,13 @@ from authorship_tool.types_ import Para2dStr, Sent1dStr, Tag, TaggedToken, Token
 
 
 def is_sent(values: list, /) -> TypeGuard[Sent1dStr]:
-    """strのリストであることを確認する
+    """単語のリストであることを確認する
 
     Args:
         values (list): リスト
 
     Returns:
-        TypeGuard[list[str]]: タイプガードされたリスト
+        TypeGuard: タイプガード
     """
     return (
         bool(values)
@@ -21,13 +21,13 @@ def is_sent(values: list, /) -> TypeGuard[Sent1dStr]:
 
 
 def is_para(values: list, /) -> TypeGuard[Para2dStr]:
-    """strのリストのリストであることを確認する
+    """単語のリストのリストであることを確認する
 
     Args:
         values (list): リスト
 
     Returns:
-        TypeGuard[list[list[str]]]: タイプガードされたリスト
+        TypeGuard: タイプガード
     """
     return (
         bool(values)
@@ -37,13 +37,13 @@ def is_para(values: list, /) -> TypeGuard[Para2dStr]:
 
 
 def are_paras(values: list, /) -> TypeGuard[list[Para2dStr]]:
-    """strのリストのリストのリストであることを確認する
+    """単語のリストのリストのリストであることを確認する
 
     Args:
         values (list): リスト
 
     Returns:
-        TypeGuard[list[list[list[str]]]]: タイプガードされたリスト
+        TypeGuard: タイプガード
     """
     return (
         bool(values)
@@ -53,13 +53,13 @@ def are_paras(values: list, /) -> TypeGuard[list[Para2dStr]]:
 
 
 def is_tagged_token(values: tuple, /) -> TypeGuard[TaggedToken]:
-    """posのタプルであることを確認する
+    """posと単語のタプルであることを確認する
 
     Args:
         values (tuple): タプル
 
     Returns:
-        TypeGuard[tuple[str, str]]: タイプガードされたタプル
+        TypeGuard: タイプガード
     """
     return (
         bool(values)
@@ -71,13 +71,13 @@ def is_tagged_token(values: tuple, /) -> TypeGuard[TaggedToken]:
 
 
 def are_tagged_tokens(values: list, /) -> TypeGuard[list[TaggedToken]]:
-    """posのリストであることを確認する
+    """posと単語のリストであることを確認する
 
     Args:
         values (list): リスト
 
     Returns:
-        TypeGuard[list[tuple[str, str]]]: タイプガードされたリスト
+        TypeGuard: タイプガード
     """
     return (
         bool(values)
@@ -87,13 +87,13 @@ def are_tagged_tokens(values: list, /) -> TypeGuard[list[TaggedToken]]:
 
 
 def are_tagged_sents(values: list, /) -> TypeGuard[list[list[TaggedToken]]]:
-    """posのリストのリストであることを確認する
+    """posと単語のリストのリストであることを確認する
 
     Args:
         values (list): リスト
 
     Returns:
-        TypeGuard[list[list[tuple[str, str]]]]: タイプガードされたリスト
+        TypeGuard: タイプガード
     """
     return (
         bool(values)
@@ -109,7 +109,7 @@ def is_tag_list(values: list, /) -> TypeGuard[list[Tag]]:
         values (list): リスト
 
     Returns:
-        TypeGuard[list[str]]: タイプガードされたリスト
+        TypeGuard: タイプガード
     """
     return (
         bool(values)
@@ -125,7 +125,7 @@ def is_tag_set(values: set, /) -> TypeGuard[set[Tag]]:
         values (set): セット
 
     Returns:
-        TypeGuard[set[str]]: タイプガードされたセット
+        TypeGuard: タイプガード
     """
     return (
         bool(values)
@@ -141,7 +141,7 @@ def is_tag_tuple(values: tuple, /) -> TypeGuard[tuple[Tag, ...]]:
         values (tuple): タプル
 
     Returns:
-        TypeGuard[tuple[str, ...]]: タイプガードされたタプル
+        TypeGuard: タイプガード
     """
     return (
         bool(values)
