@@ -23,6 +23,9 @@ TaggedToken: TypeAlias = tuple[TokenStr, Tag]
 FeatureLabel: TypeAlias = str
 """特徴ラベル"""
 
+Char: TypeAlias = str
+"""文字"""
+
 # 環境変数
 
 EnvKey: TypeAlias = str
