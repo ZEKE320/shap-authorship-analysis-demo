@@ -4,3 +4,6 @@
 [submodule "data/liyanage_vijini_2022"]
 	path = data/liyanage_vijini_2022
 	url = https://github.com/john6938/GeneratedTextDetection.git
+[submodule "data/john_blake_2023"]
+	path = data/john_blake_2023
+	url = https://github.com/john6938/nlp.git
