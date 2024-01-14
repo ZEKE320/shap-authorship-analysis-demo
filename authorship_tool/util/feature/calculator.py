@@ -14,9 +14,17 @@ nltk.download("wordnet")
 
 import numpy as np
 from nltk import SnowballStemmer, WordNetLemmatizer
+from numpy.typing import NDArray
 from rich.console import Console
 
-from authorship_tool.types_ import Para2dStr, Sent1dStr, Tag, TaggedToken, TokenStr
+from authorship_tool.types_ import (
+    Char,
+    Para2dStr,
+    Sent1dStr,
+    Tag,
+    TaggedToken,
+    TokenStr,
+)
 from authorship_tool.util import dim_reshaper
 from authorship_tool.util.feature.pos import PosFeature
 from authorship_tool.util.feature.regex import NUMERIC_VALUE_PATTERN
@@ -189,9 +197,9 @@ class SentenceCalculator:
         )
 
     @staticmethod
-    def average_token_length(sent: Sent1dStr) -> np.float64:
+    def average_word_length(sent: Sent1dStr) -> np.float64:
         """
-        文中の単語の平均文字列長を計算する
+        文中の単語の平均単語長を計算する
         Calculate the average word length in a sentence
 
         Args:
@@ -204,7 +212,7 @@ class SentenceCalculator:
             return np.float64(0)
 
         return np.divide(
-            np.sum([len(token) for token in sent]),
+            sum(len(token) for token in sent),
             sent_length,
             dtype=np.float64,
         )
@@ -246,7 +254,9 @@ class SentenceCalculator:
             return np.float64(0)
 
         return np.divide(
-            SentenceCalculator.count_uncommon_words(sent), sent_length, dtype=np.float64
+            SentenceCalculator.count_uncommon_words(sent),
+            sent_length,
+            dtype=np.float64,
         )
 
     @staticmethod
@@ -306,16 +316,19 @@ class SentenceCalculator:
         pos_feature: PosFeature = PosFeature(sent).tag_subcategories()
         tagged_tokens: list[TaggedToken] = pos_feature.tagged_tokens
 
-        # 過去分詞形容詞を確認するコード
-        # if "JJ_pp" in set(pos for (_, pos) in tagged_tokens):
-        #     console.print(f"{pos_feature}\n")
-
         tags: list[Tag] = [tag for (_, tag) in tagged_tokens]
-        tag_size: int = len(tags)
+        # NOTE 各タグの出現数を計算するため、ここでsetに変換してはいけない
+        # Do not convert to a set here to calculate the number of occurrences of each tag
+
+        total_token_count: int = len(tags)
 
         return {
-            tag: np.divide(tags.count(tag), tag_size, dtype=np.float64)
-            if tag_size != 0
+            tag: np.divide(
+                tags.count(tag),
+                total_token_count,
+                dtype=np.float64,
+            )
+            if total_token_count != 0
             else np.float64(0)
             for tag in set(tags)
         }
@@ -343,9 +356,9 @@ class ParagraphCalculator:
         return SentenceCalculator.word_variation(dim_reshaper.reduce_dim(para))
 
     @staticmethod
-    def average_token_length(para: Para2dStr) -> np.float64:
+    def average_word_length(para: Para2dStr) -> np.float64:
         """
-        段落中の単語の平均文字列長を計算する
+        段落中の単語の平均単語長を計算する
         Calculate the average word length in a paragraph
 
         Args:
@@ -355,7 +368,7 @@ class ParagraphCalculator:
             np.float64: 平均文字列長 (Average word length)
         """
 
-        return SentenceCalculator.average_token_length(dim_reshaper.reduce_dim(para))
+        return SentenceCalculator.average_word_length(dim_reshaper.reduce_dim(para))
 
     @staticmethod
     def non_alphabetic_characters_frequency(para: Para2dStr) -> np.float64:
@@ -427,7 +440,7 @@ class UnivKansasFeatures:
     """
 
     @staticmethod
-    def v1_sentences_per_paragraph(para: Para2dStr) -> np.int64:
+    def v1_sentences_per_paragraph(para: Para2dStr) -> int:
         """
         段落内の文数を計算する
         Calculate the number of sentences in a paragraph
@@ -438,10 +451,10 @@ class UnivKansasFeatures:
         Returns:
             np.int64: 段落内の文数 (Number of sentences in a paragraph)
         """
-        return np.int64(len(para))
+        return len(para)
 
     @staticmethod
-    def v2_words_per_paragraph(para: Para2dStr) -> np.int64:
+    def v2_words_per_paragraph(para: Para2dStr) -> int:
         """
         段落内で出現する単語の合計を計算する
         Calculate the total number of words in a paragraph
@@ -456,7 +469,7 @@ class UnivKansasFeatures:
         return SentenceCalculator.sentence_length(sent)
 
     @staticmethod
-    def _char_present(para: Para2dStr, char: str) -> np.bool_:
+    def _char_present(para: Para2dStr, char: str) -> bool:
         """
         段落内に指定した文字が存在するかどうかを判定する
         Determine whether the specified character exists in the paragraph
@@ -472,10 +485,10 @@ class UnivKansasFeatures:
         if len(char) != 1:
             raise ValueError("char must be a single character")
 
-        return np.bool_(any(char in word for sent in para for word in sent))
+        return any(char in word for sent in para for word in sent)
 
     @staticmethod
-    def v3_close_parenthesis_present(para: Para2dStr) -> np.bool_:
+    def v3_close_parenthesis_present(para: Para2dStr) -> bool:
         """
         段落内に括弧閉じが存在するかどうかを判定する
         Determine whether the closing parenthesis exists in the paragraph
@@ -489,7 +502,7 @@ class UnivKansasFeatures:
         return UnivKansasFeatures._char_present(para, ")")
 
     @staticmethod
-    def v4_dash_present(para: Para2dStr) -> np.bool_:
+    def v4_dash_present(para: Para2dStr) -> bool:
         """
         段落内にダッシュが存在するかどうかを判定する
         Determine whether the dash exists in the paragraph
@@ -503,7 +516,7 @@ class UnivKansasFeatures:
         return UnivKansasFeatures._char_present(para, "-")
 
     @staticmethod
-    def _semi_colon_present(para: Para2dStr) -> np.bool_:
+    def _semi_colon_present(para: Para2dStr) -> bool:
         """
         段落内にセミコロンが存在するかどうかを判定する
         Determine whether the semicolon exists in the paragraph
@@ -517,7 +530,7 @@ class UnivKansasFeatures:
         return UnivKansasFeatures._char_present(para, ";")
 
     @staticmethod
-    def _colon_present(para: Para2dStr) -> np.bool_:
+    def _colon_present(para: Para2dStr) -> bool:
         """
         段落内にコロンが存在するかどうかを判定する
         Determine whether the colon exists in the paragraph
@@ -531,7 +544,7 @@ class UnivKansasFeatures:
         return UnivKansasFeatures._char_present(para, ":")
 
     @staticmethod
-    def v5_semi_colon_or_colon_present(para: Para2dStr) -> np.bool_:
+    def v5_semi_colon_or_colon_present(para: Para2dStr) -> bool:
         """
         段落内にセミコロンまたはコロンが存在するかどうかを判定する
         Determine whether the semicolon or colon exists in the paragraph
@@ -547,7 +560,7 @@ class UnivKansasFeatures:
         ) or UnivKansasFeatures._colon_present(para)
 
     @staticmethod
-    def v6_question_mark_present(para: Para2dStr) -> np.bool_:
+    def v6_question_mark_present(para: Para2dStr) -> bool:
         """
         段落内に疑問符が存在するかどうかを判定する
         Determine whether the question mark exists in the paragraph
@@ -561,7 +574,7 @@ class UnivKansasFeatures:
         return UnivKansasFeatures._char_present(para, "?")
 
     @staticmethod
-    def v7_apostrophe_present(para: Para2dStr) -> np.bool_:
+    def v7_apostrophe_present(para: Para2dStr) -> bool:
         """
         段落内にアポストロフィが存在するかどうかを判定する
         Determine whether the apostrophe exists in the paragraph
@@ -602,19 +615,20 @@ class UnivKansasFeatures:
         Returns:
             np.float64: 文の前後での文長の差の平均値 (Average difference in sentence length between sentences before and after a sentence)
         """
-        sent_lengths: list[int] = [len(sentence) for sentence in para]
-        diffs: list[int] = [
-            abs(sent_lengths[i] - sent_lengths[i + 1])
-            for i in range(len(sent_lengths) - 1)
-        ]
+        sent_lengths: NDArray[np.int64] = np.array([len(sentence) for sentence in para])
+        diffs: NDArray[np.int64] = np.abs(np.diff(sent_lengths))
 
-        if (dif_count := len(diffs)) == 0:
+        if diffs.size == 0:
             return np.float64(0)
 
-        return np.divide(sum(diffs), dif_count, dtype=np.float64)
+        return np.divide(
+            np.sum(diffs),
+            diffs.size,
+            dtype=np.float64,
+        )
 
     @staticmethod
-    def v10_sentence_with_lt_11_words(para: Para2dStr) -> np.bool_:
+    def v10_sentence_with_lt_11_words(para: Para2dStr) -> bool:
         """
         段落内に単語数が11未満の文が存在するかどうかを判定する
         Determine whether there are sentences with less than 11 words in a paragraph
@@ -625,10 +639,10 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: 11未満の単語数を持つ文が存在する場合はTrue、それ以外はFalse（真偽値）
         """
-        return np.bool_(any(len(sentence) < 11 for sentence in para))
+        return any(len(sentence) < 11 for sentence in para)
 
     @staticmethod
-    def v11_sentence_with_gt_34_words(para: Para2dStr) -> np.bool_:
+    def v11_sentence_with_gt_34_words(para: Para2dStr) -> bool:
         """
         段落内に単語数が34より多い文が存在するかどうかを判定する
         Determine whether there are sentences with more than 34 words in a paragraph
@@ -639,10 +653,10 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: 34より多い単語数を持つ文が存在する場合はTrue、それ以外はFalse（真偽値）
         """
-        return np.bool_(any(len(sentence) > 34 for sentence in para))
+        return any(len(sentence) > 34 for sentence in para)
 
     @staticmethod
-    def _contains_word(para: Para2dStr, word: str) -> np.bool_:
+    def _contains_word(para: Para2dStr, word: str) -> bool:
         """
         段落内に指定した単語が存在するかどうかを判定する
         Determine whether the specified word exists in the paragraph
@@ -655,12 +669,13 @@ class UnivKansasFeatures:
             np.bool_: 単語の存在有無 (Presence or absence of word)
         """
         lower_word: str = word.lower()
-        return np.bool_(
-            any(lower_word == token.lower() for sentence in para for token in sentence)
+
+        return any(
+            lower_word == token.lower() for sentence in para for token in sentence
         )
 
     @staticmethod
-    def v12_contains_although(para: Para2dStr) -> np.bool_:
+    def v12_contains_although(para: Para2dStr) -> bool:
         """
         段落内に"although"が存在するかどうかを判定する
         Determine whether "although" exists in the paragraph
@@ -670,10 +685,11 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: "although"の存在有無 (Presence or absence of "although")
         """
+
         return UnivKansasFeatures._contains_word(para, "although")
 
     @staticmethod
-    def v13_contains_however(para: Para2dStr) -> np.bool_:
+    def v13_contains_however(para: Para2dStr) -> bool:
         """
         段落内に"however"が存在するかどうかを判定する
         Determine whether "however" exists in the paragraph
@@ -684,10 +700,11 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: "however"の存在有無 (Presence or absence of "however")
         """
+
         return UnivKansasFeatures._contains_word(para, "however")
 
     @staticmethod
-    def v14_contains_but(para: Para2dStr) -> np.bool_:
+    def v14_contains_but(para: Para2dStr) -> bool:
         """
         段落内に"but"が存在するかどうかを判定する
         Determine whether "but" exists in the paragraph
@@ -697,10 +714,11 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: "but"の存在有無 (Presence or absence of "but")
         """
+
         return UnivKansasFeatures._contains_word(para, "but")
 
     @staticmethod
-    def v15_contains_because(para: Para2dStr) -> np.bool_:
+    def v15_contains_because(para: Para2dStr) -> bool:
         """
         段落内に"because"が存在するかどうかを判定する
         Determine whether "because" exists in the paragraph
@@ -711,10 +729,11 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: "because"の存在有無 (Presence or absence of "because")
         """
+
         return UnivKansasFeatures._contains_word(para, "because")
 
     @staticmethod
-    def v16_contains_this(para: Para2dStr) -> np.bool_:
+    def v16_contains_this(para: Para2dStr) -> bool:
         """
         段落内にthisが存在するかどうかを判定する
 
@@ -724,10 +743,11 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: "this"の存在有無 (Presence or absence of "this")
         """
+
         return UnivKansasFeatures._contains_word(para, "this")
 
     @staticmethod
-    def _contains_specific_word(para: Para2dStr, word: str) -> np.bool_:
+    def _contains_word_including_derived_forms(para: Para2dStr, word: str) -> bool:
         """
         段落内に指定した単語が派生形を含めて存在するかどうかを判定する
         Determine whether the specified word exists in the paragraph, including derived forms
@@ -745,9 +765,9 @@ class UnivKansasFeatures:
         )
 
         if len(matched_tokens) == 0:
-            return np.bool_(False)
+            return False
 
-        return np.bool_(UnivKansasFeatures._check_word_lemma(matched_tokens, word))
+        return UnivKansasFeatures._check_word_lemma(matched_tokens, word)
 
     @staticmethod
     def _obtain_words_matching_stem(para: Para2dStr, word: str) -> set[TokenStr]:
@@ -762,16 +782,18 @@ class UnivKansasFeatures:
         Returns:
             set[TokenStr]: 指定した語幹を持つ単語 (Words with the specified stem)
         """
+
         stem: str = stemmer.stem(word)
+
         return {
             token
             for sentence in para
             for token in sentence
-            if stem == stemmer.stem(token)
+            if stemmer.stem(token) == stem
         }
 
     @staticmethod
-    def _check_word_lemma(tokens: set[str], target_word: str) -> np.bool_:
+    def _check_word_lemma(tokens: set[str], target_word: str) -> bool:
         """
         レンマ化した単語が一致するかどうかを判定する
         Determine whether the lemmatized words match
@@ -783,13 +805,13 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: レンマ化した単語の一致有無 (Presence or absence of matching lemmatized words)
         """
+
         lemmatized_word: str = lemmatizer.lemmatize(target_word)
-        return np.bool_(
-            any(lemmatized_word == lemmatizer.lemmatize(token) for token in tokens)
-        )
+
+        return any(lemmatized_word == lemmatizer.lemmatize(token) for token in tokens)
 
     @staticmethod
-    def v17_contains_others_or_researchers(para: Para2dStr) -> np.bool_:
+    def v17_contains_others_or_researchers(para: Para2dStr) -> bool:
         """
         段落内にothersまたはresearchersが存在するかどうかを判定する
         Determine whether "others" or "researchers" exists in the paragraph
@@ -800,12 +822,14 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: "others"または"researchers"の存在有無 (Presence or absence of "others" or "researchers")
         """
-        return UnivKansasFeatures._contains_specific_word(
+        return UnivKansasFeatures._contains_word_including_derived_forms(
             para, "others"
-        ) or UnivKansasFeatures._contains_specific_word(para, "researchers")
+        ) or UnivKansasFeatures._contains_word_including_derived_forms(
+            para, "researchers"
+        )
 
     @staticmethod
-    def v18_contains_numbers(para: Para2dStr) -> np.bool_:
+    def v18_contains_numbers(para: Para2dStr) -> bool:
         """
         段落内に数字が存在するかどうかを判定する
         Determine whether numbers exist in the paragraph
@@ -816,17 +840,12 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: 数字の存在有無 (Presence or absence of numbers)
         """
-        return np.bool_(
-            any(
-                char.isdigit()
-                for sentence in para
-                for token in sentence
-                for char in token
-            )
+        return any(
+            char.isdigit() for sentence in para for token in sentence for char in token
         )
 
     @staticmethod
-    def _count_char(para: Para2dStr, target_char: str) -> np.int64:
+    def _count_char(para: Para2dStr, target_char: str) -> int:
         """
         段落内に指定した文字の合計を計算する
         Count the total number of specified characters in a paragraph
@@ -841,13 +860,10 @@ class UnivKansasFeatures:
         if len(target_char) != 1:
             raise ValueError("target_char must be a single character")
 
-        return np.sum(
-            [token.count(target_char) for sentence in para for token in sentence],
-            dtype=np.int64,
-        )
+        return sum(token.count(target_char) for sentence in para for token in sentence)
 
     @staticmethod
-    def v19_contains_2_times_more_capitals_than_period(para: Para2dStr) -> np.bool_:
+    def v19_contains_2_times_more_capitals_than_period(para: Para2dStr) -> bool:
         """
         段落内にピリオドよりも大文字が2倍以上存在するかどうかを判定する
         Determine whether there are more than twice as many capital letters as periods in a paragraph
@@ -858,21 +874,20 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: ピリオドの2倍以上の大文字が存在するかどうか (Whether there are more than twice as many capital letters as periods)
         """
+
         return np.greater(
-            np.sum(
-                [
-                    char.isupper()
-                    for sentence in para
-                    for token in sentence
-                    for char in token
-                ]
+            sum(
+                char.isupper()
+                for sentence in para
+                for token in sentence
+                for char in token
             ),
             np.multiply(UnivKansasFeatures._count_char(para, "."), 2),
-            dtype=np.bool_,
+            dtype=bool,
         )
 
     @staticmethod
-    def v20_contains_et(para: Para2dStr) -> np.bool_:
+    def v20_contains_et(para: Para2dStr) -> bool:
         """
         段落内にetが存在するかどうかを判定する
         Determine whether "et" exists in the paragraph
@@ -883,4 +898,4 @@ class UnivKansasFeatures:
         Returns:
             np.bool_: "et"の存在有無 (Presence or absence of "et")
         """
-        return UnivKansasFeatures._contains_specific_word(para, "et")
+        return UnivKansasFeatures._contains_word_including_derived_forms(para, "et")
