@@ -101,45 +101,45 @@ def dump(result: TrainingResult, title: str | None = None) -> None:
     if title is None:
         title = "_output_"
 
-    LGBM_MODEL_DIR: Final[Path] = PathUtil.LGBM_MODEL_DIR.joinpath(title)
-    DATASET_DIR: Final[Path] = PathUtil.DATASET_DIR.joinpath(title)
+    lgbm_model_dir: Final[Path] = PathUtil.LGBM_MODEL_DIR.joinpath(title)
+    dataset_dir: Final[Path] = PathUtil.DATASET_DIR.joinpath(title)
 
-    LGBM_MODEL_DIR.mkdir(exist_ok=True)
-    LGBM_MODEL_DIR.mkdir(exist_ok=True)
+    lgbm_model_dir.mkdir(exist_ok=True)
+    lgbm_model_dir.mkdir(exist_ok=True)
 
-    with open(LGBM_MODEL_DIR.joinpath("lgbm_model.pkl"), "wb") as f:
+    with open(lgbm_model_dir.joinpath("lgbm_model.pkl"), "wb") as f:
         pickle.dump(result.model, f)
 
     result.splitted_dataset.train_data.to_csv(
-        DATASET_DIR.joinpath("train_data.csv"), index=False
+        dataset_dir.joinpath("train_data.csv"), index=False
     )
     result.splitted_dataset.test_data.to_csv(
-        DATASET_DIR.joinpath("test_data.csv"), index=False
+        dataset_dir.joinpath("test_data.csv"), index=False
     )
     DataFrame(result.splitted_dataset.train_ans).to_csv(
-        DATASET_DIR.joinpath("train_ans.csv"),
+        dataset_dir.joinpath("train_ans.csv"),
         index=False,
         header=False,
     )
     DataFrame(result.splitted_dataset.test_ans).to_csv(
-        DATASET_DIR.joinpath("test_ans.csv"),
+        dataset_dir.joinpath("test_ans.csv"),
         index=False,
         header=False,
     )
 
     DataFrame(result.prediction.pred_prob).to_csv(
-        DATASET_DIR.joinpath("ans_pred_prob.csv"),
+        dataset_dir.joinpath("ans_pred_prob.csv"),
         index=False,
         header=False,
     )
     DataFrame(result.prediction.pred_ans).to_csv(
-        DATASET_DIR.joinpath("ans_pred.csv"),
+        dataset_dir.joinpath("ans_pred.csv"),
         index=False,
         header=False,
     )
 
     DataFrame(result.shap_data.shap_vals).to_csv(
-        DATASET_DIR.joinpath("test_shap_val.csv"),
+        dataset_dir.joinpath("test_shap_val.csv"),
         index=False,
         header=False,
     )
