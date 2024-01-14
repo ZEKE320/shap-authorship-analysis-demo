@@ -16,6 +16,7 @@
       "import-untyped": "Hint"
     },
     "pylint.args": ["--rcfile=${workspaceFolder}/pyproject.toml"],
-    "pylint.ignorePatterns": ["${workspaceFolder}/data/**/*.py"]
+    "pylint.ignorePatterns": ["${workspaceFolder}/data/**/*.py"],
+    "python.analysis.exclude": ["**/data/**/*.py"]
   }
 }
