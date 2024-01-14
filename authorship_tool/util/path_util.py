@@ -56,37 +56,6 @@ class PathUtil:
     PROJECT_ROOT_PATH: Final[Path] = init_project_root()
 
 
-# @classmethod
-# def initialize_all_paths(cls) -> None:
-#     """
-#     環境変数からパスを初期化する
-#     Initialize all paths from environment variables
-#     """
-
-#     cls.PROJECT_ROOT = cls.initialize_project_root()
-#     cls.TEXT_DATA_DIR = cls.init_path(
-#         "dump/text_data",
-#     )
-#     cls.DATASET_DIR = cls.init_path(
-#         "dump/dataset",
-#     )
-#     cls.PAST_PARTICIPLE_ADJECTIVE_DATASET = cls.init_path(
-#         "data/john_blake_2023/wordLists/adjectivesPastParticiple",
-#     )
-#     cls.LGBM_MODEL_DIR = cls.init_path(
-#         "dump/lgbm/model",
-#     )
-#     cls.SHAP_FIGURE_DIR = cls.init_path(
-#         "dump/shap/figure",
-#     )
-#     cls.MANUAL_DATASET = cls.init_path(
-#         "dump/dataset/manual/dataset.csv",
-#     )
-
-
-# PathUtil.initialize_all_paths()
-
-
 PATHS: Final[dict[str, Path]] = {
     "text_data_dir": PathUtil.init_path(
         "dump/text_data",
@@ -97,10 +66,10 @@ PATHS: Final[dict[str, Path]] = {
     "past_participle_jj_dataset": PathUtil.init_path(
         "data/john_blake_2023/wordLists/adjectivesPastParticiple",
     ),
-    "lgbm_model_dataset_dir": PathUtil.init_path(
+    "lgbm_model_dir": PathUtil.init_path(
         "dump/lgbm/model",
     ),
-    "shap_figure_dataset_dir": PathUtil.init_path(
+    "shap_figure_dir": PathUtil.init_path(
         "dump/shap/figure",
     ),
 }
