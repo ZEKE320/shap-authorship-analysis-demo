@@ -51,7 +51,7 @@ def train(splitted_dataset: SplittedDataset, use_score: bool = False) -> Trainin
         splitted_dataset,
         prediction,
         shap_data,
-        score if use_score else None,
+        score,
     )
 
 
@@ -188,15 +188,13 @@ def convert_results_to_cv_result(
         LGBMCvResult: LGBMCvResultインスタンス
     """
 
-    models, splitted_datasets, predictions, shap_data_list = map(
-        list, zip(*map(astuple, results))
-    )
+    models, splitted_datasets, predictions, shap_data_list = zip(*map(astuple, results))
 
     return CrossValidationResult(
-        models,
-        splitted_datasets,
-        predictions,
-        shap_data_list,
+        list(models),
+        list(splitted_datasets),
+        list(predictions),
+        list(shap_data_list),
     )
 
 

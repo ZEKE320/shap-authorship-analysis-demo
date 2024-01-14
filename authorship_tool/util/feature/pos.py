@@ -8,9 +8,9 @@ from typing import Final
 
 import nltk
 
-from authorship_tool.types import Sent1dStr, Tag, TaggedToken, TokenStr
+from authorship_tool.types_ import Sent1dStr, Tag, TaggedToken, TokenStr
 from authorship_tool.util import type_guard
-from authorship_tool.util.path_util import PathUtil
+from authorship_tool.util.path_util import PATHS
 
 
 class PosFeature:
@@ -121,9 +121,9 @@ class PosFeature:
     @classmethod
     def initialize_dataset_past_participle_adjective(cls) -> None:
         """過去分詞形の形容詞のデータセットのパスを指定する"""
-        adjectives_past_participle_path: Final[
-            Path | None
-        ] = PathUtil.PAST_PARTICIPLE_ADJECTIVE_DATASET
+        adjectives_past_participle_path: Final[Path | None] = PATHS[
+            "past_participle_jj_dataset"
+        ]
 
         if (
             adjectives_past_participle_path is None

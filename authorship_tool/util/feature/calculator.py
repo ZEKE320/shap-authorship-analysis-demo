@@ -16,7 +16,7 @@ import numpy as np
 from nltk import SnowballStemmer, WordNetLemmatizer
 from rich.console import Console
 
-from authorship_tool.types import Para2dStr, Sent1dStr, Tag, TaggedToken, TokenStr
+from authorship_tool.types_ import Para2dStr, Sent1dStr, Tag, TaggedToken, TokenStr
 from authorship_tool.util import dim_reshaper
 from authorship_tool.util.feature.pos import PosFeature
 from authorship_tool.util.feature.regex import NUMERIC_VALUE_PATTERN

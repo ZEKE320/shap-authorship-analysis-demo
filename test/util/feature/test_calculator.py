@@ -3,7 +3,8 @@
     Feature calculator module test
 """
 
-from authorship_tool.types import Para2dStr
+from types_ import Para2dStr
+
 from authorship_tool.util.feature.calculator import UnivKansasFeatures
 from authorship_tool.util.tokenizer import tokenize_to_para
 

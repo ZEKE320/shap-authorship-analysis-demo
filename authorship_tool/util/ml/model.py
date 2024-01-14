@@ -11,7 +11,7 @@ from numpy.typing import NDArray
 from pandas import DataFrame
 from shap import Explainer
 
-from authorship_tool.util.path_util import PathUtil
+from authorship_tool.util.path_util import PATHS
 
 
 @dataclass(frozen=True)
@@ -101,8 +101,8 @@ def dump(result: TrainingResult, title: str | None = None) -> None:
     if title is None:
         title = "_output_"
 
-    lgbm_model_dir: Final[Path] = PathUtil.LGBM_MODEL_DIR.joinpath(title)
-    dataset_dir: Final[Path] = PathUtil.DATASET_DIR.joinpath(title)
+    lgbm_model_dir: Final[Path] = PATHS["lgbm_model_dir"].joinpath(title)
+    dataset_dir: Final[Path] = PATHS["dataset_dir"].joinpath(title)
 
     lgbm_model_dir.mkdir(exist_ok=True)
     lgbm_model_dir.mkdir(exist_ok=True)

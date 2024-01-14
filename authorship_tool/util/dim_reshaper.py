@@ -1,7 +1,7 @@
 """配列の次元を変換するモジュール"""
 
 
-from authorship_tool.types import Para2dStr, Sent1dStr
+from authorship_tool.types_ import Para2dStr, Sent1dStr
 
 
 def reduce_dim(para: Para2dStr, /) -> Sent1dStr:

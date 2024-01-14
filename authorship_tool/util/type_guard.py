@@ -1,7 +1,7 @@
 """タイプガード用のユーティリティモジュール"""
 from typing import TypeGuard
 
-from authorship_tool.types import Para2dStr, Sent1dStr, Tag, TaggedToken, TokenStr
+from authorship_tool.types_ import Para2dStr, Sent1dStr, Tag, TaggedToken, TokenStr
 
 
 def is_sent(values: list, /) -> TypeGuard[Sent1dStr]:

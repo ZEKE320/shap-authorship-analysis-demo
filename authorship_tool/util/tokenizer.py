@@ -1,7 +1,7 @@
 """トークナイザーモジュール"""
 import nltk
 
-from authorship_tool.types import Para2dStr
+from authorship_tool.types_ import Para2dStr
 
 
 def tokenize_to_para(paragraph_text: str) -> Para2dStr:

@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from numpy.typing import NDArray
 
-from authorship_tool.types import FeatureLabel, Para2dStr, Sent1dStr, Tag
+from authorship_tool.types_ import FeatureLabel, Para2dStr, Sent1dStr, Tag
 from authorship_tool.util import dim_reshaper, type_guard
 from authorship_tool.util.feature.calculator import (
     ParagraphCalculator,
