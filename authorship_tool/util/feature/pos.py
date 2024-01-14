@@ -51,13 +51,6 @@ class PosFeature:
         self.__tagged_tokens: Final[list[TaggedToken]] = tagged_tokens
 
     def __str__(self) -> str:
-        for idx, (word, pos) in enumerate(self.__tagged_tokens):
-            if pos in PosFeature.__POS_SUBCATEGORIES:
-                self.__tagged_tokens[idx] = (
-                    f"[bold #749BC2 reverse]{word}[/bold #749BC2 reverse]",
-                    pos,
-                )
-
         return " ".join([tagged_token[0] for tagged_token in self.__tagged_tokens])
 
     @property
