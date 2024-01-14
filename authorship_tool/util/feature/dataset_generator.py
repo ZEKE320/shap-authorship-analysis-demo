@@ -24,12 +24,12 @@ class SentenceFeatureDatasetGenerator:
         "word variation": SentenceCalculator.word_variation,
         "uncommon word frequency": SentenceCalculator.uncommon_word_frequency,
         "sentence length": SentenceCalculator.sentence_length,
-        "average word length": SentenceCalculator.average_token_length,
+        "average word length": SentenceCalculator.average_word_length,
     }
 
-    def __init__(self, tags: tuple[Tag, ...] | None = None) -> None:
-        if tags and not type_guard.is_tag_tuple(tags):
-            raise ValueError("tags must be a list of str")
+    def __init__(self, tags: list[Tag] | None = None) -> None:
+        if tags and not type_guard.is_tag_list(tags):
+            raise ValueError("tags must be a set of str")
 
         col: list[str] = list(SentenceFeatureDatasetGenerator.__COLS_AND_FUNC.keys())
 
@@ -37,11 +37,11 @@ class SentenceFeatureDatasetGenerator:
             col.extend(tags)
 
         # クラスのフィールドを定義
-        self.__columns: Final[tuple[str, ...]] = tuple(col)
-        self.__tags: Final[tuple[Tag, ...]] = tags if tags else ()
+        self.__columns: Final[list[str]] = col
+        self.__tags: Final[list[Tag]] = tags if tags else []
 
     @property
-    def columns(self) -> tuple[str, ...]:
+    def columns(self) -> list[str]:
         """特徴量の列名"""
         return self.__columns
 
@@ -84,7 +84,7 @@ class ParagraphFeatureDatasetGenerator:
     """
 
     __COLS_AND_FUNC: Final[
-        dict[FeatureLabel, Callable[[Para2dStr], (np.bool_ | np.int64 | np.float64)]]
+        dict[FeatureLabel, Callable[[Para2dStr], (bool | int | np.float64)]]
     ] = {
         "v1 sentences per paragraph": UnivKansasFeatures.v1_sentences_per_paragraph,
         "v2 words per paragraph": UnivKansasFeatures.v2_words_per_paragraph,
@@ -107,15 +107,15 @@ class ParagraphFeatureDatasetGenerator:
         "v19 contains 2 times more capitals than period": UnivKansasFeatures.v19_contains_2_times_more_capitals_than_period,
         "v20 contains et": UnivKansasFeatures.v20_contains_et,
         "word variation": ParagraphCalculator.word_variation,
-        "average token length": ParagraphCalculator.average_token_length,
+        "average word length": ParagraphCalculator.average_word_length,
         "non alphabetic characters frequency": ParagraphCalculator.non_alphabetic_characters_frequency,
         "uncommon word frequency": ParagraphCalculator.uncommon_word_frequency,
         "non-alphabetic characters frequency": ParagraphCalculator.non_alphabetic_characters_frequency,
         "numeric value frequency": ParagraphCalculator.numeric_value_frequency,
     }
 
-    def __init__(self, tags: tuple[Tag, ...] | None = None) -> None:
-        if tags and not type_guard.is_tag_tuple(tags):
+    def __init__(self, tags: list[Tag] | None = None) -> None:
+        if tags and not type_guard.is_tag_list(tags):
             raise ValueError("tags must be a list of str")
 
         col: list[FeatureLabel] = list(
@@ -125,33 +125,29 @@ class ParagraphFeatureDatasetGenerator:
             col.extend(tags)
 
         # クラスのフィールドを定義
-        self.__tags: Final[tuple[Tag, ...]] = tags if tags else ()
+        self.__tags: Final[list[Tag]] = tags if tags else []
 
-        self.__columns: Final[tuple[FeatureLabel, ...]] = tuple(col)
+        self.__columns: Final[list[FeatureLabel]] = col
 
-        self.__dtypes: Final[
-            tuple[type[np.bool_ | np.int64 | np.float64], ...]
-        ] = tuple(
+        self.__dtypes: Final[list[type[np.bool_ | np.int64 | np.float64]]] = [
             get_type_hints(callable)["return"]
             for callable in self.__COLS_AND_FUNC.values()
-        ) + tuple(
-            np.float64 for _ in range(len(self.__tags))
-        )
+        ] + [np.float64 for _ in range(len(self.__tags))]
 
     @property
-    def columns(self) -> tuple[str, ...]:
+    def columns(self) -> list[str]:
         """特徴量の列名"""
         return self.__columns
 
     @property
-    def dtypes(self) -> tuple[type[np.bool_ | np.int64 | np.float64], ...]:
+    def dtypes(self) -> list[type[np.bool_ | np.int64 | np.float64]]:
         """特徴量のデータ型"""
         return self.__dtypes
 
     def generate_from_paragraph(
         self,
         para: Para2dStr,
-        category: np.bool_,
+        category: bool,
     ) -> pd.Series:
         """文字列のリストのリストから特徴量のリストを生成する"""
 
@@ -167,7 +163,7 @@ class ParagraphFeatureDatasetGenerator:
             ],
         )
         pos_frequency_results = pd.Series(
-            [freq_by_pos.get(tag, np.float64(0.0)) for tag in self.__tags],
+            [freq_by_pos.get(tag, np.float64(0)) for tag in self.__tags],
         )
         category_series = pd.Series([category])
 
