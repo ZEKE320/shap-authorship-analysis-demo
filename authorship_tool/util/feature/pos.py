@@ -19,22 +19,22 @@ class PosFeature:
     __PAST_PARTICIPLE_ADJECTIVE_DATASET: set[TokenStr] = set()
     __POS_SUBCATEGORIES: Final[set[Tag]] = set(["JJ_pp"])
 
-    def __init__(self, word_list: list) -> None:
+    def __init__(self, words: list) -> None:
         tagged_tokens: list[TaggedToken] = []
         """単語とPOSタグのタプルのリスト"""
 
-        if type_guard.is_sent(word_list):
-            tagged_tokens = nltk.pos_tag(word_list)
+        if type_guard.is_sent(words):
+            tagged_tokens = nltk.pos_tag(words)
 
-        elif type_guard.is_para(word_list):
+        elif type_guard.is_para(words):
             tagged_tokens = [
                 word_and_pos
-                for words_and_pos in nltk.pos_tag_sents(word_list)
+                for words_and_pos in nltk.pos_tag_sents(words)
                 for word_and_pos in words_and_pos
             ]
 
-        elif type_guard.are_paras(word_list):
-            sents: list[Sent1dStr] = [sent for para in word_list for sent in para]
+        elif type_guard.are_paras(words):
+            sents: list[Sent1dStr] = [sent for para in words for sent in para]
 
             tagged_tokens = [
                 word_and_pos
@@ -42,8 +42,8 @@ class PosFeature:
                 for word_and_pos in words_and_pos
             ]
 
-        elif type_guard.are_tagged_tokens(word_list):
-            tagged_tokens = word_list.copy()
+        elif type_guard.are_tagged_tokens(words):
+            tagged_tokens = words.copy()
 
         if len(tagged_tokens) == 0 or not type_guard.are_tagged_tokens(tagged_tokens):
             raise TypeError("src type is not supported.")
@@ -58,18 +58,18 @@ class PosFeature:
         """単語とPOSタグのタプルのリスト
 
         Returns:
-            list[tuple[str, str]]: 単語とPOSタグのタプルのリスト
+            list[tuple[TokenStr, Tag]]: 単語とPOSタグのタプルのリスト
         """
         return self.__tagged_tokens
 
     @property
-    def all_pos(self) -> tuple[Tag, ...]:
-        """POSタグのタプルを返す
+    def all_pos(self) -> list[Tag]:
+        """POSタグのリストを返す
 
         Returns:
-            tuple[str]: POSタグのタプル
+            list[str]: POSタグのリスト
         """
-        return tuple(sorted({pos for (_, pos) in self.__tagged_tokens}))
+        return sorted({pos for (_, pos) in self.__tagged_tokens})
 
     def tag_subcategories(self) -> "PosFeature":
         """サブカテゴリを追加する
