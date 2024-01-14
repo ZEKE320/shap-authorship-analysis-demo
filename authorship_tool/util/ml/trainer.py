@@ -188,13 +188,15 @@ def convert_results_to_cv_result(
         LGBMCvResult: LGBMCvResultインスタンス
     """
 
-    models, splitted_datasets, predictions, shap_data_list = zip(*map(astuple, results))
+    models_zip, splitted_datasets_zip, predictions_zip, shap_data_zip = zip(
+        *map(astuple, results)
+    )
 
     return CrossValidationResult(
-        list(models),
-        list(splitted_datasets),
-        list(predictions),
-        list(shap_data_list),
+        list(models_zip),
+        list(splitted_datasets_zip),
+        list(predictions_zip),
+        shap_data_list=list(shap_data_zip),
     )
 
 
@@ -209,14 +211,19 @@ def convert_cv_result_for_view(cv_result: CrossValidationResult) -> CrossValidat
         CvViewData: Cvの結果を表示するためのデータ
     """
 
-    (
-        test_data_zip,
-        test_ans_zip,
-        pred_ans_zip,
-        pred_prob_zip,
-        shap_vals_zip,
-        shap_expected_val_zip,
-    ) = zip(astuple(cv_result))
+    (_, splitted_datasets_zip, predictions_zip, shap_data_collection_zip) = astuple(
+        cv_result
+    )
+
+    (_, test_data_zip, _, test_ans_zip) = zip(
+        *map(astuple, splitted_datasets_zip),
+    )
+    (pred_prob_zip, pred_ans_zip) = zip(
+        *map(astuple, predictions_zip),
+    )
+    (_, shap_vals_zip, shap_expected_val_zip) = zip(
+        *map(astuple, shap_data_collection_zip),
+    )
 
     test_data: pd.DataFrame = pd.concat(test_data_zip)
     test_ans: NDArray[np.bool_] = np.concatenate(test_ans_zip)
