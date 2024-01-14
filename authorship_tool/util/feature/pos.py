@@ -96,20 +96,16 @@ class PosFeature:
         Returns:
             PosFeature: PosFeatureインスタンス
         """
-        for word, pos in self.__tagged_tokens:
-            if pos == "JJ" and word in PosFeature.__PAST_PARTICIPLE_ADJECTIVE_DATASET:
-                return PosFeature(
-                    [
-                        (word, "JJ_pp")
-                        if word.strip().lower()
-                        in PosFeature.__PAST_PARTICIPLE_ADJECTIVE_DATASET
-                        and pos == "JJ"
-                        else (word, pos)
-                        for (word, pos) in self.__tagged_tokens
-                    ]
-                )
-
-        return self
+        return PosFeature(
+            [
+                (word, "JJ_pp")
+                if word.strip().lower()
+                in PosFeature.__PAST_PARTICIPLE_ADJECTIVE_DATASET
+                and pos == "JJ"
+                else (word, pos)
+                for (word, pos) in self.__tagged_tokens
+            ]
+        )
 
     @classmethod
     def initialize_dataset_past_participle_adjective(cls) -> None:
