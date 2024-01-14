@@ -3,10 +3,9 @@
     Feature calculator module test
 """
 
-from types_ import Para2dStr
-
+from authorship_tool.types_ import Para2dStr
 from authorship_tool.util.feature.calculator import UnivKansasFeatures
-from authorship_tool.util.tokenizer import tokenize_to_para
+from authorship_tool.util.tokenizer import tokenize_para
 
 text_1: str = (
     "This is a famous pen, Mr. Smith."
@@ -19,9 +18,9 @@ text_2: str = (
 text_3: str = (
     "I'm glad to hear that you found it! This pen is well-designed. I really like it."
 )
-para_1: Para2dStr = tokenize_to_para(text_1)
-para_2: Para2dStr = tokenize_to_para(text_2)
-para_3: Para2dStr = tokenize_to_para(text_3)
+para_1: Para2dStr = tokenize_para(text_1)
+para_2: Para2dStr = tokenize_para(text_2)
+para_3: Para2dStr = tokenize_para(text_3)
 
 
 class TestUnivKansasFeatures:
@@ -57,9 +56,15 @@ class TestUnivKansasFeatures:
 
     @staticmethod
     def test__contains_specific_word() -> None:
-        assert not UnivKansasFeatures._contains_specific_word(para_1, "thin")
-        assert not UnivKansasFeatures._contains_specific_word(para_2, "an")
-        assert UnivKansasFeatures._contains_specific_word(para_3, "likes")
+        assert not UnivKansasFeatures._contains_word_including_derived_forms(
+            para_1, "thin"
+        )
+        assert not UnivKansasFeatures._contains_word_including_derived_forms(
+            para_2, "an"
+        )
+        assert UnivKansasFeatures._contains_word_including_derived_forms(
+            para_3, "likes"
+        )
 
     @staticmethod
     def test_v5_semi_colon_or_colon_present() -> None:
@@ -125,14 +130,14 @@ class TestUnivKansasFeatures:
 
     @staticmethod
     def test_v17_contains_others_or_researchers() -> None:
-        para_v17_1: Para2dStr = tokenize_to_para(
+        para_v17_1: Para2dStr = tokenize_para(
             "The researchers conducted the experiment."
         )
-        para_v17_2: Para2dStr = tokenize_to_para(
+        para_v17_2: Para2dStr = tokenize_para(
             "The other person did not agree with the result."
         )
-        para_v17_3: Para2dStr = tokenize_to_para("He conducted a research.")
-        para_v17_4: Para2dStr = tokenize_to_para("SHe discriminated against others.")
+        para_v17_3: Para2dStr = tokenize_para("He conducted a research.")
+        para_v17_4: Para2dStr = tokenize_para("SHe discriminated against others.")
         assert UnivKansasFeatures.v17_contains_others_or_researchers(para_v17_1)
         assert not UnivKansasFeatures.v17_contains_others_or_researchers(para_v17_2)
         assert not UnivKansasFeatures.v17_contains_others_or_researchers(para_v17_3)
@@ -154,7 +159,7 @@ class TestUnivKansasFeatures:
         assert not UnivKansasFeatures.v20_contains_et(para_2)
         assert not UnivKansasFeatures.v20_contains_et(para_3)
 
-        para_v20: Para2dStr = tokenize_to_para(
+        para_v20: Para2dStr = tokenize_para(
             "Jack Smith, et al. conducted the experiment."
         )
         assert UnivKansasFeatures.v20_contains_et(para_v20)
