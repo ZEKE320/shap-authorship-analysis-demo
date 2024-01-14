@@ -416,17 +416,8 @@ class ParagraphCalculator:
         Returns:
             dict[Tag, float]: 品詞とその割合 (POS and its frequency)
         """
-        pos_feature: PosFeature = PosFeature(para).tag_subcategories()
-        tagged_tokens: list[TaggedToken] = pos_feature.tagged_tokens
-        tags: list[Tag] = [tag for (_, tag) in tagged_tokens]
-        total_tag_count: int = len(tags)
 
-        return {
-            tag: np.divide(tags.count(tag), total_tag_count, dtype=np.float64)
-            if total_tag_count != 0
-            else np.float64(0)
-            for tag in set(tags)
-        }
+        return SentenceCalculator.pos_frequencies(dim_reshaper.reduce_dim(para))
 
 
 class UnivKansasFeatures:
