@@ -35,6 +35,139 @@ class SentenceCalculator:
     """
 
     @staticmethod
+    def sentence_length(sent: Sent1dStr) -> int:
+        """
+        文中のトークン数を計算する
+        Count the number of tokens in a sentence
+
+        Args:
+            sent (Sent1dStr): 文章 (Sentence)
+
+        Returns:
+            np.int64: トークン数 (Number of tokens)
+        """
+        return len(sent)
+
+    @staticmethod
+    def count_individual_tokens(sent: Sent1dStr) -> int:
+        """
+        文中に出現する一意の単語数を計算する
+        Count the number of unique words in a sentence
+
+        Args:
+            sent (Sent1dStr): 文章 (Sentence)
+        Returns:
+            np.int64: 出現する一意の単語数 (Number of unique words)
+        """
+        return len(set(sent))
+
+    @staticmethod
+    def count_total_characters(sent: Sent1dStr) -> int:
+        """
+        文中の文字数を計算する
+        Count the number of characters in a sentence
+
+        Args:
+            sent (Sent1dStr): 文章 (Sentence)
+
+        Returns:
+            np.int64: 文中の文字数 (Number of characters in a sentence)
+        """
+        return sum(len(token) for token in sent)
+
+    @staticmethod
+    def count_character(sent: Sent1dStr, character: str) -> int:
+        """
+        文中で出現する指定した文字の合計を計算する
+        Count the total number of specified characters in a sentence
+
+        Args:
+            sent (Sent1dStr): 文 (Sentence)
+            character (str): 文字 (Character)
+
+        Returns:
+            np.int64: 文中で出現する指定した文字の合計 (Total number of specified characters in a sentence)
+        """
+        if len(character) != 1:
+            raise ValueError("character must be a single character")
+
+        return sum(token.count(character) for token in sent)
+
+    @staticmethod
+    def count_non_alphabetic_characters(sent: Sent1dStr) -> int:
+        """
+        文中で出現するアルファベット以外の文字数を計算する
+        Count the number of non-alphabetic characters in a sentence
+
+        Args:
+            sent (Sent1dStr): 文 (Sentence)
+
+        Returns:
+            np.int64: 文中で出現するアルファベット以外の文字数 (Number of non-alphabetic characters in a sentence)
+        """
+        non_alpha_list: list[Char] = [
+            char for token in sent for char in token if not char.isalpha()
+        ]
+
+        return len(non_alpha_list)
+
+    @staticmethod
+    def count_numeric_characters(sent: Sent1dStr) -> int:
+        """
+        文中で出現する数字の文字数を計算する
+        Count the number of numeric characters in a sentence
+
+        Args:
+            sent (Sent1dStr): 文 (Sentence)
+
+        Returns:
+            np.int64: 文中で出現する数字の文字数 (Number of numeric characters in a sentence)
+        """
+        numeric_chars: list[Char] = [
+            char for token in sent for char in token if char.isdecimal()
+        ]
+
+        return len(numeric_chars)
+
+    @staticmethod
+    def count_numeric_values(sent: Sent1dStr) -> int:
+        """
+        文内で出現する数値の出現数を計算する
+        Count the number of numeric values in a sentence
+
+        Args:
+            sent (Sent1dStr): 文 (Sentence)
+
+        Returns:
+            np.int64: 文中で出現する数値の出現数 (Number of numeric values in a sentence)
+        """
+        numeric_values: list[str] = [
+            matched
+            for token in sent
+            for matched in re.findall(NUMERIC_VALUE_PATTERN, token)
+        ]
+
+        return len(numeric_values)
+
+    @staticmethod
+    def count_uncommon_words(sent: Sent1dStr) -> int:
+        """
+        ストップワードではない単語の数を計算する
+        Count the number of words that are not stop words
+
+        Args:
+            sent (Sent1dStr): 文 (Sentence)
+
+        Returns:
+            np.int64: ストップワードではない単語の数 (Number of words that are not stop words)
+        """
+        not_stop_words: list[TokenStr] = [
+            word for word in sent if word not in stop_words
+        ]
+
+        return len(not_stop_words)
+
+    @staticmethod
     def word_variation(sent: Sent1dStr) -> np.float64:
         """
         文中の単語の豊富さを計算する
@@ -186,116 +319,6 @@ class SentenceCalculator:
             else np.float64(0)
             for tag in set(tags)
         }
-
-    @staticmethod
-    def sentence_length(sent: Sent1dStr) -> np.int64:
-        """
-        文中のトークン数を計算する
-        Count the number of tokens in a sentence
-
-        Args:
-            sent (Sent1dStr): 文章 (Sentence)
-
-        Returns:
-            np.int64: トークン数 (Number of tokens)
-        """
-        return np.int64(len(sent))
-
-    @staticmethod
-    def count_individual_tokens(sent: Sent1dStr) -> np.int64:
-        """
-        文中に出現する一意の単語数を計算する
-        Count the number of unique words in a sentence
-
-        Args:
-            sent (Sent1dStr): 文章 (Sentence)
-        Returns:
-            np.int64: 出現する一意の単語数 (Number of unique words)
-        """
-        return np.int64(len(set(sent)))
-
-    @staticmethod
-    def count_character(sent: Sent1dStr, character: str) -> np.int64:
-        """
-        文中で出現する指定した文字の合計を計算する
-        Count the total number of specified characters in a sentence
-
-        Args:
-            sent (Sent1dStr): 文 (Sentence)
-            character (str): 文字 (Character)
-
-        Returns:
-            np.int64: 文中で出現する指定した文字の合計 (Total number of specified characters in a sentence)
-        """
-        if len(character) != 1:
-            raise ValueError("character must be a single character")
-
-        return np.sum([token.count(character) for token in sent], dtype=np.int64)
-
-    @staticmethod
-    def count_non_alphabetic_characters(sent: Sent1dStr) -> np.int64:
-        """
-        文中で出現するアルファベット以外の文字数を計算する
-        Count the number of non-alphabetic characters in a sentence
-
-        Args:
-            sent (Sent1dStr): 文 (Sentence)
-
-        Returns:
-            np.int64: 文中で出現するアルファベット以外の文字数 (Number of non-alphabetic characters in a sentence)
-        """
-        non_alpha_list = [
-            char for token in sent for char in token if not char.isalpha()
-        ]
-        return np.int64(len(non_alpha_list))
-
-    @staticmethod
-    def count_numeric_characters(sent: Sent1dStr) -> np.int64:
-        """
-        文中で出現する数字の文字数を計算する
-        Count the number of numeric characters in a sentence
-
-        Args:
-            sent (Sent1dStr): 文 (Sentence)
-
-        Returns:
-            np.int64: 文中で出現する数字の文字数 (Number of numeric characters in a sentence)
-        """
-        numeric_list = [char for token in sent for char in token if char.isdecimal()]
-        return np.int64(len(numeric_list))
-
-    @staticmethod
-    def count_numeric_values(sent: Sent1dStr) -> np.int64:
-        """
-        文内で出現する数値の出現数を計算する
-        Count the number of numeric values in a sentence
-
-        Args:
-            sent (Sent1dStr): 文 (Sentence)
-
-        Returns:
-            np.int64: 文中で出現する数値の出現数 (Number of numeric values in a sentence)
-        """
-        matched_values = [
-            matched
-            for token in sent
-            for matched in re.findall(NUMERIC_VALUE_PATTERN, token)
-        ]
-        return np.int64(len(matched_values))
-
-    @staticmethod
-    def count_uncommon_words(sent: Sent1dStr) -> np.int64:
-        """
-        ストップワードではない単語の数を計算する
-        Count the number of words that are not stop words
-
-        Args:
-            sent (Sent1dStr): 文 (Sentence)
-
-        Returns:
-            np.int64: ストップワードではない単語の数 (Number of words that are not stop words)
-        """
-        return np.int64(len([word for word in sent if word not in stop_words]))
 
 
 class ParagraphCalculator:
