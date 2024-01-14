@@ -6,6 +6,15 @@
 
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 
+  "mounts": [
+    "type=volume,source=devcontainer-nltk-data,target=/home/vscode/nltk_data",
+    "type=volume,source=devcontainer-uoa-thesis-2014-2017,target=/workspaces/shap-authorship-analysis-demo/data/uoa-thesis-2014-2017"
+  ],
+
+  "containerEnv": {
+    "POETRY_VIRTUALENVS_IN_PROJECT": "true"
+  },
+
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {
       "installDirectlyFromGitHubRelease": true,
@@ -20,10 +29,6 @@
     "ghcr.io/devcontainers-contrib/features/poetry:2": {
       "version": "latest"
     }
-  },
-
-  "containerEnv": {
-    "POETRY_VIRTUALENVS_IN_PROJECT": "true"
   },
 
   "customizations": {
@@ -70,7 +75,9 @@
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": {
     "submodule": "git submodule init && git submodule update",
-    "poetry": "poetry install"
+    "poetry": "poetry install",
+    "nltk": "sudo chmod 777 -R /home/vscode/nltk_data",
+    "thesis-data": "sudo chmod 777 -R /workspaces/shap-authorship-analysis-demo/data/uoa-thesis-2014-2017"
   }
 
   // Configure tool-specific properties.
