@@ -1,3 +1,6 @@
 [submodule "data/nlp_datasets"]
 	path = data/nlp_datasets
 	url = https://github.com/john6938/nlp.git
+[submodule "data/liyanage_vijini_2022"]
+	path = data/liyanage_vijini_2022
+	url = https://github.com/john6938/GeneratedTextDetection.git
