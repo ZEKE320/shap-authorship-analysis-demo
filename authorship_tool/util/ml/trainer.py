@@ -13,7 +13,7 @@ from sklearn.model_selection import LeaveOneOut, train_test_split
 
 from authorship_tool.util.ml.model import (
     CrossValidationResult,
-    CrossValidationView,
+    CvGlobalExplanationData,
     LGBMSource,
     Prediction,
     Score,
@@ -209,7 +209,9 @@ def convert_results_to_cv_result(
     )
 
 
-def convert_cv_result_for_view(cv_result: CrossValidationResult) -> CrossValidationView:
+def convert_cv_result_to_global_exp_data(
+    cv_result: CrossValidationResult,
+) -> CvGlobalExplanationData:
     """
     LGBMCvResultをCvViewDataに変換します。
 
@@ -240,21 +242,15 @@ def convert_cv_result_for_view(cv_result: CrossValidationResult) -> CrossValidat
 
     pred_ans: NDArray[np.bool_] = np.concatenate(pred_ans_zip)
     pred_prob: NDArray[np.float64] = np.concatenate(pred_prob_zip)
-    shap_vals: NDArray[np.float64] = np.concatenate(shap_vals_zip)
-    shap_expected_val: NDArray[np.float64] = np.concatenate(
-        np.full(
-            shape=shap_vals_zip,
-            fill_value=shap_expected_val_zip,
-        )
-    )
 
-    return CrossValidationView(
+    shap_vals: NDArray[np.float64] = np.concatenate(shap_vals_zip)
+
+    return CvGlobalExplanationData(
         test_data,
         test_ans,
         pred_ans,
         pred_prob,
         shap_vals,
-        shap_expected_val,
     )
 
 
@@ -287,7 +283,7 @@ def calc_score(
     )
 
 
-def calculate_score_by_loocv(cv_view_data: CrossValidationView) -> Score:
+def calc_score_by_loocv(cv_view_data: CvGlobalExplanationData) -> Score:
     """
     LOOCVの結果からスコアを計算します。
 

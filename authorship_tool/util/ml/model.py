@@ -81,7 +81,7 @@ class CrossValidationResult:
 
 
 @dataclass(frozen=True)
-class CrossValidationView:
+class CvGlobalExplanationData:
     """クロスバリデーション結果の可視化用データクラス"""
 
     test_data: pd.DataFrame
