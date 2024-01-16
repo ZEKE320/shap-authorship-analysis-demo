@@ -156,7 +156,7 @@ def train_by_index(
     return train(splitted_dataset, use_score_calc)
 
 
-def train_loocv(source: LGBMSource) -> CrossValidationView:
+def train_loocv(source: LGBMSource) -> list[TrainingResult]:
     """
     LOOCVで学習を行います。
 
@@ -173,10 +173,7 @@ def train_loocv(source: LGBMSource) -> CrossValidationView:
         for train_indices, test_index in loo.split(source.feature_data_frame)
     ]
 
-    cv_result: CrossValidationResult = convert_results_to_cv_result(results)
-    cv_view_data: CrossValidationView = convert_cv_result_for_view(cv_result)
-
-    return cv_view_data
+    return results
 
 
 def convert_results_to_cv_result(
