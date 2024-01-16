@@ -75,7 +75,7 @@ def predict(model: LGBMClassifier, test_data: pd.DataFrame) -> Prediction:
 
     return Prediction(
         pred_prob=np.array(model.predict_proba(X=test_data), dtype=np.float64)[:, 1],
-        pred_ans=np.array(model.predict(X=test_data), dtype=np.bool_),
+        pred_ans=np.array(model.predict(X=test_data), dtype=bool),
     )
 
 
