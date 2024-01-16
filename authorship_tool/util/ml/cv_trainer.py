@@ -3,6 +3,7 @@
 Classifier cross validation module
 """
 
+from typing import Final
 
 import numpy as np
 import numpy.typing as npt
@@ -18,7 +19,9 @@ from authorship_tool.util.ml.model import (
     SplittedDataset,
     TrainingResult,
 )
-from authorship_tool.util.ml.trainer import SCORE_CALC_DEFAULT, train
+from authorship_tool.util.ml.trainer import train
+
+SCORE_CALC_DEFAULT: Final[bool] = False
 
 
 def train_by_index(

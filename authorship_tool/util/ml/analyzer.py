@@ -3,13 +3,16 @@
 Classifier analyzer module
 """
 
+from typing import Final
+
 import numpy as np
 import pandas as pd
 import shap
 from lightgbm import LGBMClassifier
 
 from authorship_tool.util.ml.model import ShapData
-from authorship_tool.util.ml.trainer import SHAP_VALUE_POSITIVE_IDX
+
+SHAP_VALUE_POSITIVE_IDX: Final[int] = 1
 
 
 def create_shap_data(model: LGBMClassifier, test_data: pd.DataFrame) -> ShapData:

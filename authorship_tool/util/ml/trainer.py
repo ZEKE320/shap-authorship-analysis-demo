@@ -23,7 +23,6 @@ from authorship_tool.util.ml.model import (
     TrainingResult,
 )
 
-SHAP_VALUE_POSITIVE_IDX: Final[int] = 1
 SCORE_CALC_DEFAULT: Final[bool] = False
 
 
