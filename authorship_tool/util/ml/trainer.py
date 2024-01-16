@@ -23,10 +23,11 @@ from authorship_tool.util.ml.model import (
 )
 
 SHAP_VALUE_POSITIVE_IDX: Final[int] = 1
+SCORE_CALC_DEFAULT: Final[bool] = False
 
 
 def train(
-    splitted_dataset: SplittedDataset, use_score_calc: bool = False
+    splitted_dataset: SplittedDataset, use_score_calc: bool = SCORE_CALC_DEFAULT
 ) -> TrainingResult:
     """
     LightGBMを使ってモデルをトレーニングします。
@@ -132,7 +133,7 @@ def train_by_index(
     source: LGBMSource,
     train_indices: NDArray,
     test_index: NDArray,
-    use_score_calc: bool = False,
+    use_score_calc: bool = SCORE_CALC_DEFAULT,
 ) -> TrainingResult:
     """
     指定したインデックスのデータを用いて学習を行います。
