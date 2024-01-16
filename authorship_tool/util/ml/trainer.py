@@ -196,7 +196,8 @@ def convert_results_to_cv_result(
     )
 
     models_zip, splitted_datasets_zip, predictions_zip, shap_data_zip, scores = zip(
-        *result_tuples
+        *result_tuples,
+        strict=True,
     )
 
     return CrossValidationResult(
@@ -219,18 +220,19 @@ def convert_cv_result_for_view(cv_result: CrossValidationResult) -> CrossValidat
         CvViewData: Cvの結果を表示するためのデータ
     """
 
-    _, splitted_datasets_zip, predictions_zip, shap_data_collection_zip, _ = astuple(
-        cv_result
-    )
+    _, splitted_datasets, predictions, shap_data_tuple, _ = astuple(cv_result)
 
     (_, test_data_zip, _, test_ans_zip) = zip(
-        *[astuple(splitted_dataset) for splitted_dataset in splitted_datasets_zip],
+        *[astuple(splitted_dataset) for splitted_dataset in splitted_datasets],
+        strict=True,
     )
     (pred_prob_zip, pred_ans_zip) = zip(
-        *[astuple(prediction) for prediction in predictions_zip],
+        *[astuple(prediction) for prediction in predictions],
+        strict=True,
     )
     (_, shap_vals_zip, shap_expected_val_zip) = zip(
-        *[astuple(shap_data) for shap_data in shap_data_collection_zip],
+        *[astuple(shap_data) for shap_data in shap_data_tuple],
+        strict=True,
     )
 
     test_data: pd.DataFrame = pd.concat(test_data_zip)
