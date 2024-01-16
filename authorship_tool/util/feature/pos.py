@@ -10,7 +10,7 @@ import nltk
 
 from authorship_tool.types_ import Sent1dStr, Tag, TaggedToken, TokenStr
 from authorship_tool.util import type_guard
-from authorship_tool.util.path_util import PATHS
+from authorship_tool.util.path_util import DatasetPaths
 
 
 class PosFeature:
@@ -110,9 +110,9 @@ class PosFeature:
     @classmethod
     def initialize_dataset_past_participle_adjective(cls) -> None:
         """過去分詞形の形容詞のデータセットのパスを指定する"""
-        adjectives_past_participle_path: Final[Path | None] = PATHS[
-            "past_participle_jj_dataset"
-        ]
+        adjectives_past_participle_path: Final[
+            Path | None
+        ] = DatasetPaths.past_participle_jj_dataset
 
         if (
             adjectives_past_participle_path is None

@@ -11,7 +11,7 @@ from numpy.typing import NDArray
 from pandas import DataFrame
 from shap import Explainer
 
-from authorship_tool.util.path_util import PATHS
+from authorship_tool.util.path_util import BasePaths
 
 
 @dataclass(frozen=True)
@@ -92,21 +92,17 @@ class CrossValidationView:
     shap_expected_val: NDArray[np.float64]
 
 
-def dump(result: TrainingResult, title: str | None = None) -> None:
+def dump(result: TrainingResult, path: type[BasePaths]) -> None:
     """
     作成したモデル、データを保存する
 
     Args:
-        title (Optional[str]): フォルダ名に使用するタイトル
+        result (TrainingResult): 学習結果
+        path (BasePaths): パス
     """
-    if title is None:
-        title = "_output_"
 
-    lgbm_model_dir: Final[Path] = PATHS["lgbm_model_dir"].joinpath(title)
-    dataset_dir: Final[Path] = PATHS["dataset_dir"].joinpath(title)
-
-    lgbm_model_dir.mkdir(exist_ok=True)
-    dataset_dir.mkdir(exist_ok=True)
+    lgbm_model_dir: Final[Path] = path.lgbm_model_dir
+    dataset_dir: Final[Path] = path.dataset_dump_dir
 
     with open(lgbm_model_dir.joinpath("lgbm_model.pkl"), "wb") as f:
         pickle.dump(result.model, f)

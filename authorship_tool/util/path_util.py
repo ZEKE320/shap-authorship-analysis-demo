@@ -1,10 +1,17 @@
 """パスユーティリティモジュール (Path utility module)"""
+import abc
 import os
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Final
 
 
 class PathUtil:
+    """
+    パスユーティリティ
+    Path utility
+    """
+
     @staticmethod
     def init_project_root() -> Path:
         """
@@ -56,20 +63,140 @@ class PathUtil:
     PROJECT_ROOT_PATH: Final[Path] = init_project_root()
 
 
-PATHS: Final[dict[str, Path]] = {
-    "text_data_dir": PathUtil.init_path(
+@dataclass(frozen=True, init=False)
+class DatasetPaths:
+    """
+    データセットパス
+    Dataset paths
+    """
+
+    text_data_dir: Path = PathUtil.init_path(
         "dump/text_data",
-    ),
-    "dataset_dir": PathUtil.init_path(
-        "dump/dataset",
-    ),
-    "past_participle_jj_dataset": PathUtil.init_path(
+    )
+    past_participle_jj_dataset: Path = PathUtil.init_path(
         "data/john_blake_2023/wordLists/adjectivesPastParticiple",
-    ),
-    "lgbm_model_dir": PathUtil.init_path(
+    )
+    vijini_dataset: Path = PathUtil.init_path(
+        "data/liyanage_vijini_2022",
+    )
+    uoa_thesis_dataset: Path = PathUtil.init_path(
+        "data/uoa-thesis-2014-2017",
+    )
+
+    def __new__(cls) -> None:
+        cls.text_data_dir.mkdir(parents=True, exist_ok=True)
+        cls.past_participle_jj_dataset.mkdir(parents=True, exist_ok=True)
+
+
+@dataclass(frozen=True, init=False)
+class CommonOutputPaths:
+    """
+    共通出力パス
+    Common output paths
+    """
+
+    processed_text_dir: Path = PathUtil.init_path(
+        "dump/processed_text",
+    )
+    dataset_dump_dir: Path = PathUtil.init_path(
+        "dump/dataset",
+    )
+    lgbm_model_dir: Path = PathUtil.init_path(
         "dump/lgbm/model",
-    ),
-    "shap_figure_dir": PathUtil.init_path(
+    )
+    shap_figure_dir: Path = PathUtil.init_path(
         "dump/shap/figure",
-    ),
-}
+    )
+
+
+@dataclass(frozen=True, init=False)
+class BasePaths(metaclass=abc.ABCMeta):
+    """
+    ベースパス
+    Base paths
+    """
+
+    basename: str
+    processed_text_dir: Path
+    dataset_dump_dir: Path
+    lgbm_model_dir: Path
+    shap_figure_dir: Path
+
+    @classmethod
+    def init_paths(cls) -> None:
+        cls.processed_text_dir = CommonOutputPaths.processed_text_dir.joinpath(
+            cls.basename
+        )
+        cls.dataset_dump_dir = CommonOutputPaths.dataset_dump_dir.joinpath(cls.basename)
+        cls.lgbm_model_dir = CommonOutputPaths.lgbm_model_dir.joinpath(cls.basename)
+        cls.shap_figure_dir = CommonOutputPaths.shap_figure_dir.joinpath(cls.basename)
+
+        cls.processed_text_dir.mkdir(parents=True, exist_ok=True)
+        cls.dataset_dump_dir.mkdir(parents=True, exist_ok=True)
+        cls.lgbm_model_dir.mkdir(parents=True, exist_ok=True)
+        cls.shap_figure_dir.mkdir(parents=True, exist_ok=True)
+
+
+@dataclass(frozen=True, init=False)
+class VijiniDatasetPaths(BasePaths):
+    """
+    Vijini氏データセット関連パス
+    Vijini dataset paths
+    """
+
+    basename: str = "liyanage_vijini_2022"
+
+
+VijiniDatasetPaths.init_paths()
+
+
+@dataclass(frozen=True, init=False)
+class UoaThesisDatasetPaths(BasePaths):
+    """
+    UoA論文データセット関連パス
+    UoA thesis dataset paths
+    """
+
+    basename: str = "uoa_thesis_2014_2017"
+
+
+UoaThesisDatasetPaths.init_paths()
+
+
+@dataclass(frozen=True, init=False)
+class InauguralPaths(BasePaths):
+    """
+    就任演説関連パス
+    Inaugural paths
+    """
+
+    basename: str = "inaugural"
+
+
+InauguralPaths.init_paths()
+
+
+@dataclass(frozen=True, init=False)
+class InauguralLoocvPaths(BasePaths):
+    """
+    就任演説関連パス (LOOCV)
+    Inaugural paths (LOOCV)
+    """
+
+    basename: str = "inaugural_loocv"
+
+
+InauguralLoocvPaths.init_paths()
+
+
+@dataclass(frozen=True, init=False)
+class GutenbergPaths(BasePaths):
+    """
+    Gutenberg関連パス
+    Gutenberg paths
+    """
+
+    basename: str = "gutenberg"
+
+
+GutenbergPaths.init_paths()
