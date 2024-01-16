@@ -1,7 +1,7 @@
 """lightgbmトレーナー"""
 
 from dataclasses import astuple
-from typing import Final
+from typing import Final, cast
 
 import numpy as np
 import pandas as pd
@@ -190,8 +190,13 @@ def convert_results_to_cv_result(
         LGBMCvResult: LGBMCvResultインスタンス
     """
 
-    models_zip, splitted_datasets_zip, predictions_zip, shap_data_zip = zip(
-        *map(astuple, results)
+    result_tuples = cast(
+        list[tuple[LGBMClassifier, SplittedDataset, Prediction, ShapData, Score]],
+        [astuple(result) for result in results],
+    )
+
+    models_zip, splitted_datasets_zip, predictions_zip, shap_data_zip, scores = zip(
+        *result_tuples
     )
 
     return CrossValidationResult(
@@ -213,18 +218,18 @@ def convert_cv_result_for_view(cv_result: CrossValidationResult) -> CrossValidat
         CvViewData: Cvの結果を表示するためのデータ
     """
 
-    (_, splitted_datasets_zip, predictions_zip, shap_data_collection_zip) = astuple(
+    _, splitted_datasets_zip, predictions_zip, shap_data_collection_zip, _ = astuple(
         cv_result
     )
 
     (_, test_data_zip, _, test_ans_zip) = zip(
-        *map(astuple, splitted_datasets_zip),
+        *[astuple(splitted_dataset) for splitted_dataset in splitted_datasets_zip],
     )
     (pred_prob_zip, pred_ans_zip) = zip(
-        *map(astuple, predictions_zip),
+        *[astuple(prediction) for prediction in predictions_zip],
     )
     (_, shap_vals_zip, shap_expected_val_zip) = zip(
-        *map(astuple, shap_data_collection_zip),
+        *[astuple(shap_data) for shap_data in shap_data_collection_zip],
     )
 
     test_data: pd.DataFrame = pd.concat(test_data_zip)
