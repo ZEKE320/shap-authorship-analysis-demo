@@ -25,14 +25,16 @@ from authorship_tool.util.ml.model import (
 SHAP_VALUE_POSITIVE_IDX: Final[int] = 1
 
 
-def train(splitted_dataset: SplittedDataset, use_score: bool = False) -> TrainingResult:
+def train(
+    splitted_dataset: SplittedDataset, use_score_calc: bool = False
+) -> TrainingResult:
     """
     LightGBMを使ってモデルをトレーニングします。
     Train the model using LightGBM.
 
     Args:
         splitted_dataset (SplittedDataset): トレーニングデータとテストデータ
-        use_score (bool, optional): スコア計算の有無. Defaults to False.
+        use_score_calc (bool, optional): スコア計算の有無. Defaults to False.
 
     Returns:
         TrainingResult: トレーニング結果
@@ -44,7 +46,9 @@ def train(splitted_dataset: SplittedDataset, use_score: bool = False) -> Trainin
     prediction: Prediction = predict(model, splitted_dataset.test_data)
     shap_data: ShapData = create_shap_data(model, splitted_dataset.test_data)
 
-    score: Score | None = calc_score(prediction, splitted_dataset.test_ans, use_score)
+    score: Score | None = calc_score(
+        prediction, splitted_dataset.test_ans, use_score_calc
+    )
 
     return TrainingResult(
         model,
@@ -121,14 +125,14 @@ def train_once(training_source: LGBMSource) -> TrainingResult:
         test_ans,
     )
 
-    return train(dataset, use_score=True)
+    return train(dataset, use_score_calc=True)
 
 
 def train_by_index(
     source: LGBMSource,
     train_indices: NDArray,
     test_index: NDArray,
-    use_score: bool = False,
+    use_score_calc: bool = False,
 ) -> TrainingResult:
     """
     指定したインデックスのデータを用いて学習を行います。
@@ -137,7 +141,7 @@ def train_by_index(
         source (LGBMSource): LGBMのモデル作成用ソースデータ
         train_indices (NDArray): トレーニングデータのインデックス一覧
         test_index (NDArray): テストデータのインデックス一覧
-        use_score (bool, optional): スコア計算の有無. Defaults to False.
+        use_score_calc (bool, optional): スコア計算の有無. Defaults to False.
 
     Returns:
         LGBMResult: _description_
@@ -149,7 +153,7 @@ def train_by_index(
         test_ans=source.nd_category[test_index],
     )
 
-    return train(splitted_dataset, use_score)
+    return train(splitted_dataset, use_score_calc)
 
 
 def train_loocv(source: LGBMSource) -> CrossValidationView:
@@ -165,7 +169,7 @@ def train_loocv(source: LGBMSource) -> CrossValidationView:
     loo = LeaveOneOut()
 
     results: list[TrainingResult] = [
-        train_by_index(source, train_indices, test_index, use_score=False)
+        train_by_index(source, train_indices, test_index, use_score_calc=False)
         for train_indices, test_index in loo.split(source.feature_data_frame)
     ]
 
@@ -196,7 +200,7 @@ def convert_results_to_cv_result(
         list(models_zip),
         list(splitted_datasets_zip),
         list(predictions_zip),
-        shap_data_list=list(shap_data_zip),
+        list(shap_data_zip),
     )
 
 
