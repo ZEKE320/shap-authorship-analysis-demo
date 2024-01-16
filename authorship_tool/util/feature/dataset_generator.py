@@ -23,7 +23,7 @@ class SentenceFeatureDatasetGenerator:
     __COLS_AND_FUNC: Final[dict[str, Callable[[Sent1dStr], np.float64 | np.int64]]] = {
         "word variation": SentenceCalculator.word_variation,
         "uncommon word frequency": SentenceCalculator.uncommon_word_frequency,
-        "sentence length": SentenceCalculator.sentence_length,
+        "sentence length": SentenceCalculator.count_total_tokens,
         "average word length": SentenceCalculator.average_word_length,
     }
 

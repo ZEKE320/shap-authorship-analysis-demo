@@ -43,7 +43,7 @@ class SentenceCalculator:
     """
 
     @staticmethod
-    def sentence_length(sent: Sent1dStr) -> int:
+    def count_total_tokens(sent: Sent1dStr) -> int:
         """
         文中のトークン数を計算する
         Count the number of tokens in a sentence
@@ -187,7 +187,7 @@ class SentenceCalculator:
         Returns:
             np.float64: 単語の豊富さ (Word variation)
         """
-        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+        if (sent_length := SentenceCalculator.count_total_tokens(sent)) == 0:
             return np.float64(0)
 
         return np.divide(
@@ -208,11 +208,11 @@ class SentenceCalculator:
         Returns:
             np.float64: 平均文字列長 (Average word length)
         """
-        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+        if (sent_length := SentenceCalculator.count_total_tokens(sent)) == 0:
             return np.float64(0)
 
         return np.divide(
-            sum(len(token) for token in sent),
+            SentenceCalculator.count_total_characters(sent),
             sent_length,
             dtype=np.float64,
         )
@@ -229,7 +229,7 @@ class SentenceCalculator:
         Returns:
             np.float64: 記号の割合 (Frequency of symbols)
         """
-        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+        if (sent_length := SentenceCalculator.count_total_tokens(sent)) == 0:
             return np.float64(0)
 
         return np.divide(
@@ -250,7 +250,7 @@ class SentenceCalculator:
         Returns:
             np.float64: 特徴的な単語の割合 (Frequency of uncommon words)
         """
-        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+        if (sent_length := SentenceCalculator.count_total_tokens(sent)) == 0:
             return np.float64(0)
 
         return np.divide(
@@ -271,7 +271,7 @@ class SentenceCalculator:
         Returns:
             np.float64: アルファベット以外の文字の割合 (Frequency of non-alphabetic characters)
         """
-        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+        if (sent_length := SentenceCalculator.count_total_tokens(sent)) == 0:
             return np.float64(0)
 
         return np.divide(
@@ -292,7 +292,7 @@ class SentenceCalculator:
         Returns:
             np.float64: 数値の割合 (Frequency of numeric values)
         """
-        if (sent_length := SentenceCalculator.sentence_length(sent)) == 0:
+        if (sent_length := SentenceCalculator.count_total_tokens(sent)) == 0:
             return np.float64(0)
 
         return np.divide(
@@ -465,7 +465,7 @@ class UnivKansasFeatures:
         Returns:
             int: 段落内の文数 (Number of sentences in a paragraph)
         """
-        return len(para)
+        return ParagraphCalculator.count_total_tokens(para)
 
     @staticmethod
     def v2_words_per_paragraph(para: Para2dStr) -> int:
@@ -480,7 +480,7 @@ class UnivKansasFeatures:
             int: 段落内で出現する単語の合計 (Total number of words in a paragraph)
         """
         sent: Sent1dStr = dim_reshaper.reduce_dim(para)
-        return SentenceCalculator.sentence_length(sent)
+        return SentenceCalculator.count_total_tokens(sent)
 
     @staticmethod
     def _char_present(para: Para2dStr, char: str) -> bool:
