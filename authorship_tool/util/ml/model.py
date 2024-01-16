@@ -1,11 +1,11 @@
 """LGBMに利用するモデルデータ定義モジュール"""
 import pickle
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Final
 
 import numpy as np
 import pandas as pd
-from attr import dataclass
 from lightgbm import LGBMClassifier
 from numpy.typing import NDArray
 from pandas import DataFrame
