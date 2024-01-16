@@ -141,7 +141,9 @@ def dump(result: TrainingResult, path: type[BasePaths]) -> None:
     )
 
 
-def pred_crosstab_normal(result: TrainingResult) -> DataFrame:
+def pred_crosstab(
+    test_ans: npt.NDArray[np.float64], pred_ans: npt.NDArray[np.float64]
+) -> DataFrame:
     """
     予測結果のクロス集計を行う
 
@@ -149,23 +151,8 @@ def pred_crosstab_normal(result: TrainingResult) -> DataFrame:
         DataFrame: クロス集計結果
     """
     return pd.crosstab(
-        result.splitted_dataset.test_ans,
-        result.prediction.pred_ans,
-        rownames=["actual"],
-        colnames=["predicted"],
-    )
-
-
-def pred_crosstab_loocv(cv_result: CrossValidationView) -> DataFrame:
-    """
-    予測結果のクロス集計を行う
-
-    Returns:
-        DataFrame: クロス集計結果
-    """
-    return pd.crosstab(
-        cv_result.test_ans,
-        cv_result.pred_ans,
+        test_ans,
+        pred_ans,
         rownames=["actual"],
         colnames=["predicted"],
     )
