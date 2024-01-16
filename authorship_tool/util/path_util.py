@@ -83,10 +83,6 @@ class DatasetPaths:
         "data/uoa-thesis-2014-2017",
     )
 
-    def __new__(cls) -> None:
-        cls.text_data_dir.mkdir(parents=True, exist_ok=True)
-        cls.past_participle_jj_dataset.mkdir(parents=True, exist_ok=True)
-
 
 @dataclass(frozen=True, init=False)
 class CommonOutputPaths:
@@ -124,6 +120,11 @@ class BasePaths(metaclass=abc.ABCMeta):
 
     @classmethod
     def init_paths(cls) -> None:
+        """
+        パスを初期化する
+        Initialize the paths
+        """
+
         cls.processed_text_dir = CommonOutputPaths.processed_text_dir.joinpath(
             cls.basename
         )
