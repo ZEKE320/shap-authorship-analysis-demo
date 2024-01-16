@@ -24,6 +24,26 @@ from authorship_tool.util.ml.trainer import train
 SCORE_CALC_DEFAULT: Final[bool] = False
 
 
+def train_loocv(source: LGBMSource) -> list[TrainingResult]:
+    """
+    LOOCVで学習を行います。
+
+    Args:
+        source (LGBMSource): LGBMのモデル作成用ソースデータ
+
+    Returns:
+        CvViewData: Cvの結果を表示するためのデータ
+    """
+    loo = LeaveOneOut()
+
+    results: list[TrainingResult] = [
+        train_by_index(source, train_indices, test_index, use_score_calc=False)
+        for train_indices, test_index in loo.split(source.feature_data_frame)
+    ]
+
+    return results
+
+
 def train_by_index(
     source: LGBMSource,
     train_indices: npt.NDArray,
@@ -160,23 +180,3 @@ def calc_score_by_loocv(cv_view_data: CvGlobalExplanationData) -> Score:
         accuracy_result,
         auc_roc_result,
     )
-
-
-def train_loocv(source: LGBMSource) -> list[TrainingResult]:
-    """
-    LOOCVで学習を行います。
-
-    Args:
-        source (LGBMSource): LGBMのモデル作成用ソースデータ
-
-    Returns:
-        CvViewData: Cvの結果を表示するためのデータ
-    """
-    loo = LeaveOneOut()
-
-    results: list[TrainingResult] = [
-        train_by_index(source, train_indices, test_index, use_score_calc=False)
-        for train_indices, test_index in loo.split(source.feature_data_frame)
-    ]
-
-    return results
