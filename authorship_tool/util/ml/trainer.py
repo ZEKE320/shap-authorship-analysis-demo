@@ -194,10 +194,10 @@ def convert_results_to_cv_result(
     )
 
     return CrossValidationResult(
-        list(models_zip),
-        list(splitted_datasets_zip),
-        list(predictions_zip),
-        list(shap_data_zip),
+        tuple(models_zip),
+        tuple(splitted_datasets_zip),
+        tuple(predictions_zip),
+        tuple(shap_data_zip),
     )
 
 

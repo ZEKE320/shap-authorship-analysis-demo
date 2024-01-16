@@ -20,7 +20,7 @@ from authorship_tool.util.feature.calculator import (
 class SentenceFeatureDatasetGenerator:
     """文の特徴量のデータセットを生成するクラス"""
 
-    __COLS_AND_FUNC: Final[dict[str, Callable[[Sent1dStr], np.float64 | np.int64]]] = {
+    __COLS_AND_FUNC: Final[dict[str, Callable[[Sent1dStr], np.float64 | int]]] = {
         "word variation": SentenceCalculator.word_variation,
         "uncommon word frequency": SentenceCalculator.uncommon_word_frequency,
         "sentence length": SentenceCalculator.count_total_tokens,

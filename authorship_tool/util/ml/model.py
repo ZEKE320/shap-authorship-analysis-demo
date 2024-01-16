@@ -73,10 +73,11 @@ class TrainingResult:
 class CrossValidationResult:
     """LGBMのクロスバリデーション結果データクラス"""
 
-    models: list[LGBMClassifier]
-    splitted_datasets: list[SplittedDataset]
-    predictions: list[Prediction]
-    shap_data_list: list[ShapData]
+    models: tuple[LGBMClassifier, ...]
+    splitted_datasets: tuple[SplittedDataset, ...]
+    predictions: tuple[Prediction, ...]
+    shap_data_tuple: tuple[ShapData, ...]
+    scores: tuple[Score, ...]
 
 
 @dataclass(frozen=True)
