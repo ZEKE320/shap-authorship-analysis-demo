@@ -129,7 +129,7 @@ class ParagraphFeatureDatasetGenerator:
 
         self.__columns: Final[list[FeatureLabel]] = col
 
-        self.__dtypes: Final[list[type[np.bool_ | np.int64 | np.float64]]] = [
+        self.__dtypes: Final[list[type[bool | int | np.float64]]] = [
             get_type_hints(callable)["return"]
             for callable in self.__COLS_AND_FUNC.values()
         ] + [np.float64 for _ in range(len(self.__tags))]
@@ -140,7 +140,7 @@ class ParagraphFeatureDatasetGenerator:
         return self.__columns
 
     @property
-    def dtypes(self) -> list[type[np.bool_ | np.int64 | np.float64]]:
+    def dtypes(self) -> list[type[bool | int | np.float64]]:
         """特徴量のデータ型"""
         return self.__dtypes
 
