@@ -272,9 +272,9 @@ def calc_score(
     auc_roc_result = roc_auc_score(y_true=test_ans, y_score=prediction.pred_prob)
 
     return Score(
-        f1_result,  # type: ignore
-        accuracy_result,  # type: ignore
-        auc_roc_result,  # type: ignore
+        f1_result,
+        accuracy_result,
+        auc_roc_result,
     )
 
 
@@ -298,7 +298,7 @@ def calculate_score_by_loocv(cv_view_data: CrossValidationView) -> Score:
     )
 
     return Score(
-        f1_result,  # type: ignore
-        accuracy_result,  # type: ignore
-        auc_roc_result,  # type: ignore
+        f1_result,
+        accuracy_result,
+        auc_roc_result,
     )
