@@ -52,7 +52,7 @@ class SentenceCalculator:
             sent (Sent1dStr): 文章 (Sentence)
 
         Returns:
-            np.int64: トークン数 (Number of tokens)
+            int: トークン数 (Number of tokens)
         """
         return len(sent)
 
@@ -65,7 +65,7 @@ class SentenceCalculator:
         Args:
             sent (Sent1dStr): 文章 (Sentence)
         Returns:
-            np.int64: 出現する一意の単語数 (Number of unique words)
+            int: 出現する一意の単語数 (Number of unique words)
         """
         return len(set(sent))
 
@@ -79,7 +79,7 @@ class SentenceCalculator:
             sent (Sent1dStr): 文章 (Sentence)
 
         Returns:
-            np.int64: 文中の文字数 (Number of characters in a sentence)
+            int: 文中の文字数 (Number of characters in a sentence)
         """
         return sum(len(token) for token in sent)
 
@@ -94,7 +94,7 @@ class SentenceCalculator:
             character (str): 文字 (Character)
 
         Returns:
-            np.int64: 文中で出現する指定した文字の合計 (Total number of specified characters in a sentence)
+            int: 文中で出現する指定した文字の合計 (Total number of specified characters in a sentence)
         """
         if len(character) != 1:
             raise ValueError("character must be a single character")
@@ -111,7 +111,7 @@ class SentenceCalculator:
             sent (Sent1dStr): 文 (Sentence)
 
         Returns:
-            np.int64: 文中で出現するアルファベット以外の文字数 (Number of non-alphabetic characters in a sentence)
+            int: 文中で出現するアルファベット以外の文字数 (Number of non-alphabetic characters in a sentence)
         """
         non_alpha_list: list[Char] = [
             char for token in sent for char in token if not char.isalpha()
@@ -129,7 +129,7 @@ class SentenceCalculator:
             sent (Sent1dStr): 文 (Sentence)
 
         Returns:
-            np.int64: 文中で出現する数字の文字数 (Number of numeric characters in a sentence)
+            int: 文中で出現する数字の文字数 (Number of numeric characters in a sentence)
         """
         numeric_chars: list[Char] = [
             char for token in sent for char in token if char.isdecimal()
@@ -147,7 +147,7 @@ class SentenceCalculator:
             sent (Sent1dStr): 文 (Sentence)
 
         Returns:
-            np.int64: 文中で出現する数値の出現数 (Number of numeric values in a sentence)
+            int: 文中で出現する数値の出現数 (Number of numeric values in a sentence)
         """
         numeric_values: list[str] = [
             matched
@@ -167,7 +167,7 @@ class SentenceCalculator:
             sent (Sent1dStr): 文 (Sentence)
 
         Returns:
-            np.int64: ストップワードではない単語の数 (Number of words that are not stop words)
+            int: ストップワードではない単語の数 (Number of words that are not stop words)
         """
         not_stop_words: list[TokenStr] = [
             word for word in sent if word not in stop_words
@@ -311,7 +311,7 @@ class SentenceCalculator:
             sent (Sent1dStr): 文 (Sentence)
 
         Returns:
-            dict[Tag, float]: 品詞とその割合 (POS and its frequency)
+            dict[Tag, np.float64]: 品詞とその割合 (POS and its frequency)
         """
         pos_feature: PosFeature = PosFeature(sent).tag_subcategories()
         tagged_tokens: list[TaggedToken] = pos_feature.tagged_tokens
@@ -427,7 +427,7 @@ class ParagraphCalculator:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            dict[Tag, float]: 品詞とその割合 (POS and its frequency)
+            dict[Tag, np.float64]: 品詞とその割合 (POS and its frequency)
         """
 
         return SentenceCalculator.pos_frequencies(dim_reshaper.reduce_dim(para))
@@ -449,7 +449,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.int64: 段落内の文数 (Number of sentences in a paragraph)
+            int: 段落内の文数 (Number of sentences in a paragraph)
         """
         return len(para)
 
@@ -463,7 +463,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.int64: 段落内で出現する単語の合計 (Total number of words in a paragraph)
+            int: 段落内で出現する単語の合計 (Total number of words in a paragraph)
         """
         sent: Sent1dStr = dim_reshaper.reduce_dim(para)
         return SentenceCalculator.sentence_length(sent)
@@ -479,7 +479,7 @@ class UnivKansasFeatures:
             char (str): 文字 (Character)
 
         Returns:
-            np.bool_: 文字の存在有無 (Presence or absence of character)
+            bool: 文字の存在有無 (Presence or absence of character)
         """
 
         if len(char) != 1:
@@ -497,7 +497,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: 括弧閉じの存在有無 (Presence or absence of closing parenthesis)
+            bool: 括弧閉じの存在有無 (Presence or absence of closing parenthesis)
         """
         return UnivKansasFeatures._char_present(para, ")")
 
@@ -511,7 +511,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: ダッシュの存在有無 (Presence or absence of dash)
+            bool: ダッシュの存在有無 (Presence or absence of dash)
         """
         return UnivKansasFeatures._char_present(para, "-")
 
@@ -525,7 +525,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: セミコロンの存在有無 (Presence or absence of semicolon)
+            bool: セミコロンの存在有無 (Presence or absence of semicolon)
         """
         return UnivKansasFeatures._char_present(para, ";")
 
@@ -539,7 +539,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: コロンの存在有無 (Presence or absence of colon)
+            bool: コロンの存在有無 (Presence or absence of colon)
         """
         return UnivKansasFeatures._char_present(para, ":")
 
@@ -553,7 +553,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: セミコロンまたはコロンの存在有無 (Presence or absence of semicolon or colon)
+            bool: セミコロンまたはコロンの存在有無 (Presence or absence of semicolon or colon)
         """
         return UnivKansasFeatures._semi_colon_present(
             para
@@ -569,7 +569,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: 疑問符の存在有無 (Presence or absence of question mark)
+            bool: 疑問符の存在有無 (Presence or absence of question mark)
         """
         return UnivKansasFeatures._char_present(para, "?")
 
@@ -583,7 +583,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: アポストロフィの存在有無 (Presence or absence of apostrophe)
+            bool: アポストロフィの存在有無 (Presence or absence of apostrophe)
         """
         return UnivKansasFeatures._char_present(para, "'")
 
@@ -637,7 +637,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: 11未満の単語数を持つ文が存在する場合はTrue、それ以外はFalse（真偽値）
+            bool: 11未満の単語数を持つ文が存在する場合はTrue、それ以外はFalse（真偽値）
         """
         return any(len(sentence) < 11 for sentence in para)
 
@@ -651,7 +651,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: 34より多い単語数を持つ文が存在する場合はTrue、それ以外はFalse（真偽値）
+            bool: 34より多い単語数を持つ文が存在する場合はTrue、それ以外はFalse（真偽値）
         """
         return any(len(sentence) > 34 for sentence in para)
 
@@ -666,7 +666,7 @@ class UnivKansasFeatures:
             word (str): 単語 (Word)
 
         Returns:
-            np.bool_: 単語の存在有無 (Presence or absence of word)
+            bool: 単語の存在有無 (Presence or absence of word)
         """
         lower_word: str = word.lower()
 
@@ -683,7 +683,7 @@ class UnivKansasFeatures:
         Args:
             para (Para2dStr): 段落 (Paragraph)
         Returns:
-            np.bool_: "although"の存在有無 (Presence or absence of "although")
+            bool: "although"の存在有無 (Presence or absence of "although")
         """
 
         return UnivKansasFeatures._contains_word(para, "although")
@@ -698,7 +698,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: "however"の存在有無 (Presence or absence of "however")
+            bool: "however"の存在有無 (Presence or absence of "however")
         """
 
         return UnivKansasFeatures._contains_word(para, "however")
@@ -712,7 +712,7 @@ class UnivKansasFeatures:
         Args:
             para (Para2dStr): 段落 (Paragraph)
         Returns:
-            np.bool_: "but"の存在有無 (Presence or absence of "but")
+            bool: "but"の存在有無 (Presence or absence of "but")
         """
 
         return UnivKansasFeatures._contains_word(para, "but")
@@ -727,7 +727,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: "because"の存在有無 (Presence or absence of "because")
+            bool: "because"の存在有無 (Presence or absence of "because")
         """
 
         return UnivKansasFeatures._contains_word(para, "because")
@@ -741,7 +741,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: "this"の存在有無 (Presence or absence of "this")
+            bool: "this"の存在有無 (Presence or absence of "this")
         """
 
         return UnivKansasFeatures._contains_word(para, "this")
@@ -757,7 +757,7 @@ class UnivKansasFeatures:
             word (str): 単語 (Word)
 
         Returns:
-            np.bool_: 派生形を含めた単語の存在有無 (Presence or absence of word, including derived forms)
+            bool: 派生形を含めた単語の存在有無 (Presence or absence of word, including derived forms)
         """
 
         matched_tokens: set[TokenStr] = UnivKansasFeatures._obtain_words_matching_stem(
@@ -803,7 +803,7 @@ class UnivKansasFeatures:
             target_word (str): 比較対象の単語 (Word to be compared)
 
         Returns:
-            np.bool_: レンマ化した単語の一致有無 (Presence or absence of matching lemmatized words)
+            bool: レンマ化した単語の一致有無 (Presence or absence of matching lemmatized words)
         """
 
         lemmatized_word: str = lemmatizer.lemmatize(target_word)
@@ -820,7 +820,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: "others"または"researchers"の存在有無 (Presence or absence of "others" or "researchers")
+            bool: "others"または"researchers"の存在有無 (Presence or absence of "others" or "researchers")
         """
         return UnivKansasFeatures._contains_word_including_derived_forms(
             para, "others"
@@ -838,7 +838,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: 数字の存在有無 (Presence or absence of numbers)
+            bool: 数字の存在有無 (Presence or absence of numbers)
         """
         return any(
             char.isdigit() for sentence in para for token in sentence for char in token
@@ -855,7 +855,7 @@ class UnivKansasFeatures:
             target_char (str): 文字 (Character)
 
         Returns:
-            np.int64: 段落内に指定した文字の合計 (Total number of specified characters in a paragraph)
+            int: 段落内に指定した文字の合計 (Total number of specified characters in a paragraph)
         """
         if len(target_char) != 1:
             raise ValueError("target_char must be a single character")
@@ -872,7 +872,7 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: ピリオドの2倍以上の大文字が存在するかどうか (Whether there are more than twice as many capital letters as periods)
+            bool: ピリオドの2倍以上の大文字が存在するかどうか (Whether there are more than twice as many capital letters as periods)
         """
 
         return np.greater(
@@ -896,6 +896,6 @@ class UnivKansasFeatures:
             para (Para2dStr): 段落 (Paragraph)
 
         Returns:
-            np.bool_: "et"の存在有無 (Presence or absence of "et")
+            bool: "et"の存在有無 (Presence or absence of "et")
         """
         return UnivKansasFeatures._contains_word_including_derived_forms(para, "et")
