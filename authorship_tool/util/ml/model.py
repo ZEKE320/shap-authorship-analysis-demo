@@ -5,9 +5,9 @@ from pathlib import Path
 from typing import Final
 
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 from lightgbm import LGBMClassifier
-from numpy.typing import NDArray
 from pandas import DataFrame
 from shap import Explainer
 
@@ -19,7 +19,7 @@ class LGBMSource:
     """LGBMのモデル作成用データクラス"""
 
     feature_data_frame: DataFrame
-    nd_category: NDArray[np.bool_]
+    nd_category: npt.NDArray[np.bool_]
 
 
 @dataclass(frozen=True)
@@ -28,16 +28,16 @@ class SplittedDataset:
 
     train_data: DataFrame
     test_data: DataFrame
-    train_ans: NDArray
-    test_ans: NDArray
+    train_ans: npt.NDArray
+    test_ans: npt.NDArray
 
 
 @dataclass(frozen=True)
 class Prediction:
     """予測結果データクラス"""
 
-    pred_prob: NDArray
-    pred_ans: NDArray
+    pred_prob: npt.NDArray
+    pred_ans: npt.NDArray
 
 
 @dataclass(frozen=True)
@@ -54,7 +54,7 @@ class ShapData:
     """Shapデータクラス"""
 
     explainer: Explainer
-    shap_vals: NDArray[np.float64]
+    shap_vals: npt.NDArray[np.float64]
     shap_expected_val: np.float64
 
 
@@ -85,11 +85,10 @@ class CrossValidationView:
     """クロスバリデーション結果の可視化用データクラス"""
 
     test_data: pd.DataFrame
-    test_ans: NDArray[np.bool_]
-    pred_ans: NDArray[np.bool_]
-    pred_prob: NDArray[np.float64]
-    shap_positive_vals: NDArray[np.float64]
-    shap_expected_val: NDArray[np.float64]
+    test_ans: npt.NDArray[np.bool_]
+    pred_ans: npt.NDArray[np.bool_]
+    pred_prob: npt.NDArray[np.float64]
+    shap_vals: npt.NDArray[np.float64]
 
 
 def dump(result: TrainingResult, path: type[BasePaths]) -> None:
