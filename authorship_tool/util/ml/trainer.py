@@ -204,6 +204,7 @@ def convert_results_to_cv_result(
         tuple(splitted_datasets_zip),
         tuple(predictions_zip),
         tuple(shap_data_zip),
+        tuple(scores),
     )
 
 
