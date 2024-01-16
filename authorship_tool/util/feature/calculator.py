@@ -341,6 +341,20 @@ class ParagraphCalculator:
     """
 
     @staticmethod
+    def count_total_tokens(para: Para2dStr) -> int:
+        """
+        段落中の単語数を計算する
+        Calculate the number of tokens in a paragraph
+
+        Args:
+            para (Para2dStr): 段落 (Paragraph)
+
+        Returns:
+            int: 段落中の単語数 (Number of tokens in a paragraph)
+        """
+        return SentenceCalculator.count_total_tokens(dim_reshaper.reduce_dim(para))
+
+    @staticmethod
     def word_variation(para: Para2dStr) -> np.float64:
         """
         段落中の単語の豊富さを計算する
