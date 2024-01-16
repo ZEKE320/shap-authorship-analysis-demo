@@ -1,13 +1,12 @@
 """lightgbmトレーナー"""
 
-from dataclasses import astuple
-from typing import Final, cast
+from typing import Final
 
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 import shap
 from lightgbm import LGBMClassifier
-from numpy.typing import NDArray
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.model_selection import LeaveOneOut, train_test_split
 
@@ -106,13 +105,10 @@ def train_once(training_source: LGBMSource) -> TrainingResult:
     """LightGBMを使って、著者推定モデルを学習します。
 
     Args:
-        df (pd.DataFrame): 特徴量のデータフレーム
-        nd_correctness (np.ndarray): 正解ラベルの配列
+        training_source (LGBMSource): LGBMのモデル作成用ソースデータ (LGBM model creation source data)
 
     Returns:
-        tuple:
-        学習済みモデル、学習用データ、テスト用データ、学習用正解ラベル、テスト用正解ラベル、
-        テスト用予測確率、テスト用予測ラベル、ROC AUCスコア
+        TrainingResult: トレーニング結果 (Training result)
     """
 
     train_data, test_data, train_ans, test_ans = train_test_split(
@@ -131,8 +127,8 @@ def train_once(training_source: LGBMSource) -> TrainingResult:
 
 def train_by_index(
     source: LGBMSource,
-    train_indices: NDArray,
-    test_index: NDArray,
+    train_indices: npt.NDArray,
+    test_index: npt.NDArray,
     use_score_calc: bool = SCORE_CALC_DEFAULT,
 ) -> TrainingResult:
     """
@@ -190,13 +186,17 @@ def convert_results_to_cv_result(
         LGBMCvResult: LGBMCvResultインスタンス
     """
 
-    result_tuples = cast(
-        list[tuple[LGBMClassifier, SplittedDataset, Prediction, ShapData, Score]],
-        [astuple(result) for result in results],
-    )
-
     models_zip, splitted_datasets_zip, predictions_zip, shap_data_zip, scores = zip(
-        *result_tuples,
+        *[
+            (
+                result.model,
+                result.splitted_dataset,
+                result.prediction,
+                result.shap_data,
+                result.score,
+            )
+            for result in results
+        ],
         strict=True,
     )
 
@@ -222,28 +222,31 @@ def convert_cv_result_to_global_exp_data(
         CvViewData: Cvの結果を表示するためのデータ
     """
 
-    _, splitted_datasets, predictions, shap_data_tuple, _ = astuple(cv_result)
-
-    (_, test_data_zip, _, test_ans_zip) = zip(
-        *[astuple(splitted_dataset) for splitted_dataset in splitted_datasets],
+    (test_data_zip, test_ans_zip) = zip(
+        *[
+            (splitted_dataset.test_data, splitted_dataset.test_ans)
+            for splitted_dataset in cv_result.splitted_datasets
+        ],
         strict=True,
     )
     (pred_prob_zip, pred_ans_zip) = zip(
-        *[astuple(prediction) for prediction in predictions],
+        *[
+            (prediction.pred_prob, prediction.pred_ans)
+            for prediction in cv_result.predictions
+        ],
         strict=True,
     )
-    (_, shap_vals_zip, shap_expected_val_zip) = zip(
-        *[astuple(shap_data) for shap_data in shap_data_tuple],
-        strict=True,
-    )
+    shap_vals_list: list[npt.NDArray[np.float64]] = [
+        shap_data.shap_vals for shap_data in cv_result.shap_data_tuple
+    ]
 
     test_data: pd.DataFrame = pd.concat(test_data_zip)
-    test_ans: NDArray[np.bool_] = np.concatenate(test_ans_zip)
+    test_ans: npt.NDArray[np.bool_] = np.concatenate(test_ans_zip)
 
-    pred_ans: NDArray[np.bool_] = np.concatenate(pred_ans_zip)
-    pred_prob: NDArray[np.float64] = np.concatenate(pred_prob_zip)
+    pred_ans: npt.NDArray[np.bool_] = np.concatenate(pred_ans_zip)
+    pred_prob: npt.NDArray[np.float64] = np.concatenate(pred_prob_zip)
 
-    shap_vals: NDArray[np.float64] = np.concatenate(shap_vals_zip)
+    shap_vals: npt.NDArray[np.float64] = np.concatenate(shap_vals_list)
 
     return CvGlobalExplanationData(
         test_data,
@@ -255,7 +258,7 @@ def convert_cv_result_to_global_exp_data(
 
 
 def calc_score(
-    prediction: Prediction, test_ans: NDArray, use_score: bool
+    prediction: Prediction, test_ans: npt.NDArray, use_score: bool
 ) -> Score | None:
     """
     スコアを計算します。
