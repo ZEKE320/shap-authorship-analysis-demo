@@ -90,7 +90,11 @@ def train_once(training_source: LGBMSource) -> TrainingResult:
     """
 
     train_data, test_data, train_ans, test_ans = train_test_split(
-        training_source.feature_data_frame, training_source.nd_category
+        training_source.feature_data_frame,
+        training_source.nd_category,
+        shuffle=True,
+        random_state=0,
+        test_size=0.20,
     )
 
     dataset = SplittedDataset(
