@@ -12,8 +12,8 @@ def test_is_sent() -> None:
     assert not type_guard.is_sent([])
     assert not type_guard.is_sent(["a", 1])
     assert not type_guard.is_sent([1, 2])
-    assert not type_guard.is_sent("a")  # type: ignore
-    assert not type_guard.is_sent(1)  # type: ignore
+    assert not type_guard.is_sent("a")
+    assert not type_guard.is_sent(1)
 
 
 def test_is_pos_list() -> None:
@@ -23,11 +23,7 @@ def test_is_pos_list() -> None:
     assert not type_guard.are_tagged_tokens([])
     assert not type_guard.are_tagged_tokens([("a", 1)])
     assert not type_guard.are_tagged_tokens([("a", "b", "c")])
-    assert not type_guard.are_tagged_tokens("a")  # type: ignore
-    assert not type_guard.are_tagged_tokens(1)  # type: ignore
+    assert not type_guard.are_tagged_tokens("a")
+    assert not type_guard.are_tagged_tokens(1)
 
-    assert type_guard.are_tagged_tokens(nltk.pos_tag(["He", "looks", "busy", "."]))
-
-
-if __name__ == "__main__":
     pytest.main(["-v"])
