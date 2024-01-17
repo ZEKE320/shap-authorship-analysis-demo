@@ -142,7 +142,7 @@ def dump(result: TrainingResult, path: type[BasePaths]) -> None:
 
 
 def pred_crosstab(
-    test_ans: npt.NDArray[np.float64], pred_ans: npt.NDArray[np.float64]
+    test_ans: npt.NDArray[np.bool_], pred_ans: npt.NDArray[np.bool_]
 ) -> DataFrame:
     """
     予測結果のクロス集計を行う
