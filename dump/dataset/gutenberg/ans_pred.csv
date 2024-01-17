@@ -1,8 +1,7 @@
 True
 True
 True
-False
-<<<<<<< HEAD
+True
 False
 True
 True
@@ -11,52 +10,30 @@ True
 True
 True
 False
-=======
 True
-False
 True
 True
-False
 True
 False
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
 True
 True
-True
-<<<<<<< HEAD
 False
 True
 True
 False
-=======
-True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
-False
-True
 True
 True
 True
 True
 True
-True
-<<<<<<< HEAD
-False
 True
 True
 True
 False
 False
-=======
-True
-True
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 False
@@ -66,10 +43,6 @@ True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -78,7 +51,6 @@ True
 True
 True
 False
-True
 True
 True
 True
@@ -88,64 +60,35 @@ True
 True
 True
 True
-<<<<<<< HEAD
-False
-=======
 True
-False
 False
-False
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
 True
 True
 True
 True
 True
-<<<<<<< HEAD
-False
-True
 True
-=======
-True
-False
 False
 True
-False
 True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-<<<<<<< HEAD
-False
 True
 True
-=======
 True
-False
 True
 False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
 True
-True
-True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
+False
 True
 True
 True
@@ -154,6 +97,7 @@ True
 True
 True
 True
+False
 True
 True
 True
@@ -164,24 +108,16 @@ True
 False
 True
 True
-True
-False
 True
-<<<<<<< HEAD
-=======
 False
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -201,48 +137,28 @@ False
 True
 True
 True
-<<<<<<< HEAD
 True
-False
-True
 True
-False
-=======
-False
 True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
+False
 True
 True
 True
 True
 True
 True
-<<<<<<< HEAD
-False
 False
 False
 True
-False
 True
 False
-=======
-True
 True
-True
-False
 False
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -266,17 +182,11 @@ True
 True
 True
 True
-<<<<<<< HEAD
 True
 False
 True
 True
-False
-=======
 False
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -293,13 +203,9 @@ True
 True
 True
 True
-<<<<<<< HEAD
 True
 True
 True
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -311,92 +217,59 @@ True
 False
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-<<<<<<< HEAD
-False
+True
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
 False
 True
 True
 False
-=======
 True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
 False
 True
 True
 True
 True
-False
 True
-False
 True
+False
 True
 True
 True
 True
-<<<<<<< HEAD
-=======
 True
 True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 False
-True
 True
 True
 True
 True
 True
-True
-<<<<<<< HEAD
 False
 True
 True
-False
 False
-False
 True
-False
-=======
 True
 True
 False
-True
-True
 True
 True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
-True
-True
-True
 False
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -405,7 +278,6 @@ True
 True
 True
 True
-False
 True
 True
 True
@@ -415,18 +287,12 @@ True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
+True
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 False
 True
@@ -434,18 +300,12 @@ True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 False
@@ -461,20 +321,13 @@ True
 True
 True
 True
-<<<<<<< HEAD
 False
-True
 False
-True
-True
-True
 False
-=======
-True
 True
 True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
+False
 True
 True
 True
@@ -483,75 +336,49 @@ True
 True
 True
 True
-<<<<<<< HEAD
 False
-True
-True
 False
-=======
-True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
+False
 True
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 True
 True
 True
-False
-=======
 False
-True
-True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-True
 False
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
 False
-<<<<<<< HEAD
 False
 True
 True
 False
-=======
-True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
 True
 True
-True
 False
 False
 True
@@ -560,65 +387,34 @@ True
 True
 True
 True
-False
-=======
 False
-True
-True
 True
 True
 True
-True
 False
-True
-True
-True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
 True
-True
-True
-True
-True
-True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
 True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
-False
 True
-<<<<<<< HEAD
-=======
 False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
-False
 True
-<<<<<<< HEAD
-=======
 False
-True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -629,75 +425,43 @@ True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
-True
+False
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
-False
+True
 False
 True
 True
-False
-False
 False
 True
 False
-=======
 True
-True
-False
 False
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
 True
 True
-=======
-False
 True
 True
 True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -705,18 +469,13 @@ True
 True
 True
 True
-False
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
 True
 True
 True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -727,21 +486,11 @@ True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 False
-True
-<<<<<<< HEAD
-=======
-True
 True
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 False
 False
 True
@@ -750,34 +499,21 @@ True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
 True
 True
 True
 True
-<<<<<<< HEAD
 True
 True
-=======
-False
 True
 True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -788,21 +524,14 @@ True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 False
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -820,70 +549,46 @@ True
 True
 True
 True
-<<<<<<< HEAD
 False
-True
 True
 True
 True
-False
-=======
-True
-True
-False
 True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-False
-<<<<<<< HEAD
-=======
 False
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-False
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 False
 False
 False
-=======
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 False
 True
 True
 True
 True
-True
+False
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -892,31 +597,19 @@ True
 True
 True
 True
-<<<<<<< HEAD
 False
-True
-True
 True
-=======
 True
 True
-False
-True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 False
-<<<<<<< HEAD
 True
 True
-False
-=======
 False
 True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -925,9 +618,6 @@ True
 True
 True
 True
-True
-True
-<<<<<<< HEAD
 False
 False
 True
@@ -936,46 +626,25 @@ True
 True
 True
 False
-True
-True
-True
-=======
-True
-True
-True
 True
 True
 True
 True
-False
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
 True
 True
 True
-<<<<<<< HEAD
 False
 True
 False
-=======
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
-True
 False
 True
 True
 True
 True
-<<<<<<< HEAD
 False
-True
-=======
 True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -991,25 +660,13 @@ True
 True
 True
 False
-<<<<<<< HEAD
 False
-True
 True
-False
 True
-False
 False
-=======
-True
-True
 True
-True
 False
-True
 False
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 False
 True
 True
@@ -1019,37 +676,25 @@ True
 True
 True
 True
-True
+False
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 False
 True
-=======
-True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -1058,9 +703,6 @@ True
 True
 True
 False
-True
-True
-True
 True
 True
 True
@@ -1074,68 +716,43 @@ True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-False
 True
-<<<<<<< HEAD
 True
 True
 False
-=======
 False
 True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
-True
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 False
 True
 True
-True
-<<<<<<< HEAD
 False
-True
 True
-=======
 True
 True
 False
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
 True
 True
 True
 True
 True
 True
-<<<<<<< HEAD
-False
 True
 True
 True
-=======
+False
 True
 True
-False
 True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -1143,53 +760,34 @@ True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 True
 True
 False
-=======
 False
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
 False
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 False
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
-False
+True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -1198,62 +796,40 @@ True
 True
 False
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 False
 True
 False
-=======
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-True
 False
-True
 True
 True
-<<<<<<< HEAD
 False
 False
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
+False
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
-True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
 False
-True
 True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
-True
-False
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 False
 True
@@ -1265,10 +841,6 @@ True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 False
 True
@@ -1277,23 +849,18 @@ True
 True
 True
 False
-<<<<<<< HEAD
-False
 True
 True
 True
 True
-False
 True
 False
 True
+False
 True
 True
-=======
 True
-False
 True
-False
 True
 True
 True
@@ -1302,72 +869,56 @@ True
 True
 True
 False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
 True
 True
 True
 True
+False
 True
 True
 True
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-True
-True
 False
 True
 True
 True
 True
 True
-False
 True
 True
-<<<<<<< HEAD
 True
 True
 True
 True
 True
-=======
-False
 True
 True
 False
-False
 True
-False
 True
-False
 True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
+False
 True
 True
 True
 True
 True
 True
+False
+False
 True
 True
 True
@@ -1376,19 +927,14 @@ True
 True
 True
 True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-False
-<<<<<<< HEAD
+True
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
+True
+True
 True
 True
 True
@@ -1397,33 +943,25 @@ True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
-<<<<<<< HEAD
 False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
 True
+False
 True
 True
 True
 True
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
+False
 True
 True
 True
@@ -1434,26 +972,23 @@ True
 True
 True
 True
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-<<<<<<< HEAD
 False
 True
 True
 True
-=======
 True
 True
+False
+False
+True
+True
 True
 False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
@@ -1461,526 +996,55 @@ True
 True
 True
 True
-<<<<<<< HEAD
+False
 True
 True
 True
 True
 True
-False
-=======
+True
 False
 True
 True
-False
 True
 True
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
+False
 True
 True
 True
 True
 True
-<<<<<<< HEAD
-False
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-False
-True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-False
-<<<<<<< HEAD
-True
-True
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-False
-True
-True
-True
-<<<<<<< HEAD
-False
-True
-True
-False
-=======
-True
-False
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-<<<<<<< HEAD
-False
-True
-True
-=======
-True
-True
-False
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-<<<<<<< HEAD
-False
-True
-=======
-True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-True
-False
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-False
-True
-True
-True
-True
-True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-False
-False
-True
-True
-True
-True
-False
-<<<<<<< HEAD
-True
-True
-True
-True
-False
-True
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-False
-True
-True
-True
-True
-True
-True
-True
-True
-<<<<<<< HEAD
-=======
-False
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-False
-True
-True
-True
-True
-True
-True
-True
-True
-True
-False
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-True
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-<<<<<<< HEAD
-False
-True
-True
-False
-=======
-True
-True
-False
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-True
-True
-True
-False
-True
-True
-True
-<<<<<<< HEAD
-=======
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-False
-True
-True
-True
-<<<<<<< HEAD
-False
-True
-=======
-True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-False
-True
-True
-True
-True
-True
-True
-True
-True
-True
-False
-True
-<<<<<<< HEAD
-=======
-False
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-<<<<<<< HEAD
-False
-True
-True
-False
-True
-False
-=======
-True
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-False
-False
-True
-True
-True
-<<<<<<< HEAD
-False
-False
-True
-True
-True
-False
-True
-True
-True
-False
-=======
-True
-True
-True
-True
-True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-False
-True
-True
-<<<<<<< HEAD
-True
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-False
-True
-False
-True
-True
-True
-<<<<<<< HEAD
-=======
-True
-False
-False
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-False
-True
-True
-True
-True
-<<<<<<< HEAD
-=======
-False
-False
-True
-False
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-False
-True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
 True
 True
-True
-True
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-<<<<<<< HEAD
-=======
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-False
-True
-True
-True
-True
-True
-<<<<<<< HEAD
-=======
-False
-False
-False
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-True
-True
-True
-True
-<<<<<<< HEAD
-False
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-False
-True
-True
-True
-<<<<<<< HEAD
-False
-True
-False
-True
-True
-True
-=======
-True
-True
-False
-True
-True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-True
-False
-<<<<<<< HEAD
-False
-False
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-<<<<<<< HEAD
-False
-=======
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
-True
-True
-True
-True
-True
-True
-<<<<<<< HEAD
-False
-True
-False
 False
-=======
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
-True
-False
-True
-True
-True
-<<<<<<< HEAD
-False
 True
 False
-False
-=======
 True
-False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
 True
 True
 True
-<<<<<<< HEAD
-=======
 True
 False
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 False
-True
-True
-True
-True
 True
 True
 True
-<<<<<<< HEAD
-=======
 True
-True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 False
-True
-True
 True
 True
 True
 True
 True
-True
-True
-<<<<<<< HEAD
-False
 True
 False
-=======
 True
->>>>>>> 0a3b6b0ebb88701353472ed123916ddaa725628e
 True
 True
