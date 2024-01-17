@@ -4,6 +4,3 @@
 [submodule "data/john_blake_2023"]
 	path = data/john_blake_2023
 	url = https://github.com/ZEKE320/nlp_datasets.git
-[submodule "data/liyanage_vijini_2022_alt"]
-	path = data/liyanage_vijini_2022_alt
-	url = https://github.com/ZEKE320/GeneratedTextDetection.git
