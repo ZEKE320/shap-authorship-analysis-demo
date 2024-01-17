@@ -9,7 +9,7 @@ import numpy as np
 import numpy.typing as npt
 import pandas as pd
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
-from sklearn.model_selection import LeaveOneOut
+from sklearn.model_selection import KFold, LeaveOneOut
 
 from authorship_tool.util.ml.model import (
     CrossValidationResult,
@@ -39,6 +39,27 @@ def train_loocv(source: LGBMSource) -> list[TrainingResult]:
     results: list[TrainingResult] = [
         train_by_index(source, train_indices, test_index, use_score_calc=False)
         for train_indices, test_index in loo.split(source.feature_data_frame)
+    ]
+
+    return results
+
+
+def train_kfold(source: LGBMSource, k: int) -> list[TrainingResult]:
+    """
+    KFoldで学習を行います。
+
+    Args:
+        source (LGBMSource): LGBMのモデル作成用ソースデータ
+        k (int): KFoldの分割数
+
+    Returns:
+        CvViewData: Cvの結果を表示するためのデータ
+    """
+    kf = KFold(n_splits=k, shuffle=False)
+
+    results: list[TrainingResult] = [
+        train_by_index(source, train_indices, test_index, use_score_calc=False)
+        for train_indices, test_index in kf.split(source.feature_data_frame)
     ]
 
     return results
@@ -156,7 +177,7 @@ def convert_cv_result_to_global_exp_data(
     )
 
 
-def calc_score_by_loocv(cv_view_data: CvGlobalExplanationData) -> Score:
+def calc_score_for_cv(cv_view_data: CvGlobalExplanationData) -> Score:
     """
     LOOCVの結果からスコアを計算します。
 
