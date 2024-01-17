@@ -76,6 +76,9 @@ class DatasetPaths:
     past_participle_jj_dataset: Path = PathUtil.init_path(
         "data/john_blake_2023/wordLists/adjectivesPastParticiple",
     )
+    present_participle_jj_dataset: Path = PathUtil.init_path(
+        "data/john_blake_2023/wordLists/adjectivesPresentParticiple"
+    )
     vijini_dataset_fully_gen: Path = PathUtil.init_path(
         "data/liyanage_vijini_2022/Dataset/FullyGenerated",
     )
