@@ -1,10 +1,10 @@
 """トークナイザーモジュール"""
 import nltk
 
-from authorship_tool.types_ import Para2dStr
+from authorship_tool.types_ import Para2dStr, Paragraph
 
 
-def tokenize_para(paragraph_text: str) -> Para2dStr:
+def tokenize_para(paragraph_text: Paragraph) -> Para2dStr:
     """
     文章を単語のリストのリストに分割する
 
