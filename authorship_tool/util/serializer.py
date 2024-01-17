@@ -7,12 +7,12 @@ from pathlib import Path
 
 import pandas as pd
 
-from authorship_tool.types_ import AuthorColl4dStr
+from authorship_tool.types_ import Doc3dStr, Title
 from authorship_tool.util.table_util import display
 
 
 def author_collection_to_csv(
-    author_collection: AuthorColl4dStr, author_name: str, file_path: Path
+    doc_by_title: dict[Title, Doc3dStr], author_name: str, file_path: Path
 ) -> None:
     """
     1人の著者の文書集合をcsvファイルにシリアライズする。
@@ -24,15 +24,14 @@ def author_collection_to_csv(
 
     fixed_cols: list[str] = [
         "Author name",
-        "Document index",
-        "Paragraph index",
-        "Sentence index",
-        "Sentence length",
+        "Document name",
+        "Paragraph number",
+        "Sentence number",
     ]
 
-    rows: list[list[int | str]] = [
-        [author_name, doc_idx, para_idx, sent_idx, len(sent)] + sent
-        for doc_idx, doc in enumerate(author_collection)
+    rows: list[list[int | str | object]] = [
+        [author_name, title, para_idx + 1, sent_idx + 1] + sent
+        for title, doc in doc_by_title.items()
         for para_idx, para in enumerate(doc)
         for sent_idx, sent in enumerate(para)
     ]
