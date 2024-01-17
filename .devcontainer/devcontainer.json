@@ -61,7 +61,8 @@
         "tamasfe.even-better-toml",
         "VisualStudioExptTeam.vscodeintellicode-completions",
         "yzane.markdown-pdf",
-        "yzhang.markdown-all-in-one"
+        "yzhang.markdown-all-in-one",
+        "ms-toolsai.datawrangler"
       ]
     }
   },

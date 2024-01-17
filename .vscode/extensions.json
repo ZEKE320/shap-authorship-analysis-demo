@@ -53,7 +53,8 @@
     "visualstudioexptteam.vscodeintellicode",
     "yzane.markdown-pdf",
     "yzhang.markdown-all-in-one",
-    "ziyasal.vscode-open-in-github"
+    "ziyasal.vscode-open-in-github",
+    "ms-toolsai.datawrangler"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []
