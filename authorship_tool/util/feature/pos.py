@@ -17,6 +17,7 @@ class PosFeature:
     """POSタグと追加の特徴タグを管理するクラス"""
 
     __PAST_PARTICIPLE_ADJECTIVE_DATASET: set[TokenStr] = set()
+    __PRESENT_PARTICIPLE_ADJECTIVE_DATASET: set[TokenStr] = set()
     __POS_SUBCATEGORIES: Final[set[Tag]] = set(["JJ_pp"])
 
     def __init__(self, words: list) -> None:
@@ -86,11 +87,11 @@ class PosFeature:
             PosFeature: PosFeatureインスタンス
         """
         if "JJ" in self.all_pos:
-            return self.__tag_jj_past_participle()
+            return self.tag_jj_past_participle().tag_jj_present_participle()
 
         return self
 
-    def __tag_jj_past_participle(self) -> "PosFeature":
+    def tag_jj_past_participle(self) -> "PosFeature":
         """過去分詞形の形容詞を追加する
 
         Returns:
@@ -107,27 +108,44 @@ class PosFeature:
             ]
         )
 
+    def tag_jj_present_participle(self) -> "PosFeature":
+        """
+        現在分詞形の形容詞を追加する
+
+        Returns:
+            PosFeature: PosFeatureインスタンス
+        """
+        return PosFeature(
+            [
+                (word, "JJ_presp")
+                if word.strip().lower()
+                in PosFeature.__PRESENT_PARTICIPLE_ADJECTIVE_DATASET
+                and pos == "JJ"
+                else (word, pos)
+                for (word, pos) in self.__tagged_tokens
+            ]
+        )
+
     @classmethod
-    def initialize_dataset_past_participle_adjective(cls) -> None:
-        """過去分詞形の形容詞のデータセットのパスを指定する"""
-        adjectives_past_participle_path: Final[
-            Path | None
-        ] = DatasetPaths.past_participle_jj_dataset
+    def initialize_additional_pos_dataset(cls) -> None:
+        """
+        追加のPOSタグデータセットを初期化する
+        Initialize additional POS tag dataset
+        """
 
-        if (
-            adjectives_past_participle_path is None
-            or not adjectives_past_participle_path.exists()
-        ):
-            print(
-                f"File: '{adjectives_past_participle_path}' could not be found. Skip and continue processing."
-            )
-            return
-
-        with open(adjectives_past_participle_path, "r", encoding="utf-8") as f:
+        with open(DatasetPaths.past_participle_jj_dataset, "r", encoding="utf-8") as f:
             adjectives: set[str] = set(f.read().splitlines())
             cls.__PAST_PARTICIPLE_ADJECTIVE_DATASET = set(
                 adj.strip().lower() for adj in adjectives
             )
 
+        with open(
+            DatasetPaths.present_participle_jj_dataset, "r", encoding="utf-8"
+        ) as f:
+            adjectives: set[str] = set(f.read().splitlines())
+            cls.__PRESENT_PARTICIPLE_ADJECTIVE_DATASET = set(
+                adj.strip().lower() for adj in adjectives
+            )
 
-PosFeature.initialize_dataset_past_participle_adjective()
+
+PosFeature.initialize_additional_pos_dataset()
