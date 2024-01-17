@@ -101,7 +101,7 @@ def dump(result: TrainingResult, path: type[BasePaths]) -> None:
     """
 
     lgbm_model_dir: Final[Path] = path.lgbm_model_dir
-    dataset_dir: Final[Path] = path.dataset_dump_dir
+    dataset_dir: Final[Path] = path.dataset_output_dir
 
     with open(lgbm_model_dir.joinpath("lgbm_model.pkl"), "wb") as f:
         pickle.dump(result.model, f)

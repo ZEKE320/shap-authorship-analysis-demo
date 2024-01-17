@@ -70,9 +70,6 @@ class DatasetPaths:
     Dataset paths
     """
 
-    text_data_dir: Path = PathUtil.init_path(
-        "dump/text_data",
-    )
     past_participle_jj_dataset: Path = PathUtil.init_path(
         "data/john_blake_2023/wordLists/adjectivesPastParticiple",
     )
@@ -97,17 +94,20 @@ class CommonOutputPaths:
     Common output paths
     """
 
-    processed_text_dir: Path = PathUtil.init_path(
-        "dump/processed_text",
+    text_data_dir: Path = PathUtil.init_path(
+        "out/text_data",
     )
-    dataset_dump_dir: Path = PathUtil.init_path(
-        "dump/dataset",
+    processed_text_dir: Path = PathUtil.init_path(
+        "out/processed_text",
+    )
+    dataset_output_dir: Path = PathUtil.init_path(
+        "out/dataset",
     )
     lgbm_model_dir: Path = PathUtil.init_path(
-        "dump/lgbm/model",
+        "out/lgbm/model",
     )
     shap_figure_dir: Path = PathUtil.init_path(
-        "dump/shap/figure",
+        "out/shap/figure",
     )
 
 
@@ -120,7 +120,7 @@ class BasePaths(metaclass=abc.ABCMeta):
 
     basename: str
     processed_text_dir: Path
-    dataset_dump_dir: Path
+    dataset_output_dir: Path
     lgbm_model_dir: Path
     shap_figure_dir: Path
 
@@ -134,12 +134,14 @@ class BasePaths(metaclass=abc.ABCMeta):
         cls.processed_text_dir = CommonOutputPaths.processed_text_dir.joinpath(
             cls.basename
         )
-        cls.dataset_dump_dir = CommonOutputPaths.dataset_dump_dir.joinpath(cls.basename)
+        cls.dataset_output_dir = CommonOutputPaths.dataset_output_dir.joinpath(
+            cls.basename
+        )
         cls.lgbm_model_dir = CommonOutputPaths.lgbm_model_dir.joinpath(cls.basename)
         cls.shap_figure_dir = CommonOutputPaths.shap_figure_dir.joinpath(cls.basename)
 
         cls.processed_text_dir.mkdir(parents=True, exist_ok=True)
-        cls.dataset_dump_dir.mkdir(parents=True, exist_ok=True)
+        cls.dataset_output_dir.mkdir(parents=True, exist_ok=True)
         cls.lgbm_model_dir.mkdir(parents=True, exist_ok=True)
         cls.shap_figure_dir.mkdir(parents=True, exist_ok=True)
 
