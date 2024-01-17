@@ -27,6 +27,9 @@ Doc3dStr: TypeAlias = list[Para2dStr]
 Document: TypeAlias = str | list[Paragraph]
 """文書 (Document) - str"""
 
+Title: TypeAlias = str
+"""タイトル (Title)"""
+
 AuthorColl4dStr: TypeAlias = list[Doc3dStr]
 """1人の著者に関連する文書の集合 (Author's document collection) - list[list[list[list[str]]]]"""
 
