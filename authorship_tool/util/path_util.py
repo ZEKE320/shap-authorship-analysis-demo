@@ -158,6 +158,19 @@ VijiniDatasetPaths.init_paths()
 
 
 @dataclass(frozen=True, init=False)
+class VijiniDatasetLoocvPaths(BasePaths):
+    """
+    Vijini氏データセット関連パス
+    Vijini dataset paths
+    """
+
+    basename: str = "liyanage_vijini_2022_loocv"
+
+
+VijiniDatasetLoocvPaths.init_paths()
+
+
+@dataclass(frozen=True, init=False)
 class UoaThesisDatasetPaths(BasePaths):
     """
     UoA論文データセット関連パス
@@ -207,3 +220,18 @@ class GutenbergPaths(BasePaths):
 
 
 GutenbergPaths.init_paths()
+
+InauguralLoocvPaths.init_paths()
+
+
+@dataclass(frozen=True, init=False)
+class GutenbergKFoldPaths(BasePaths):
+    """
+    Gutenberg関連パス
+    Gutenberg paths
+    """
+
+    basename: str = "gutenberg_kfold"
+
+
+GutenbergKFoldPaths.init_paths()
