@@ -3,9 +3,13 @@
 from authorship_tool.types_ import Para2dStr, Sent1dStr
 
 
-def reduce_dim(two_dim_str: list | set | tuple, /) -> list:
+def reduce_dim(coll: list | set | tuple, times: int = 1, /) -> list:
     """段落のリストを文章のリストに変換する"""
-    return [single_str for one_dim_str in two_dim_str for single_str in one_dim_str]
+
+    for _ in range(times):
+        coll = [str_1d for str_2d in coll for str_1d in str_2d]
+
+    return list(coll)
 
 
 def one_dim_to_str(sent: Sent1dStr, /) -> str:
