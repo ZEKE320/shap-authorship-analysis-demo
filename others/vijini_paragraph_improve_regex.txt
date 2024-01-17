@@ -1,0 +1,7 @@
+(\.\s+)((\b(\d+\.)?\s*Introduction[s]?(?:\s[A-Z][a-z]*)*\b)(?=\s+[A-Z\d]))
+(\.\s+)(\b(\d+\.\s+)?[A-Z][a-z]*(?:\s[A-Z][a-z]*)*\b)(?=\s+[A-Z\d])
+
+Introduction
+Conclusion
+Background
+Related work
