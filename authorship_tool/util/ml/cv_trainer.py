@@ -55,7 +55,7 @@ def train_kfold(source: LGBMSource, k: int) -> list[TrainingResult]:
     Returns:
         CvViewData: Cvの結果を表示するためのデータ
     """
-    kf = KFold(n_splits=k, shuffle=False)
+    kf = KFold(n_splits=k, shuffle=True, random_state=0)
 
     results: list[TrainingResult] = [
         train_by_index(source, train_indices, test_index, use_score_calc=False)
