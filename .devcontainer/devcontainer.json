@@ -16,18 +16,24 @@
   },
 
   "features": {
-    // "ghcr.io/devcontainers/features/java": {
-    //   "jdkDistro": "tem",
-    //   "version": "latest"
-    // },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/java": {
+      "jdkDistro": "tem",
+      "version": "latest"
+    },
     "ghcr.io/devcontainers/features/python": {
       "version": "3.11",
-      "installTools": true
+      "installTools": false
     }
   },
 
   "customizations": {
     "vscode": {
+      "settings": {
+        "sonarlint.ls.javaHome": "/usr/local/sdkman/candidates/java/current"
+      },
       "extensions": [
         "christian-kohler.path-intellisense",
         "DavidAnson.vscode-markdownlint",
@@ -57,7 +63,8 @@
         "VisualStudioExptTeam.vscodeintellicode-completions",
         "yzane.markdown-pdf",
         "yzhang.markdown-all-in-one",
-        "ms-toolsai.datawrangler"
+        "ms-toolsai.datawrangler",
+        "SonarSource.sonarlint-vscode"
       ]
     }
   },
@@ -71,7 +78,7 @@
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": {
     "Git Submodule": "git submodule init && git submodule update",
-    "Poetry": "pipx install poetry && poetry install",
+    "Poetry": "pip install --upgrade pip && pip install poetry && poetry install",
     "NLTK": "sudo chmod 777 -R /home/vscode/nltk_data",
     "UoA thesis data 2014-2017": "sudo chmod 755 -R /workspaces/shap-authorship-analysis-demo/data/uoa-thesis-2014-2017"
   }
