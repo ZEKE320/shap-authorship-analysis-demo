@@ -9,16 +9,16 @@ SHAPによる著者分析のデモ用リポジトリ
 
 ### Force plot
 
-![Force](dump/shap/figure/gutenberg/shap_force_plot.svg)
+![Force](out/shap/figure/gutenberg/shap_force_plot.svg)
 
 ### Decision plot
 
-![Decision](/dump/shap/figure/gutenberg/shap_decision_plot.svg)
+![Decision](out/shap/figure/gutenberg/shap_decision_plot.svg)
 
 ### Summary plot (bar)
 
-![Summary_bar](dump/shap/figure/gutenberg/shap_summary_plot_bar.svg)
+![Summary_bar](out/shap/figure/gutenberg/shap_summary_plot_bar.svg)
 
 ### Summary plot
 
-![Summary](dump/shap/figure/gutenberg/shap_summary_plot.svg)
+![Summary](out/shap/figure/gutenberg/shap_summary_plot.svg)
