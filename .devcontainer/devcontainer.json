@@ -17,11 +17,13 @@
 
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker": {
-      "version": "latest"
+      "version": "latest",
+      "moby": false,
+      "installDockerBuildx": false
     },
     "ghcr.io/devcontainers/features/java": {
-      "jdkDistro": "tem",
-      "version": "latest"
+      "version": "latest",
+      "jdkDistro": "tem"
     },
     "ghcr.io/devcontainers/features/python": {
       "version": "3.11",
