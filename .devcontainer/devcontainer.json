@@ -7,8 +7,8 @@
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 
   "mounts": [
-    "type=volume,source=devcontainer-nltk-data,target=/home/vscode/nltk_data",
-    "type=volume,source=devcontainer-uoa-thesis-2014-2017,target=/workspaces/shap-authorship-analysis-demo/data/uoa-thesis-2014-2017"
+    "type=volume,source=vsc-remote-nltk-data,target=/home/vscode/nltk_data",
+    "type=volume,source=vsc-remote-uoa-thesis-2014-2017,target=/workspaces/shap-authorship-analysis-demo/data/uoa-thesis-2014-2017"
   ],
 
   "containerEnv": {
