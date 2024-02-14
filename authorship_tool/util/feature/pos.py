@@ -3,14 +3,23 @@ POSタグモジュール
 POS tags module
 """
 
-from pathlib import Path
+from enum import Enum, auto
 from typing import Final
 
 import nltk
+import pandas as pd
 
 from authorship_tool.types_ import Sent1dStr, Tag, TaggedToken, TokenStr
 from authorship_tool.util import type_guard
 from authorship_tool.util.path_util import DatasetPaths
+
+
+class ExtrapositionAdjectiveState(Enum):
+    INITIAL = auto()
+    FOUND_IT = auto()
+    FOUND_VERB = auto()
+    FOUND_ADJ = auto()
+    FOUND_THAT_TO = auto()
 
 
 class PosFeature:
@@ -18,7 +27,8 @@ class PosFeature:
 
     __PAST_PARTICIPLE_ADJECTIVE_DATASET: set[TokenStr] = set()
     __PRESENT_PARTICIPLE_ADJECTIVE_DATASET: set[TokenStr] = set()
-    __POS_SUBCATEGORIES: Final[set[Tag]] = set(["JJ_pp"])
+    __LIMIT_ADJECTIVE_DATASET: set[TokenStr] = set()
+    __EXTRAPOSITION_ADJECTIVE_DATASET: set[TokenStr] = set()
 
     def __init__(self, words: list) -> None:
         tagged_tokens: list[TaggedToken] = []
@@ -87,7 +97,12 @@ class PosFeature:
             PosFeature: PosFeatureインスタンス
         """
         if "JJ" in self.all_pos:
-            return self.tag_jj_past_participle().tag_jj_present_participle()
+            return (
+                self.tag_jj_past_participle()
+                .tag_jj_present_participle()
+                .tag_jj_limit()
+                .tag_jj_extraposition()
+            )
 
         return self
 
@@ -99,11 +114,13 @@ class PosFeature:
         """
         return PosFeature(
             [
-                (word, "JJ_pp")
-                if word.strip().lower()
-                in PosFeature.__PAST_PARTICIPLE_ADJECTIVE_DATASET
-                and pos == "JJ"
-                else (word, pos)
+                (
+                    (word, "JJ_pp")
+                    if word.strip().lower()
+                    in PosFeature.__PAST_PARTICIPLE_ADJECTIVE_DATASET
+                    and pos == "JJ"
+                    else (word, pos)
+                )
                 for (word, pos) in self.__tagged_tokens
             ]
         )
@@ -117,14 +134,91 @@ class PosFeature:
         """
         return PosFeature(
             [
-                (word, "JJ_presp")
-                if word.strip().lower()
-                in PosFeature.__PRESENT_PARTICIPLE_ADJECTIVE_DATASET
-                and pos == "JJ"
-                else (word, pos)
+                (
+                    (word, "JJ_presp")
+                    if word.strip().lower()
+                    in PosFeature.__PRESENT_PARTICIPLE_ADJECTIVE_DATASET
+                    and pos == "JJ"
+                    else (word, pos)
+                )
                 for (word, pos) in self.__tagged_tokens
             ]
         )
+
+    def tag_jj_limit(self) -> "PosFeature":
+        """
+        限定形容詞をタグ付けする
+
+        Returns:
+            PosFeature: PosFeatureインスタンス
+        """
+        return PosFeature(
+            [
+                (
+                    (word, "JJ_lim")
+                    if word.strip().lower() in PosFeature.__LIMIT_ADJECTIVE_DATASET
+                    and pos == "JJ"
+                    else (word, pos)
+                )
+                for (word, pos) in self.__tagged_tokens
+            ]
+        )
+
+    def tag_jj_extraposition(self) -> "PosFeature":
+        """
+        外置形容詞をタグ付けする
+
+
+        Returns:
+            PosFeature: PosFeatureインスタンス
+        """
+
+        if all(
+            word in PosFeature.__EXTRAPOSITION_ADJECTIVE_DATASET
+            for word, _ in self.__tagged_tokens
+        ):
+            return self
+
+        State = ExtrapositionAdjectiveState
+        current = State.INITIAL
+        jj_idx: int | None = None
+        jj_token: TokenStr | None = None
+        tagged_tokens: list[TaggedToken] = []
+
+        for i, (token, tag) in enumerate(self.__tagged_tokens):
+
+            if current == State.INITIAL and token.lower() == "it":
+                current = State.FOUND_IT
+
+            elif current == State.FOUND_IT and tag.startswith("V"):
+                current = State.FOUND_VERB
+
+            elif (
+                current == State.FOUND_VERB
+                and tag == "JJ"
+                and token.lower() in self.__EXTRAPOSITION_ADJECTIVE_DATASET
+            ):
+
+                current = State.FOUND_ADJ
+                jj_idx = i
+                jj_token = token
+
+            elif current == State.FOUND_ADJ and token.lower() in ["that", "to"]:
+                if isinstance(jj_idx, int) and jj_token is not None:
+                    jj_idx = int(jj_idx)  # Convert jj_idx to an integer
+                    tagged_tokens[jj_idx] = (jj_token, "JJ_exp")
+                current = State.INITIAL
+                jj_idx = None
+                jj_token = None
+
+            elif tag in ["."]:
+                current = State.INITIAL
+                jj_idx = None
+                jj_token = None
+
+            tagged_tokens.append((token, tag))
+
+        return PosFeature(tagged_tokens)
 
     @classmethod
     def initialize_additional_pos_dataset(cls) -> None:
@@ -146,6 +240,22 @@ class PosFeature:
             cls.__PRESENT_PARTICIPLE_ADJECTIVE_DATASET = set(
                 adj.strip().lower() for adj in adjectives
             )
+
+        # 限定形容詞のデータセットを読み込む
+        limit_adjectives_df = pd.read_csv(DatasetPaths.limit_jj_dataset)
+        limit_adjectives = set(
+            limit_adjectives_df["Non-gradable (limit)"].str.strip().str.lower()
+        )
+        cls.__LIMIT_ADJECTIVE_DATASET = limit_adjectives
+
+        # 外置形容詞のデータセットを読み込む
+        extraposition_adjectives_df = pd.read_csv(DatasetPaths.extraposition_jj_dataset)
+        extraposition_adjectives = set(
+            extraposition_adjectives_df["Extraposition Adjectives"]
+            .str.strip()
+            .str.lower()
+        )
+        cls.__EXTRAPOSITION_ADJECTIVE_DATASET = extraposition_adjectives
 
 
 PosFeature.initialize_additional_pos_dataset()
