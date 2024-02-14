@@ -1,4 +1,5 @@
 """パスユーティリティモジュール (Path utility module)"""
+
 import abc
 import os
 from dataclasses import dataclass
@@ -57,7 +58,7 @@ class PathUtil:
         if not (abs_path := cls.PROJECT_ROOT_PATH.joinpath(Path(rel_path_str))):
             raise FileNotFoundError(f"File: `{abs_path}` could not be found.")
 
-        print(f"Path: {rel_path_str} = {abs_path}")
+        print(f"Path: {rel_path_str}")
         return abs_path
 
     PROJECT_ROOT_PATH: Final[Path] = init_project_root()
@@ -71,10 +72,16 @@ class DatasetPaths:
     """
 
     past_participle_jj_dataset: Path = PathUtil.init_path(
-        "data/john_blake_2023/wordLists/adjectivesPastParticiple",
+        "data/john_blake_2023/wordLists/adjectives/participle/adjectivesPastParticiple.csv",
     )
     present_participle_jj_dataset: Path = PathUtil.init_path(
-        "data/john_blake_2023/wordLists/adjectivesPresentParticiple"
+        "data/john_blake_2023/wordLists/adjectives/participle/adjectivesPresentParticiple.csv"
+    )
+    limit_jj_dataset: Path = PathUtil.init_path(
+        "data/john_blake_2023/wordLists/adjectives/limit/limit_adjectives.csv",
+    )
+    extraposition_jj_dataset: Path = PathUtil.init_path(
+        "data/john_blake_2023/wordLists/adjectives/extraposition/adjectives_extraposition.csv",
     )
     vijini_dataset_fully_gen: Path = PathUtil.init_path(
         "data/liyanage_vijini_2022/Dataset/FullyGenerated",
