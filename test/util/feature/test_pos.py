@@ -29,3 +29,62 @@
 #         "participle",
 #         "words",
 #     ]
+
+
+import nltk
+
+from authorship_tool.util.feature.pos import PosFeature
+
+
+def test_sentence_contains_extraposition_1():
+    pos_feature = PosFeature(
+        nltk.pos_tag(nltk.word_tokenize("It is obvious that you have been misled."))
+    )
+    result = pos_feature.tag_jj_extraposition()
+    assert "JJ_exp" in [tag for _, tag in result.tagged_tokens]
+
+
+def test_sentence_contains_extraposition_2():
+    pos_feature = PosFeature(
+        nltk.pos_tag(
+            nltk.word_tokenize("It's a shame what happened to you and your sister.")
+        )
+    )
+    result = pos_feature.tag_jj_extraposition()
+    assert "JJ_exp" not in [tag for _, tag in result.tagged_tokens]
+
+
+def test_sentence_contains_extraposition_3():
+    pos_feature = PosFeature(
+        nltk.pos_tag(
+            nltk.word_tokenize(
+                "It might be a good idea to wear a respirator mask when you're working with fiberglass."
+            )
+        )
+    )
+    result = pos_feature.tag_jj_extraposition()
+    assert "JJ_exp" in [tag for __build_class__, tag in result.tagged_tokens]
+
+
+def test_sentence_contains_extraposition_4():
+    pos_feature = PosFeature(
+        nltk.pos_tag(
+            nltk.word_tokenize(
+                "It's likely that the enemy simply dropped back off the hilltop once they'd grabbed all the weapons they could carry."
+            )
+        )
+    )
+    result = pos_feature.tag_jj_extraposition()
+    assert "JJ_exp" in [tag for _, tag in result.tagged_tokens]
+
+
+def test_sentence_contains_extraposition_5():
+    pos_feature = PosFeature(
+        nltk.pos_tag(
+            nltk.word_tokenize(
+                "It surprised everybody that Marlene had so much energy and strength."
+            )
+        )
+    )
+    result = pos_feature.tag_jj_extraposition()
+    assert "JJ_exp" not in [tag for word, tag in result.tagged_tokens]
