@@ -50,12 +50,14 @@ LightGBMはブラックボックス化した機械学習モデルであるため
 
 1番目のデータポイントに対する予測とその根拠をあらわすプロット  
 SHAP値が大きい場合にChesterton氏、小さい場合にBryant氏であるとモデルが予測する傾向があることを示す。  
+（1番目のデータポイントについては正答がChesterton氏で、モデルも正しく予測していた）
 ![Force](out/shap/figure/gutenberg/shap_force_plot.svg)
 
 ### Decision plot
 
 1番目のデータポイントに対するForce plotを、各特徴量ごとに行で分解して表示したもの。  
 SHAP値が大きい場合にChesterton氏、小さい場合にBryant氏であるとモデルが予測する傾向があることを示す。  
+（1番目のデータポイントについては正答がChesterton氏で、モデルも正しく予測していた）
 ![Decision](out/shap/figure/gutenberg/shap_decision_plot.svg)
 
 ### Summary plot (bar)
