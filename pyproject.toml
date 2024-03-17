@@ -7,18 +7,18 @@ readme = "README.md"
 packages = [{ from = ".", include = "authorship_tool" }]
 
 [tool.poetry.dependencies]
-python = "^3.11"
-black = { extras = ["jupyter"], version = "^23.12.1" }
-isort = "^5.13.2"
+python = "3.11.8"
+black = { extras = ["jupyter"], version = "*" }
+isort = "*"
 jupyter = "*"
 lightgbm = "*"
 matplotlib = "*"
-mypy = "^1.8.0"
+mypy = "*"
 nltk = "*"
-numpy = "^1.26.3"
+numpy = "*"
 pandas = "*"
 pandas-stubs = "*"
-pydash = "^7.0.6"
+pydash = "*"
 pytest = "*"
 pytest-mock = "*"
 rich = "*"
@@ -26,8 +26,8 @@ scikit-learn = "*"
 shap = "*"
 tabulate = "*"
 types-tabulate = "*"
-pypdf = "^3.17.4"
-spacy = "^3.7.2"
+pypdf = "*"
+spacy = "*"
 
 
 [build-system]
