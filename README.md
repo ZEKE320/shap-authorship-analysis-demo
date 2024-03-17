@@ -1,7 +1,7 @@
 # shap-authorship-analysis-demo
 
 SHAPによる著者分析のデモ用リポジトリ
-文章の特徴を分析し、著者の文章にどのような特徴がみられるのかプロットするデモアプリケーションです。
+文章の特徴を分析し、著者の文章にどのような特徴がみられるのかプロットするデモアプリケーション
 
 ## デモ (Project Gutenberg)
 
@@ -9,7 +9,7 @@ SHAPによる著者分析のデモ用リポジトリ
 
 NLTKで利用可能なGutenberg Corpus ([https://www.gutenberg.org/](https://www.gutenberg.org/)) のうち、Chesterton氏とBryant氏の小説を著者ごとに分類。それぞれTrue・Falseでラベル付けを行いデータセットとして利用した。
 
-データセットを作成するにあたり、各著者の小説全体に対して1つ段落ごとにデータポイントとみなし、LightGBMで学習・予測を行った。
+データセットを作成するにあたり、各著者の小説全体に対して1段落を1つのデータポイントとみなし、LightGBMで学習・予測を行った。
 
 予測に用いた特徴量には約30個の文法的特徴と約40個の品詞に対する段落中出現頻度を合計した計73のパラメータが含まれる。
 
@@ -19,9 +19,9 @@ LightGBMはブラックボックス化した機械学習モデルであるため
 
 - 記述スタイル: 小説 (1900年代初頭)
 - クロスバリデーション手法: 100-fold cross validation
-- データセット: Project Gutenberg Selections [source](https://www.nltk.org/nltk_data/#:~:text=Project%20Gutenberg%20Selections%20%5B%20download%20%7C%20source%20%5D) (Chesterton氏とBryant氏の小説を選択。これは両者の記述スタイルが類似していたため。)
+- データセット: Project Gutenberg Selections [source](https://www.nltk.org/nltk_data/#:~:text=Project%20Gutenberg%20Selections%20%5B%20download%20%7C%20source%20%5D) (Chesterton氏とBryant氏の小説を選択。これは両者の記述スタイルが類似しているため。)
 
-- 以下、著者とその段落数を示す。
+- 以下に著者とその段落数を示す。
   | Author     | Paragraphs |
   | ---------- | ---------: |
   | Chesterton |       4055 |
@@ -52,14 +52,14 @@ LightGBMはブラックボックス化した機械学習モデルであるため
 
 1番目のデータポイントに対する予測とその根拠をあらわすプロット  
 SHAP値が大きい場合にChesterton氏、小さい場合にBryant氏であるとモデルが予測する傾向があることを示す。  
-（1番目のデータポイントについては正答がChesterton氏で、モデルも正しく予測していた）
+（1番目のデータポイントについては正答がChesterton氏であり、モデルも正しく予測していた）
 ![Force](out/shap/figure/gutenberg/shap_force_plot.svg)
 
 ### Decision plot
 
 1番目のデータポイントに対するForce plotを、各特徴量ごとに行で分解して表示したもの。  
 SHAP値が大きい場合にChesterton氏、小さい場合にBryant氏であるとモデルが予測する傾向があることを示す。  
-（1番目のデータポイントについては正答がChesterton氏で、モデルも正しく予測していた）
+（1番目のデータポイントについては正答がChesterton氏であり、モデルも正しく予測していた）
 ![Decision](out/shap/figure/gutenberg/shap_decision_plot.svg)
 
 ### Summary plot (bar)
@@ -69,6 +69,6 @@ SHAP値が大きい場合にChesterton氏、小さい場合にBryant氏である
 
 ### Summary plot
 
-100-fold クロスバリデーションによる各特徴量の特徴の強さ・弱さが、それぞれのデータポイントの分類に対してどのような貢献をしたのかを表示するプロット。  
-SHAP値が大きい場合にChesterton氏、小さい場合にBryant氏である可能性を示す。  
+100-fold クロスバリデーションによる各特徴量の強さ・弱さが、それぞれのデータポイントの分類に対してどのような貢献をしたのかを表示するプロット。  
+SHAP値が大きい場合にChesterton氏、小さい場合にBryant氏であるとモデルが予測する傾向があることを示す。  
 ![Summary](out/shap/figure/gutenberg_kfold/shap_summary_plot.svg)
