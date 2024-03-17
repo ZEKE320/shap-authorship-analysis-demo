@@ -355,6 +355,20 @@ class ParagraphCalculator:
         return SentenceCalculator.count_total_tokens(dim_reshaper.reduce_dim(para))
 
     @staticmethod
+    def count_total_sentences(para: Para2dStr) -> int:
+        """
+        段落中の文数を計算する
+        Calculate the number of sentences in a paragraph
+
+        Args:
+            para (Para2dStr): 段落 (Paragraph)
+
+        Returns:
+            int: 段落中の文数 (Number of sentences in a paragraph)
+        """
+        return len(para)
+
+    @staticmethod
     def word_variation(para: Para2dStr) -> np.float64:
         """
         段落中の単語の豊富さを計算する
@@ -465,7 +479,7 @@ class UnivKansasFeatures:
         Returns:
             int: 段落内の文数 (Number of sentences in a paragraph)
         """
-        return ParagraphCalculator.count_total_tokens(para)
+        return ParagraphCalculator.count_total_sentences(para)
 
     @staticmethod
     def v2_words_per_paragraph(para: Para2dStr) -> int:
