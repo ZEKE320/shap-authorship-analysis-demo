@@ -32,11 +32,11 @@ LightGBMはブラックボックス化した機械学習モデルであるため
 
 ### Confusion matrix (100-fold cross validated model)
 
-| Prediction | Chesterton | Bryant |
-| ---------- | ---------: | -----: |
-| Actual     |            |        |
-| Chesterton |        596 |    598 |
-| Bryant     |        201 |   3854 |
+| Prediction | Bryant | Chesterton |
+| ---------- | -----: | ---------: |
+| Actual     |        |            |
+| Bryant     |    596 |        598 |
+| Chesterton |    201 |       3854 |
 
 ### Scores (100-fold cross validated model)
 
