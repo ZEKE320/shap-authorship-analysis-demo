@@ -11,7 +11,7 @@ NLTKで利用可能なGutenberg Corpus ([https://www.gutenberg.org/](https://www
 
 データセットを作成するにあたり、各著者の小説全体に対して1段落を1つのデータポイントとみなし、LightGBMで学習・予測を行った。
 
-予測に用いた特徴量には約30個の文法的特徴と約40個の品詞に対する段落中出現頻度を合計した計73のパラメータが含まれる。
+予測に用いた特徴量には約30個の文法的特徴と約40個の品詞に対する段落中出現頻度を合計した計73種類の数値が用いられた。
 
 LightGBMはブラックボックス化した機械学習モデルであるため、モデルの分類基準を説明するためにSHAP ([https://shap.readthedocs.io/en/latest/index.html](https://shap.readthedocs.io/en/latest/index.html))を導入した。
 
