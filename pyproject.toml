@@ -28,6 +28,8 @@ tabulate = "*"
 types-tabulate = "*"
 pypdf = "*"
 spacy = "*"
+seaborn = "^0.13.2"
+pylint = "^3.1.0"
 
 
 [build-system]
@@ -42,4 +44,5 @@ plugins = "numpy.typing.mypy_plugin"
 exclude = "data/*"
 
 [tool.pylint.MASTER]
-disable = ["wrong-import-position", "line-too-long"]
+disable = ["fixme", "wrong-import-position", "line-too-long"]
+ignore = "data"
