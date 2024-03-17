@@ -5,7 +5,7 @@ SHAPによる著者分析のデモ用リポジトリ
 
 ## デモ (Project Gutenberg)
 
-[著者分析デモ (Jupyter Notebook)](demo/nltk_gutenberg_analysis.ipynb)
+[著者分析デモ (Jupyter Notebook)](demo/data_classifier/nltk_gutenberg_analysis_demo.ipynb)
 
 NLTKで利用可能なGutenberg Corpus ([https://www.gutenberg.org/](https://www.gutenberg.org/)) のうち、Chesterton氏とBryant氏の小説を著者ごとに分類。それぞれTrue・Falseでラベル付けを行いデータセットとして利用した。
 
