@@ -28,15 +28,15 @@ LightGBMはブラックボックス化した機械学習モデルであるため
   | Bryant     |       1194 |
   | Total      |       5249 |
 
-  - （メモ：データポイント数に偏りがあるため、後に1000のデータポイントを各著者からランダムに選出し、再度検証すべき）
+  - （メモ：データポイント数に偏りがあるため、次のステップとして各著者から1000のデータポイントをランダムに選出する実装を追加する）
 
 ### Confusion matrix (100-fold cross validated model)
 
 | Prediction | Bryant | Chesterton |
 | ---------- | -----: | ---------: |
 | Actual     |        |            |
-| Bryant     |    596 |        598 |
-| Chesterton |    201 |       3854 |
+| Bryant     |    612 |        582 |
+| Chesterton |    202 |       3853 |
 
 - (メモ：データポイント数の偏りのため、やや当てずっぽうにChesterton氏と予測する傾向が見られる。)
 
@@ -44,9 +44,9 @@ LightGBMはブラックボックス化した機械学習モデルであるため
 
 | Metrics  | Score |
 | -------- | ----: |
-| F1       | 0.906 |
-| ROC-AUC  | 0.858 |
-| Accuracy | 0.847 |
+| F1       | 0.907 |
+| ROC-AUC  | 0.870 |
+| Accuracy | 0.850 |
 
 ### Force plot
 
