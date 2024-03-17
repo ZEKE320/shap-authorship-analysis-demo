@@ -38,6 +38,8 @@ LightGBMはブラックボックス化した機械学習モデルであるため
 | Bryant     |    596 |        598 |
 | Chesterton |    201 |       3854 |
 
+- (メモ：データポイント数の偏りのため、やや当てずっぽうにChesterton氏と予測する傾向が見られる。)
+
 ### Scores (100-fold cross validated model)
 
 | Metrics  | Score |
