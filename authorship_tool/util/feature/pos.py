@@ -15,6 +15,8 @@ from authorship_tool.util.path_util import DatasetPaths
 
 
 class ExtrapositionAdjectiveState(Enum):
+    """外置形容詞の状態を表す列挙型"""
+
     INITIAL = auto()
     FOUND_IT = auto()
     FOUND_VERB = auto()

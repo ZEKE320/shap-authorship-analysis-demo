@@ -323,13 +323,15 @@ class SentenceCalculator:
         total_token_count: int = len(tags)
 
         return {
-            tag: np.divide(
-                tags.count(tag),
-                total_token_count,
-                dtype=np.float64,
+            tag: (
+                np.divide(
+                    tags.count(tag),
+                    total_token_count,
+                    dtype=np.float64,
+                )
+                if total_token_count != 0
+                else np.float64(0)
             )
-            if total_token_count != 0
-            else np.float64(0)
             for tag in set(tags)
         }
 

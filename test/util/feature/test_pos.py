@@ -1,3 +1,5 @@
+"""pos.pyのテスト"""
+
 # from io import TextIOWrapper
 # from typing import Final
 
@@ -37,6 +39,8 @@ from authorship_tool.util.feature.pos import PosFeature
 
 
 def test_sentence_contains_extraposition_1():
+    """文が外置形容詞を含むかどうかを判定するテスト1"""
+
     pos_feature = PosFeature(
         nltk.pos_tag(nltk.word_tokenize("It is obvious that you have been misled."))
     )
@@ -45,6 +49,8 @@ def test_sentence_contains_extraposition_1():
 
 
 def test_sentence_contains_extraposition_2():
+    """文が外置形容詞を含むかどうかを判定するテスト2"""
+
     pos_feature = PosFeature(
         nltk.pos_tag(
             nltk.word_tokenize("It's a shame what happened to you and your sister.")
@@ -55,6 +61,7 @@ def test_sentence_contains_extraposition_2():
 
 
 def test_sentence_contains_extraposition_3():
+    """文が外置形容詞を含むかどうかを判定するテスト3"""
     pos_feature = PosFeature(
         nltk.pos_tag(
             nltk.word_tokenize(
@@ -63,10 +70,11 @@ def test_sentence_contains_extraposition_3():
         )
     )
     result = pos_feature.tag_jj_extraposition()
-    assert "JJ_exp" in [tag for __build_class__, tag in result.tagged_tokens]
+    assert "JJ_exp" in [tag for _, tag in result.tagged_tokens]
 
 
 def test_sentence_contains_extraposition_4():
+    """文が外置形容詞を含むかどうかを判定するテスト4"""
     pos_feature = PosFeature(
         nltk.pos_tag(
             nltk.word_tokenize(
@@ -79,6 +87,7 @@ def test_sentence_contains_extraposition_4():
 
 
 def test_sentence_contains_extraposition_5():
+    """文が外置形容詞を含むかどうかを判定するテスト5"""
     pos_feature = PosFeature(
         nltk.pos_tag(
             nltk.word_tokenize(
@@ -87,4 +96,4 @@ def test_sentence_contains_extraposition_5():
         )
     )
     result = pos_feature.tag_jj_extraposition()
-    assert "JJ_exp" not in [tag for word, tag in result.tagged_tokens]
+    assert "JJ_exp" not in [tag for _, tag in result.tagged_tokens]
