@@ -16,13 +16,12 @@
   },
 
   "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/java": {
       "version": "latest",
       "jdkDistro": "tem"
     },
     "ghcr.io/devcontainers/features/python": {
-      "version": "3.11",
+      "version": "3.12",
       "installTools": false
     }
   },
