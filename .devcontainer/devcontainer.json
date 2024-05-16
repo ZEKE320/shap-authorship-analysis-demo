@@ -11,6 +11,8 @@
     "type=volume,source=vsc-remote-uoa-thesis-2014-2017,target=/workspaces/shap-authorship-analysis-demo/data/uoa-thesis-2014-2017"
   ],
 
+  "runArgs": ["--gpus", "all"],
+
   "containerEnv": {
     "POETRY_VIRTUALENVS_IN_PROJECT": "true"
   },
