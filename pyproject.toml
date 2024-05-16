@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{ from = ".", include = "authorship_tool" }]
 
 [tool.poetry.dependencies]
-python = "3.11.8"
+python = "3.11.9"
 black = { extras = ["jupyter"], version = "*" }
 isort = "*"
 jupyter = "*"
