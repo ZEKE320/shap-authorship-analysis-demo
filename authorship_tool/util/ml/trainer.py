@@ -3,13 +3,12 @@
 Classifier trainer module
 """
 
-
 from typing import Final
 
+import lightgbm as lgb
 import numpy as np
 import numpy.typing as npt
-import pandas as pd
-from lightgbm import LGBMClassifier
+from pandas import DataFrame
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 
@@ -41,8 +40,8 @@ def train(
         TrainingResult: トレーニング結果
     """
 
-    model = LGBMClassifier()
-    model.fit(X=splitted_dataset.train_data.values, y=splitted_dataset.train_ans)
+    model = lgb.LGBMClassifier()
+    model.fit(X=splitted_dataset.train_data.to_numpy(), y=splitted_dataset.train_ans)
 
     prediction: Prediction = predict(model, splitted_dataset.test_data)
     shap_data: ShapData = create_shap_data(model, splitted_dataset.test_data)
@@ -60,7 +59,7 @@ def train(
     )
 
 
-def predict(model: LGBMClassifier, test_data: pd.DataFrame) -> Prediction:
+def predict(model: lgb.LGBMClassifier, test_data: DataFrame) -> Prediction:
     """
     モデルによる予測を行います。
     Perform prediction by the model.
@@ -125,9 +124,9 @@ def calc_score(
     if len(test_ans) <= 1 or not use_score:
         return None
 
-    f1_result = f1_score(y_true=test_ans, y_pred=prediction.pred_ans)
-    accuracy_result = accuracy_score(y_true=test_ans, y_pred=prediction.pred_ans)
-    auc_roc_result = roc_auc_score(y_true=test_ans, y_score=prediction.pred_prob)
+    f1_result: float = f1_score(y_true=test_ans, y_pred=prediction.pred_ans)
+    accuracy_result: float = accuracy_score(y_true=test_ans, y_pred=prediction.pred_ans)
+    auc_roc_result: float = roc_auc_score(y_true=test_ans, y_score=prediction.pred_prob)
 
     return Score(
         f1_result,

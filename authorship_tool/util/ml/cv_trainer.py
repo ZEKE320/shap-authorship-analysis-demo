@@ -157,7 +157,7 @@ def convert_cv_result_to_global_exp_data(
         strict=True,
     )
     shap_vals_list: list[npt.NDArray[np.float64]] = [
-        shap_data.shap_vals for shap_data in cv_result.shap_data_tuple
+        shap_data.shap_values for shap_data in cv_result.shap_data_tuple
     ]
 
     test_data: pd.DataFrame = pd.concat(test_data_zip)
@@ -188,11 +188,13 @@ def calc_score_for_cv(cv_view_data: CvGlobalExplanationData) -> Score:
         Score: スコアデータ
     """
 
-    f1_result = f1_score(y_true=cv_view_data.test_ans, y_pred=cv_view_data.pred_ans)
-    accuracy_result = accuracy_score(
+    f1_result: float = f1_score(
         y_true=cv_view_data.test_ans, y_pred=cv_view_data.pred_ans
     )
-    auc_roc_result = roc_auc_score(
+    accuracy_result: float = accuracy_score(
+        y_true=cv_view_data.test_ans, y_pred=cv_view_data.pred_ans
+    )
+    auc_roc_result: float = roc_auc_score(
         y_true=cv_view_data.test_ans, y_score=cv_view_data.pred_prob
     )
 

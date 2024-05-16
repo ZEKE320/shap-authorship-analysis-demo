@@ -1,4 +1,5 @@
 """テーブルを表示するためのモジュール"""
+
 import pandas
 from tabulate import tabulate
 

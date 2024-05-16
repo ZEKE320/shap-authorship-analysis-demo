@@ -1,4 +1,5 @@
 """タイプガード用のユーティリティモジュール"""
+
 from typing import TypeGuard
 
 from authorship_tool.types_ import Para2dStr, Sent1dStr, Tag, TaggedToken, TokenStr

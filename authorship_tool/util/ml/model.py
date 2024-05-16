@@ -1,4 +1,5 @@
 """LGBMに利用するモデルデータ定義モジュール"""
+
 import pickle
 from dataclasses import dataclass
 from pathlib import Path
@@ -7,9 +8,9 @@ from typing import Final
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
+import shap
 from lightgbm import LGBMClassifier
 from pandas import DataFrame
-from shap import Explainer
 
 from authorship_tool.util.path_util import BasePaths
 
@@ -28,8 +29,8 @@ class SplittedDataset:
 
     train_data: DataFrame
     test_data: DataFrame
-    train_ans: npt.NDArray
-    test_ans: npt.NDArray
+    train_ans: npt.NDArray[np.bool_]
+    test_ans: npt.NDArray[np.bool_]
 
 
 @dataclass(frozen=True)
@@ -44,18 +45,19 @@ class Prediction:
 class Score:
     """評価スコアデータクラス"""
 
-    f1_score: np.float64
-    accuracy_score: np.float64
-    auc_roc_score: np.float64
+    f1_score: float
+    accuracy_score: float
+    auc_roc_score: float
 
 
 @dataclass(frozen=True)
 class ShapData:
     """Shapデータクラス"""
 
-    explainer: Explainer
-    shap_vals: npt.NDArray[np.float64]
-    shap_expected_val: np.float64
+    explainer: shap.Explainer
+    base_values: np.float64
+    shap_values: npt.NDArray[np.float64]
+    data: DataFrame
 
 
 @dataclass(frozen=True)
@@ -134,7 +136,7 @@ def dump(result: TrainingResult, path: type[BasePaths]) -> None:
         header=False,
     )
 
-    DataFrame(result.shap_data.shap_vals).to_csv(
+    DataFrame(result.shap_data.shap_values).to_csv(
         dataset_dir.joinpath("test_shap_val.csv"),
         index=False,
         header=False,

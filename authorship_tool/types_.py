@@ -1,4 +1,5 @@
 """プロジェクト全般の型エイリアス"""
+
 from typing import TypeAlias
 
 # 文章関連

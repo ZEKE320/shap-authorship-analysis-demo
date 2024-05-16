@@ -1,4 +1,5 @@
 """トークナイザーモジュール"""
+
 import nltk
 
 from authorship_tool.types_ import Para2dStr, Paragraph

@@ -2,6 +2,7 @@
 特徴量データセット生成モジュール
 Feature dataset generator module
 """
+
 from typing import Callable, Final, get_type_hints
 
 import numpy as np
