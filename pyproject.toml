@@ -11,7 +11,7 @@ python = "3.12.3"
 black = { extras = ["jupyter"], version = "*" }
 isort = "*"
 jupyter = "*"
-lightgbm = "*"
+lightgbm = {extras = ["gpu"], version = "^4.3.0"}
 matplotlib = "*"
 mypy = "*"
 nltk = "*"
@@ -30,6 +30,11 @@ pypdf = "*"
 spacy = "*"
 seaborn = "^0.13.2"
 pylint = "^3.1.0"
+setuptools = "^69.5.1"
+wheel = "^0.43.0"
+nvidia-pyindex = "^1.0.9"
+nvidia-cuda-runtime-cu12 = "^12.4.127"
+nvidia-cuda-nvcc-cu12 = "^12.4.131"
 
 
 [build-system]
