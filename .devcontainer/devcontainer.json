@@ -18,14 +18,10 @@
   },
 
   "features": {
-    "ghcr.io/devcontainers/features/java": {
-      "version": "latest",
-      "jdkDistro": "tem"
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
     },
-    "ghcr.io/devcontainers/features/python": {
-      "version": "3.12",
-      "installTools": false
-    }
+    "ghcr.io/devcontainers-contrib/features/poetry:2": {}
   },
 
   "customizations": {
