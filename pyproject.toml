@@ -7,47 +7,27 @@ readme = "README.md"
 packages = [{ from = ".", include = "authorship_tool" }]
 
 [tool.poetry.dependencies]
-python = "3.12.3"
-black = { extras = ["jupyter"], version = "*" }
-isort = "*"
+python = "3.12.4"
 jupyter = "*"
-lightgbm = {extras = ["gpu"], version = "^4.3.0"}
+lightgbm = { extras = ["gpu"], version = "^4.3.0" }
 matplotlib = "*"
-mypy = "*"
 nltk = "*"
 numpy = "*"
 pandas = "*"
 pandas-stubs = "*"
-pydash = "*"
 pytest = "*"
 pytest-mock = "*"
 rich = "*"
 scikit-learn = "*"
 shap = "*"
-tabulate = "*"
-types-tabulate = "*"
-pypdf = "*"
 spacy = "*"
 seaborn = "^0.13.2"
-pylint = "^3.1.0"
-setuptools = "^69.5.1"
-wheel = "^0.43.0"
-nvidia-pyindex = "^1.0.9"
-nvidia-cuda-runtime-cu12 = "^12.4.127"
-nvidia-cuda-nvcc-cu12 = "^12.4.131"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.isort]
-profile = "black"
 
-[tool.mypy]
-plugins = "numpy.typing.mypy_plugin"
-exclude = "data/*"
-
-[tool.pylint.MASTER]
-disable = ["fixme", "wrong-import-position", "line-too-long"]
-ignore = "data"
+[tool.ruff]
+extend-include = ["*.ipynb"]
