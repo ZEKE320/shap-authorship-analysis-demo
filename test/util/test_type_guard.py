@@ -1,4 +1,5 @@
 """タイプガード用のユーティリティモジュールテスト"""
+
 import pytest
 
 from authorship_tool.util import type_guard

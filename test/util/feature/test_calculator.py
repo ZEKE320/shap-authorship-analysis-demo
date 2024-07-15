@@ -1,6 +1,6 @@
 """
-    特徴量計算モジュールテスト
-    Feature calculator module test
+特徴量計算モジュールテスト
+Feature calculator module test
 """
 
 from authorship_tool.types_ import Para2dStr

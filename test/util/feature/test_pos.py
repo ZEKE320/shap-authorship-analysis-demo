@@ -32,7 +32,6 @@
 #         "words",
 #     ]
 
-
 import nltk
 
 from authorship_tool.util.feature.pos import PosFeature
