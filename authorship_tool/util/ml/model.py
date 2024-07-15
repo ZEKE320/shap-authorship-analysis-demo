@@ -92,6 +92,7 @@ class CvGlobalExplanationData:
     pred_ans: npt.NDArray[np.bool_]
     pred_prob: npt.NDArray[np.float64]
     shap_vals: npt.NDArray[np.float64]
+    explanation: list[shap.Explanation]
 
 
 def dump(result: TrainingResult, path: type[BasePaths]) -> None:

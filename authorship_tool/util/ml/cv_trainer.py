@@ -8,6 +8,7 @@ from typing import Final
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
+import shap
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.model_selection import KFold, LeaveOneOut
 
@@ -159,6 +160,15 @@ def convert_cv_result_to_global_exp_data(
     shap_vals_list: list[npt.NDArray[np.float64]] = [
         shap_data.shap_values for shap_data in cv_result.shap_data_tuple
     ]
+    explanation_list = [
+        shap_data.explanation for shap_data in cv_result.shap_data_tuple
+    ]
+    explanation = shap.Explanation(
+        values=np.vstack([e.values for e in explanation_list]),
+        base_values=np.hstack([e.base_values for e in explanation_list]),
+        data=np.vstack([e.data for e in explanation_list]),
+        feature_names=explanation_list[0].feature_names,
+    )
 
     test_data: pd.DataFrame = pd.concat(test_data_zip)
     test_ans: npt.NDArray[np.bool_] = np.concatenate(test_ans_zip)
@@ -174,6 +184,7 @@ def convert_cv_result_to_global_exp_data(
         pred_ans,
         pred_prob,
         shap_vals,
+        explanation
     )
 
 
