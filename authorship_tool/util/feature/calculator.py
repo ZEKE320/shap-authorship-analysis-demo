@@ -6,12 +6,6 @@ Feature calculation module
 import re
 
 import nltk
-
-nltk.download("averaged_perceptron_tagger")
-nltk.download("punkt")
-nltk.download("stopwords")
-nltk.download("wordnet")
-
 import numpy as np
 from nltk import SnowballStemmer, WordNetLemmatizer
 from numpy.typing import NDArray
