@@ -6,9 +6,9 @@ Serializer module
 from pathlib import Path
 
 import pandas as pd
+from IPython.display import display
 
 from authorship_tool.types_ import Doc3dStr, Title
-from authorship_tool.util.table_util import display
 
 
 def author_collection_to_csv(
