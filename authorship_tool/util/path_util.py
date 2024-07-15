@@ -92,6 +92,12 @@ class DatasetPaths:
     uoa_thesis_dataset: Path = PathUtil.init_path(
         "data/uoa-thesis-2014-2017",
     )
+    enron_dataset: Path = PathUtil.init_path(
+        "data/enron-corpus/emails.csv",
+    )
+    enron_dataset_cleaned: Path = PathUtil.init_path(
+        "data/enron-corpus/emails_cleaned.csv",
+    )
 
 
 @dataclass(frozen=True, init=False)

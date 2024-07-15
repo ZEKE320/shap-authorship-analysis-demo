@@ -6,7 +6,7 @@ Feature dataset generator module
 from typing import Callable, Final, get_type_hints
 
 import numpy as np
-import pandas as pd
+from nltk.tokenize import sent_tokenize, word_tokenize
 from numpy.typing import NDArray
 
 from authorship_tool.types_ import FeatureLabel, Para2dStr, Sent1dStr, Tag
@@ -149,7 +149,7 @@ class ParagraphFeatureDatasetGenerator:
         self,
         para: Para2dStr,
         category: bool,
-    ) -> pd.Series:
+    ) -> tuple[bool | int | float, ...]:
         """文字列のリストのリストから特徴量のリストを生成する"""
 
         if not type_guard.is_para(para):
@@ -157,22 +157,41 @@ class ParagraphFeatureDatasetGenerator:
 
         freq_by_pos: dict[str, np.float64] = ParagraphCalculator.pos_frequencies(para)
 
-        feature_calc_results = pd.Series(
-            [
-                callable(para)
-                for callable in ParagraphFeatureDatasetGenerator.__COLS_AND_FUNC.values()
-            ],
-        )
-        pos_frequency_results = pd.Series(
-            [freq_by_pos.get(tag, np.float64(0)) for tag in self.__tags],
-        )
-        category_series = pd.Series([category])
+        feature_calc_results = [
+            callable(para)
+            for callable in ParagraphFeatureDatasetGenerator.__COLS_AND_FUNC.values()
+        ]
+        pos_frequency_results = [
+            freq_by_pos.get(tag, np.float64(0)) for tag in self.__tags
+        ]
 
-        return pd.concat(
-            (
-                feature_calc_results,
-                pos_frequency_results,
-                category_series,
-            ),
-            axis=0,
+        return (
+            *feature_calc_results,
+            *pos_frequency_results,
+            category,
+        )
+
+    def generate_from_str(
+        self,
+        para_str: str,
+        categories: bool,
+    ) -> tuple[bool | int | float, ...]:
+        """文字列のリストのリストから特徴量のリストを生成する"""
+        sents = sent_tokenize(para_str)
+        tokens = [word_tokenize(s) for s in sents]
+
+        freq_by_pos: dict[str, np.float64] = ParagraphCalculator.pos_frequencies(tokens)
+
+        feature_calc_results = [
+            callable(tokens)
+            for callable in ParagraphFeatureDatasetGenerator.__COLS_AND_FUNC.values()
+        ]
+        pos_frequency_results = [
+            freq_by_pos.get(tag, np.float64(0)) for tag in self.__tags
+        ]
+
+        return (
+            *feature_calc_results,
+            *pos_frequency_results,
+            categories,
         )
