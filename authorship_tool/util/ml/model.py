@@ -55,6 +55,7 @@ class ShapData:
     """Shapデータクラス"""
 
     explainer: shap.Explainer
+    explanation: shap.Explanation
     base_values: np.float64
     shap_values: npt.NDArray[np.float64]
     data: DataFrame

@@ -30,6 +30,7 @@ def create_shap_data(model: LGBMClassifier, test_data: DataFrame) -> ShapData:
 
     return ShapData(
         explainer=tree_explainer,
+        explanation=tree_explainer(test_data),
         shap_values=tree_explainer.shap_values(test_data),
         base_values=tree_explainer.expected_value,
         data=test_data,
