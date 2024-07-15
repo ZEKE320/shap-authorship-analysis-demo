@@ -59,7 +59,7 @@ class PosFeature:
             tagged_tokens = words.copy()
 
         if len(tagged_tokens) == 0 or not type_guard.are_tagged_tokens(tagged_tokens):
-            raise TypeError("src type is not supported.")
+            raise TypeError("The parameter type is not supported.")
 
         self.__tagged_tokens: Final[list[TaggedToken]] = tagged_tokens
 
@@ -188,7 +188,6 @@ class PosFeature:
         tagged_tokens: list[TaggedToken] = []
 
         for i, (token, tag) in enumerate(self.__tagged_tokens):
-
             if current == State.INITIAL and token.lower() == "it":
                 current = State.FOUND_IT
 
@@ -200,7 +199,6 @@ class PosFeature:
                 and tag == "JJ"
                 and token.lower() in self.__EXTRAPOSITION_ADJECTIVE_DATASET
             ):
-
                 current = State.FOUND_ADJ
                 jj_idx = i
                 jj_token = token
