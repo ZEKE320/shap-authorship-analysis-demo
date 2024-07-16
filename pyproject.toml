@@ -23,6 +23,9 @@ shap = "*"
 spacy = "*"
 seaborn = "^0.13.2"
 ruff = "^0.5.2"
+polars = "^1.1.0"
+pyarrow = "^16.1.0"
+plotly = "^5.22.0"
 
 
 [build-system]
